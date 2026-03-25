@@ -1,182 +1,411 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wassim - Animaux</title>
-    <style>
-        :root {
-            --bg: #f3ede2;
-            --surface: #ffffff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --accent: #cc5c1a;
-            --accent-hover: #a84b15;
-            --border: #e6ddce;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Le Dragon – Créature Légendaire</title>
 
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .container {
-            width: min(1100px, 94vw);
-            margin: 0 auto;
-            padding: 28px 0 56px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: clamp(1.8rem, 4vw, 2.4rem);
-        }
-
-        .subtitle {
-            margin: 6px 0 18px;
-            color: var(--muted);
-        }
-
-        .btn-retour {
-            text-decoration: none;
-            background: var(--accent);
-            color: #ffffff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 9px 16px;
-            white-space: nowrap;
-        }
-
-        .btn-retour:hover {
-            background: var(--accent-hover);
-        }
-
-        .grille-animaux {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
-
-        .carte-animal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .carte-image {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-            display: block;
-            background: #f9fafb;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .carte-contenu {
-            padding: 16px;
-            display: grid;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .carte-titre {
-            margin: 0;
-            font-size: 1.08rem;
-            font-weight: 800;
-        }
-
-        .carte-sous-titre {
-            margin: 0;
-            color: #374151;
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .carte-statut {
-            margin: 0;
-            color: #4b5563;
-            font-size: 0.9rem;
-        }
-
-        .btn-fiche {
-            justify-self: start;
-            text-decoration: none;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 8px 14px;
-            margin-top: 4px;
-        }
-
-        .btn-fiche:hover {
-            background: var(--accent-hover);
-        }
-
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="dragon-chinois.jpg" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main class="container">
-        <div class="header">
-            <h1>Animaux de Wassim</h1>
-            <a class="btn-retour" href="../index.html">Retour a la liste</a>
+
+  <canvas id="particle-canvas"></canvas>
+
+  <nav>
+    <div class="nav-logo">🔥 CGEX - SIO 2</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="#hero">Dragon - Wassim</a></li>
+      <li><a href="#">Autres animaux</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-label">✦ Créature légendaire ✦</p>
+      <h1 class="hero-title">Le Dragon</h1>
+      <p class="hero-subtitle">Maître du feu &nbsp;·&nbsp; Gardien des âges &nbsp;·&nbsp; Symbole éternel</p>
+    </div>
+    <div class="scroll-arrow" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+  </section>
+
+  <main class="sections-wrapper">
+
+    <article class="card" id="mythologie">
+      <div class="section-header">
+        <span class="section-icon">📜</span>
+        <h2 class="section-title">Ethymologie & Représentations</h2>
+        <span class="section-line"></span>
+      </div>
+      <p class="section-text">
+        <p>
+        Le mot <strong>dragon</strong> vient du latin <strong>draco</strong>, lui-même issu du grec ancien *drákōn*, qui signifiait à l'origine <strong>grand serpent ou serpent mythique</strong>.
+        La racine grecque est liée à l'idée de <strong>regard perçant</strong>, ce qui explique que les dragons soient souvent décrits comme des créatures qui gardent ou surveillent quelque chose, comme un trésor ou un lieu sacré.
+        Les premières représentations de dragons apparaissent dans les mythes très anciens du <strong>Proche-Orient et de la Grèce antique</strong>, il y a plus de 2500 ans, où ils sont souvent représentés comme <strong>de grands serpents monstrueux</strong>. 
+        Leur signification varie selon les cultures : en <strong>Europe</strong>, surtout au Moyen Âge, le dragon symbolise souvent <strong>le danger, le mal et l'ennemi que le héros doit vaincre</strong>. En revanche, dans les cultures <strong>asiatiques</strong>, notamment en Chine, il représente <strong>la puissance, la sagesse, la chance et les forces de la nature</strong> comme la pluie et les rivières.
+        Ainsi, même s’il est imaginaire, le dragon est une figure très importante dans de nombreuses civilisations et traditions.
+        </p>
+      </p>
+      <p class="section-text" style="margin-top:1rem;">
+        <span class="placeholder">
+            Encyclopaedia Universalis — article Dragon<br>
+            Wikipédia — Dragon ; Dragons dans la mythologie grecque<br>
+            Dictionnaire Orthodidacte — Étymologie du mot dragon]
+        </span>
+      </p>
+    </article>
+
+    <div class="fire-divider" aria-hidden="true">· ⟨ 🔥 ⟩ ·</div>
+
+    <article class="card" id="cultures">
+      <div class="section-header">
+        <span class="section-icon">🌍</span>
+        <h2 class="section-title">Dragons à travers les cultures</h2>
+        <span class="section-line"></span>
+      </div>
+      <p class="section-text">
+        La vision du dragon varie radicalement selon les civilisations : tantôt monstre destructeur,
+        tantôt divinité bienveillante. Voici quelques grandes traditions.
+      </p>
+
+      <div class="culture-grid">
+        <div class="culture-item">
+          <p class="culture-name">🇨🇳 Chine</p>
+          <p class="culture-desc">
+            Symbole de puissance, de chance et de prospérité. Le dragon chinois est bienveillant,
+            associé à l'eau et aux empereurs.
+          </p>
         </div>
-        <p class="subtitle">Tu peux mettre tes images en haut des cards en rempla cant les fichiers dans le dossier images.</p>
+        <div class="culture-item">
+          <p class="culture-name">🐉 Europe médiévale</p>
+          <p class="culture-desc">
+            Créature maléfique crachant le feu, souvent tué par un chevalier. Il garde des trésors
+            et symbolise le mal à vaincre.
+          </p>
+        </div>
+        <div class="culture-item">
+          <p class="culture-name">🇯🇵 Japon</p>
+          <p class="culture-desc">
+            Ryū : serpent aquatique et protecteur, lié à la mer et aux tempêtes.
+            Souvent représenté sans ailes.
+          </p>
+        </div>
+        <div class="culture-item">
+          <p class="culture-name">⚡ Norrois</p>
+          <p class="culture-desc">
+            Níðhöggr ronge les racines d'Yggdrasil. Le dragon nordique incarne le chaos et la destruction.
+          </p>
+        </div>
+        <div class="culture-item">
+          <p class="culture-name">🏔️ Mésoamérique</p>
+          <p class="culture-desc">
+            Quetzalcóatl, le serpent à plumes, est un dieu créateur chez les Aztèques, proche du dragon.
+          </p>
+        </div>
+      </div>
+    </article>
 
-        <section class="grille-animaux">
-            <article class="carte-animal">
-                <img src="./images/lion.jpg" alt="Lion" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+lion.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">LION</h2>
-                    <p class="carte-sous-titre">Categorie: Mammiferes</p>
-                    <p class="carte-statut">Selection de Wassim.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+    <div class="fire-divider" aria-hidden="true">· ⟨ 🔥 ⟩ ·</div>
 
-            <article class="carte-animal">
-                <img src="./images/aigle.jpg" alt="Aigle" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+aigle.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">AIGLE</h2>
-                    <p class="carte-sous-titre">Categorie: Oiseaux</p>
-                    <p class="carte-statut">Selection de Wassim.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+    <article class="card" id="symbolique">
+      <div class="section-header">
+        <span class="section-icon">🌀</span>
+        <h2 class="section-title">Symbolique du dragon</h2>
+        <span class="section-line"></span>
+      </div>
+      <p class="section-text">
+       Le dragon est représenté comme une créature monstrueuse et dangereuse. Il est souvent décrit comme un grand reptile avec des écailles, des griffes et parfois des ailes. 
+       Il symbolise une menace pour les humains et apparaît généralement comme un ennemi que le héros doit combattre.
 
-            <article class="carte-animal">
-                <img src="./images/tortue.jpg" alt="Tortue" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+tortue.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">TORTUE</h2>
-                    <p class="carte-sous-titre">Categorie: Reptiles</p>
-                    <p class="carte-statut">Selection de Wassim.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
-        </section>
-    </main>
+       Dans ces représentations, le dragon symbolise le danger, le mal ou les forces destructrices. 
+       Il représente souvent un obstacle que le héros doit vaincre. 
+       Le combat contre le dragon symbolise donc la lutte entre le bien et le mal.
+
+       Cette représentation s’explique par l’influence de la religion chrétienne au Moyen Âge. Dans la tradition chrétienne, le dragon est souvent associé au diable ou aux forces du mal. 
+       Dans la Bible, il peut représenter Satan.
+       Les récits où un saint ou un chevalier tue un dragon symbolisent donc la victoire de la foi chrétienne et du bien sur le mal.
+      </p>
+      <div class="symbolic-grid">
+        <div class="symbolic-card">
+          <img src="dragon-medieval.jpg" alt="Dragon héraldique médiéval" loading="lazy">
+          <p><strong>Fresque médiévale</strong> – le dragon comme symbole du mal.</p>
+        </div>
+        <div class="symbolic-card">
+          <img src="dragon-blason.jpg" alt="Blason avec dragon" loading="lazy">
+          <p><strong>Blasons & Armoiries</strong> – protection et puissance.</p>
+        </div>
+        <div class="symbolic-card">
+          <img src="dragon-asiatique.jpg" alt="Dragon asiatique symbole de chance" loading="lazy">
+          <p><strong>Dragon asiatique</strong> – sagesse et fortune.</p>
+        </div>
+      </div>
+
+    </article>
+
+    <div class="fire-divider" aria-hidden="true">· ⟨ 🔥 ⟩ ·</div>
+
+    <article class="card" id="pouvoirs">
+      <div class="section-header">
+        <span class="section-icon">⚔️</span>
+        <h2 class="section-title">Pouvoirs & Caractéristiques</h2>
+        <span class="section-line"></span>
+      </div>
+      <p class="section-text">
+        Dans la plupart des représentations, le dragon ressemble à un gigantesque reptile. 
+        Son corps est recouvert d’écailles très résistantes qui lui servent de protection. 
+        Beaucoup de dragons possèdent aussi de grandes ailes semblables à celles des chauves-souris, ce qui leur permettrait de voler. 
+        Ils sont souvent représentés avec de longues griffes, des dents acérées et parfois la capacité de cracher du feu. 
+        Si le dragon était une véritable espèce animale, il devrait posséder une ossature extrêmement solide et des muscles très puissants pour supporter son poids et pouvoir voler.
+      </p>
+
+      <div class="powers-list">
+        <span class="power-tag">🔥 Souffle de feu</span>
+        <span class="power-tag">❄️ Souffle de glace</span>
+        <span class="power-tag">⚡ Foudre</span>
+        <span class="power-tag">🦅 Vol</span>
+        <span class="power-tag">🛡️ Écailles invulnérables</span>
+        <span class="power-tag">🧠 Intelligence supérieure</span>
+        <span class="power-tag">✨ Magie</span>
+        <span class="power-tag">👁️ Vision nocturne</span>
+        <span class="power-tag">💨 Venin</span>
+        <span class="power-tag">🔮 Télékinésie</span>
+        <span class="power-tag">♾️ Immortalité (selon les mythes)</span>
+      </div>
+
+    </article>
+
+    <div class="fire-divider" aria-hidden="true">· ⟨ 🔥 ⟩ ·</div>
+
+    <article class="card" id="culture-pop">
+      <div class="section-header">
+        <span class="section-icon">🎬</span>
+        <h2 class="section-title">Les Dragons de nos jours</h2>
+        <span class="section-line"></span>
+      </div>
+      <p class="section-text">
+        Des grands écrans aux pages des romans, les dragons n'ont jamais cessé de fasciner les créateurs.
+        Ils sont devenus des icônes incontournables de la fantasy moderne, apparaissant dans des œuvres
+        qui ont marqué des générations entières.
+      </p>
+
+      <div class="media-grid">
+        <div class="media-item">
+          <p class="media-category">🎬 Cinéma</p>
+          <p class="media-title">
+            <em>Donjon & Dragon</em> (film) – adaptation moderne inspirée des jeux et univers fantasy.
+          </p>
+        </div>
+        <div class="media-item">
+          <p class="media-category">📺 Série</p>
+          <p class="media-title">
+            <em>Daenerys & ses dragons</em> dans <em>Game of Thrones</em> – Drogon, Rhaegal, Viserion.
+          </p>
+        </div>
+        <div class="media-item">
+          <p class="media-category">🎮 Jeu vidéo</p>
+          <p class="media-title">
+            <em>Skyrim (TES V)</em> – Alduin, le mangeur du monde, antagoniste ultime.
+          </p>
+        </div>
+        <div class="media-item">
+          <p class="media-category">📚 Littérature</p>
+          <p class="media-title">
+            <em>Eragon</em> de Christopher Paolini – un jeune dragon rider et son dragon Saphira.
+          </p>
+        </div>
+        <div class="media-item">
+          <p class="media-category">🐲 Animation</p>
+          <p class="media-title">
+            <em>Dragons</em> (DreamWorks) – Harold et Krokmou, vision moderne du dragon apprivoisé.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <div class="fire-divider" aria-hidden="true">· ⟨ 🔥 ⟩ ·</div>
+
+    <article class="card" id="conclusion">
+      <div class="section-header">
+        <span class="section-icon">🏰</span>
+        <h2 class="section-title">Conclusion</h2>
+        <span class="section-line"></span>
+      </div>
+      <p class="section-text">
+        Le dragon est bien plus qu'un simple monstre de fiction. Présent sur tous les continents
+        et à travers toutes les époques, il incarne nos peurs les plus profondes mais aussi nos
+        rêves les plus grands : la puissance, la liberté, la sagesse. 
+        Qu'il soit un gardien de trésor ou un symbole divers, le dragon continue de nous inspirer
+        et de nous fasciner, prouvant que même les créatures les plus mythiques peuvent avoir une place dans notre imaginaire collectif. 
+      </p>
+
+      <blockquote class="conclusion-quote">
+        « Le dragon ne se soumet pas, il nous enseigne à nous dépasser. »
+      </blockquote>
+
+      <p class="section-text" style="text-align:center; color:var(--text-muted); font-size:0.9rem;">
+        <span class="placeholder">[ WASSIM - BTS SIO 2 - 2024/2026 ]</span>
+      </p>
+    </article>
+
+  </main>
+
+  <footer>
+    <p>✦ &nbsp; Bestiaire Scolaire &nbsp; · &nbsp; Dragon &nbsp; · &nbsp; 2024–2026 &nbsp; ✦</p>
+  </footer>
+
+  <script>
+    // ===== NAVIGATION MOBILE =====
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+
+    toggle.addEventListener('click', () => {
+      links.classList.toggle('open');
+    });
+
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => links.classList.remove('open'));
+    });
+
+    // ===== ANIMATIONS AU SCROLL =====
+    const cards = document.querySelectorAll('.card');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    cards.forEach(card => observer.observe(card));
+
+    // ===== PARTICULES DE FEU ANIMÉES =====
+    (function () {
+      const canvas = document.getElementById('particle-canvas');
+      const ctx    = canvas.getContext('2d');
+
+      let W, H, particles = [];
+      let frameId;
+      let maxParticles = 60;
+
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+
+        maxParticles = window.innerWidth < 700 ? 35 : 60;
+        if (particles.length > maxParticles) {
+          particles.length = maxParticles;
+        } else {
+          while (particles.length < maxParticles) {
+            particles.push(createParticle(true));
+          }
+        }
+      }
+
+      window.addEventListener('resize', () => {
+        resize();
+      });
+
+      function createParticle(initial) {
+        return {
+          x:     Math.random() * W,
+          y:     initial ? Math.random() * H : H + 10,
+          size:  Math.random() * 3 + 1,
+          speedY: Math.random() * 1.1 + 0.4,
+          speedX: (Math.random() - 0.5) * 0.5,
+          opacity: Math.random() * 0.6 + 0.2,
+          life:   0,
+          maxLife: Math.random() * 160 + 80,
+          color: ['#e67e22','#c0392b','#f1c40f','#ff6b1a'][Math.floor(Math.random()*4)]
+        };
+      }
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < maxParticles; i++) {
+          particles.push(createParticle(true));
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.shadowBlur = 4;
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.life++;
+          p.y -= p.speedY;
+          p.x += p.speedX + Math.sin(p.life * 0.04) * 0.24;
+
+          const ratio = p.life / p.maxLife;
+          const alpha = ratio < 0.3 ? (ratio / 0.3) * p.opacity : (1 - ratio) * p.opacity;
+
+          if (alpha > 0) {
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = p.color;
+            ctx.shadowColor = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          if (p.life >= p.maxLife || p.y < -10 || p.x < -20 || p.x > W + 20) {
+            particles[i] = createParticle(false);
+          }
+        }
+
+        frameId = requestAnimationFrame(draw);
+      }
+
+      function startParticles() {
+        cancelAnimationFrame(frameId);
+        initParticles();
+        draw();
+      }
+
+      resize();
+      startParticles();
+    })();
+
+    // ===== PARALLAX HERO =====
+    const heroBg = document.querySelector('.hero-bg');
+    let isScrolling = false;
+
+    window.addEventListener('scroll', () => {
+      if (!isScrolling && heroBg) {
+        isScrolling = true;
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          heroBg.style.transform = `scale(1.06) translateY(${scrollY * 0.25}px)`;
+          isScrolling = false;
+        });
+      }
+    }, { passive: true });
+
+    // ===== RETOUR À LA LIGNE APRÈS CHAQUE POINT =====
+    function splitParagraphsOnPeriod() {
+      const paragraphs = document.querySelectorAll('p');
+      paragraphs.forEach(p => {
+        if (p.dataset.splitDone) return;
+        p.innerHTML = p.innerHTML.replace(/\.\s+/g, '.<br>');
+        p.dataset.splitDone = 'true';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', splitParagraphsOnPeriod);
+
+  </script>
 </body>
 </html>
