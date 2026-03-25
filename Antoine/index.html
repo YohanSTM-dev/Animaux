@@ -1,182 +1,875 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antoine - Animaux</title>
-    <style>
-        :root {
-            --bg: #f3ede2;
-            --surface: #ffffff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --accent: #cc5c1a;
-            --accent-hover: #a84b15;
-            --border: #e6ddce;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Ours — Présentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --beige: #d4b896;
+    --beige-light: #e8d5bc;
+    --beige-dark: #b89470;
+    --gold: #e8a020;
+    --gold-dark: #c07810;
+    --brown: #5c3d2e;
+    --brown-dark: #3a2218;
+    --brown-light: #8b6552;
+    --cream: #f5ead8;
+    --white: #fff8f0;
+  }
 
-        * {
-            box-sizing: border-box;
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        }
+  body {
+    background-color: var(--beige);
+    background-image:
+      linear-gradient(rgba(92,61,46,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(92,61,46,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--brown);
+    overflow-x: hidden;
+  }
 
-        .container {
-            width: min(1100px, 94vw);
-            margin: 0 auto;
-            padding: 28px 0 56px;
-        }
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+  }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
+  .hero-bears {
+    display: flex;
+    gap: 2rem;
+    font-size: 6rem;
+    margin-bottom: 1rem;
+    animation: floatBears 3s ease-in-out infinite alternate;
+  }
 
-        h1 {
-            margin: 0;
-            font-size: clamp(1.8rem, 4vw, 2.4rem);
-        }
+  @keyframes floatBears {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-14px); }
+  }
 
-        .subtitle {
-            margin: 6px 0 18px;
-            color: var(--muted);
-        }
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(4rem, 12vw, 9rem);
+    color: var(--gold);
+    letter-spacing: -2px;
+    text-shadow: 4px 4px 0 var(--brown-dark), 6px 6px 0 rgba(92,61,46,0.2);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    animation: popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
 
-        .btn-retour {
-            text-decoration: none;
-            background: var(--accent);
-            color: #ffffff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 9px 16px;
-            white-space: nowrap;
-        }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.6) rotate(-3deg); }
+    to   { opacity: 1; transform: scale(1) rotate(0); }
+  }
 
-        .btn-retour:hover {
-            background: var(--accent-hover);
-        }
+  .hero-sub {
+    font-size: 1.2rem;
+    color: var(--brown-light);
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.7s 0.4s both;
+  }
 
-        .grille-animaux {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-        .carte-animal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-            display: flex;
-            flex-direction: column;
-        }
+  .hero-tags {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.7s 0.6s both;
+  }
 
-        .carte-image {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-            display: block;
-            background: #f9fafb;
-            border-bottom: 1px solid var(--border);
-        }
+  .hero-tag {
+    background: rgba(255,248,240,0.75);
+    backdrop-filter: blur(4px);
+    border: 2px solid rgba(232,160,32,0.4);
+    border-radius: 30px;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--brown);
+  }
 
-        .carte-contenu {
-            padding: 16px;
-            display: grid;
-            gap: 8px;
-            flex: 1;
-        }
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(212,184,150,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--beige-dark);
+    padding: 0.8rem 2rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 
-        .carte-titre {
-            margin: 0;
-            font-size: 1.08rem;
-            font-weight: 800;
-        }
+  nav a {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.95rem;
+    color: var(--brown-dark);
+    text-decoration: none;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    transition: all 0.2s;
+    background: rgba(255,248,240,0.4);
+  }
+  nav a:hover {
+    background: var(--gold);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(232,160,32,0.4);
+  }
 
-        .carte-sous-titre {
-            margin: 0;
-            color: #374151;
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
+  /* ── SECTIONS ── */
+  section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
 
-        .carte-statut {
-            margin: 0;
-            color: #4b5563;
-            font-size: 0.9rem;
-        }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
 
-        .btn-fiche {
-            justify-self: start;
-            text-decoration: none;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 8px 14px;
-            margin-top: 4px;
-        }
+  .section-header .icon {
+    font-size: 2.8rem;
+    background: var(--gold);
+    width: 70px; height: 70px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 4px 4px 0 var(--brown-dark);
+    flex-shrink: 0;
+  }
 
-        .btn-fiche:hover {
-            background: var(--accent-hover);
-        }
+  .section-header h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--gold-dark);
+    line-height: 1.1;
+  }
 
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
+  .section-header .slide-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--brown-light);
+    opacity: 0.7;
+    display: block;
+  }
+
+  /* ── CARDS ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 2px solid var(--beige-dark);
+    box-shadow: 4px 4px 0 var(--beige-dark);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 var(--beige-dark);
+  }
+
+  .card h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: var(--gold-dark);
+    margin-bottom: 0.6rem;
+    display: flex; gap: 0.5rem; align-items: center;
+  }
+
+  .card p { font-size: 0.97rem; line-height: 1.7; }
+
+  /* ── HIGHLIGHT ── */
+  .highlight {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: white;
+    border-radius: 24px;
+    padding: 2rem 2.5rem;
+    margin: 2rem 0;
+    box-shadow: 6px 6px 0 var(--brown-dark);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    font-weight: 600;
+  }
+  .highlight strong { color: white; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.5); }
+
+  /* ── ÉTYMOLOGIE ── */
+  .etym-block {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 2rem 2.5rem;
+    border: 2px solid var(--beige-dark);
+    box-shadow: 5px 5px 0 var(--beige-dark);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .etym-latin {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3.5rem;
+    color: var(--gold);
+    text-shadow: 3px 3px 0 var(--beige-dark);
+    flex-shrink: 0;
+  }
+  .etym-text { font-size: 1rem; line-height: 1.7; }
+  .etym-text strong { color: var(--gold-dark); }
+
+  /* ── 5W STORIES ── */
+  .stories { display: grid; gap: 2rem; margin-top: 2rem; }
+
+  .story {
+    background: var(--white);
+    border-radius: 20px;
+    border: 2px solid var(--beige-dark);
+    box-shadow: 5px 5px 0 var(--beige-dark);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .story:hover { transform: translate(-4px, -4px); box-shadow: 9px 9px 0 var(--beige-dark); }
+
+  .story-header {
+    background: var(--gold);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .story-header .story-icon { font-size: 2rem; }
+  .story-header h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: white;
+    text-shadow: 2px 2px 0 var(--brown-dark);
+  }
+
+  .story-body { padding: 1.5rem; }
+
+  .w-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .w-item {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid var(--beige-dark);
+  }
+  .w-item .w-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.85rem;
+    color: var(--gold-dark);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .w-item p { font-size: 0.88rem; line-height: 1.4; }
+
+  /* ── TIMELINE (Moyen Âge) ── */
+  .timeline { display: grid; gap: 1.2rem; margin-top: 2rem; }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .tl-dot {
+    background: var(--gold);
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 3px 3px 0 var(--brown-dark);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .tl-content {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.1rem 1.4rem;
+    border: 2px solid var(--beige-dark);
+    box-shadow: 3px 3px 0 var(--beige-dark);
+  }
+  .tl-content h4 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem;
+    color: var(--gold-dark);
+    margin-bottom: 0.3rem;
+  }
+  .tl-content p { font-size: 0.93rem; line-height: 1.6; }
+
+  /* ── CULTURE CARDS ── */
+  .culture-item {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    border: 2px solid var(--beige-dark);
+    box-shadow: 5px 5px 0 var(--beige-dark);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .culture-item:hover { transform: translate(-4px, -4px); box-shadow: 9px 9px 0 var(--beige-dark); }
+
+  .culture-icon {
+    background: var(--gold);
+    width: 80px; height: 80px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 3px 3px 0 var(--brown-dark);
+    flex-shrink: 0;
+  }
+
+  .culture-item h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--gold-dark);
+    margin-bottom: 0.6rem;
+  }
+  .culture-item p { font-size: 0.97rem; line-height: 1.75; }
+
+  /* ── EXCEPTIONS GRID ── */
+  .except-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .except-card {
+    background: var(--cream);
+    border-radius: 18px;
+    padding: 1.4rem;
+    border: 2px solid var(--beige-dark);
+    box-shadow: 3px 3px 0 var(--beige-dark);
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .except-card:hover { transform: translateY(-5px); }
+  .except-card .big { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+  .except-card h4 {
+    font-family: 'Fredoka One', cursive;
+    color: var(--gold-dark);
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+  }
+  .except-card p { font-size: 0.88rem; line-height: 1.5; }
+
+  /* ── EXPRESSIONS (duo) ── */
+  .expr-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 580px) { .expr-duo { grid-template-columns: 1fr; } }
+
+  .expr-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 2px solid var(--beige-dark);
+    box-shadow: 4px 4px 0 var(--beige-dark);
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .expr-card:hover { transform: translateY(-4px); }
+  .expr-card .big { font-size: 3rem; margin-bottom: 0.5rem; display: block; }
+  .expr-card strong {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.15rem;
+    color: var(--gold-dark);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .expr-card p { font-size: 0.9rem; line-height: 1.5; }
+
+  /* ── SEP ── */
+  .sep {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--beige-dark), transparent);
+    margin: 0 10%;
+  }
+
+  /* ── CONCLUSION ── */
+  #conclusion {
+    background: var(--brown-dark);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--cream);
+    border-radius: 32px;
+    margin: 3rem auto;
+    max-width: 960px;
+    padding: 5rem 3rem;
+    text-align: center;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+  }
+  #conclusion .section-header { justify-content: center; }
+  #conclusion .section-header h2 { color: var(--gold); }
+
+  .concl-pills {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+  .concl-pill {
+    background: rgba(232,160,32,0.2);
+    border: 2px solid var(--gold);
+    border-radius: 30px;
+    padding: 0.6rem 1.4rem;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: var(--beige-light);
+  }
+
+  #conclusion p {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: var(--beige-light);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  #conclusion .big-bear {
+    font-size: 5rem;
+    display: block;
+    margin: 1.5rem 0;
+    animation: floatBears 2s ease-in-out infinite alternate;
+  }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 600px) {
+    .culture-item { grid-template-columns: 1fr; }
+    .etym-block { flex-direction: column; }
+  }
+</style>
 </head>
 <body>
-    <main class="container">
-        <div class="header">
-            <h1>Animaux de Antoine</h1>
-            <a class="btn-retour" href="../index.html">Retour a la liste</a>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-bears">🐻 🐻‍❄️ 🐼</div>
+  <h1>L'Ours</h1>
+  <p class="hero-sub">Origines · Légendes · Culture</p>
+  <p style="font-family:'Fredoka One',cursive; font-size:1rem; color:var(--brown-light); letter-spacing:2px; margin-bottom:1.5rem; animation: fadeUp 0.7s 0.5s both;">✏️ Par Mesange Antoine</p>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#origines">🏺 Étymologie/Origines</a>
+  <a href="#legendes">⚔️ Contes & Légendes</a>
+  <a href="#moyenage">🏰 Moyen Âge</a>
+  <a href="#arts">🎨 Arts</a>
+  <a href="#visuels">🌍 Exceptions mondiales</a>
+  <a href="#conclusion">🏁 Conclusion</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     DIAPO 1 — PRÉSENTATION & ORIGINES
+════════════════════════════════════════════ -->
+<section id="origines">
+  <div class="section-header reveal">
+    <div class="icon">🏺</div>
+    <div>
+      <span class="slide-num">Diapositive 1</span>
+      <h2>Présentation & Origines</h2>
+    </div>
+  </div>
+
+  <div class="etym-block reveal">
+    <div class="etym-latin">Ursus</div>
+    <div class="etym-text">
+      <strong>Étymologie latine</strong> — La famille des <em>ursidés</em> tire son nom directement du latin 
+      <em>Ursus</em>. Ce terme a traversé les siècles pour désigner l'ours dans de nombreuses langues romanes 
+      et scientifiques. C'est l'une des appellations animales les plus anciennes et les plus stables de la 
+      zoologie occidentale.
+    </div>
+  </div>
+
+  <p class="reveal" style="font-size:1.05rem;line-height:1.8;margin-bottom:1.5rem;">
+    Dès les premières civilisations, l'ours occupait une place centrale dans l'imaginaire humain. 
+    Considéré comme <strong>animal totem</strong> en Amérique du Nord, il était bien plus qu'une simple bête sauvage.
+  </p>
+
+  <div class="cards">
+    <div class="card reveal">
+      <h3>💪 Puissance & Force physique</h3>
+      <p>L'une des premières interprétations de l'ours : une incarnation brute de la <strong>force physique</strong>. 
+      Sa stature imposante, sa vitesse et ses griffes en faisaient un être à la fois craint et admiré par les peuples anciens.</p>
+    </div>
+    <div class="card reveal">
+      <h3>🌿 Sagesse & Guérison</h3>
+      <p>Dans les traditions chamaniques et autochtones, l'ours était un guide spirituel, 
+      porteur de <strong>sagesse</strong> et de pouvoir guérisseur. Se connecter à l'ours, 
+      c'était accéder à une connaissance profonde de la nature.</p>
+    </div>
+    <div class="card reveal">
+      <h3>🛡️ Protection maternelle</h3>
+      <p>L'ourse et ses oursons ont longtemps symbolisé la <strong>protection maternelle</strong> la plus farouche. 
+      Ce lien mère-enfant, intense et viscéral, a nourri de nombreux mythes à travers les âges.</p>
+    </div>
+  </div>
+  <div class="highlight reveal" style="margin-top:2rem;">
+    🦴 <strong>Premières représentations</strong>
+  </div>
+
+  <div class="cards">
+    <div class="card reveal">
+      <h3>📅 Époque</h3>
+      <p>Paléolithique supérieur, environ <strong>-30 000 ans</strong> — parmi les premières représentations animales gravées ou peintes par l'homme préhistorique.</p>
+    </div>
+    <div class="card reveal">
+      <h3>🗺️ Civilisation & Continent</h3>
+      <p>Europe, notamment en France avec la célèbre <strong>Grotte Chauvet</strong>, qui conserve certaines des plus anciennes peintures rupestres connues au monde.</p>
+    </div>
+    <div class="card reveal">
+      <h3>🔮 Interprétation</h3>
+      <p>L'ours est perçu comme un <strong>double de l'homme</strong> — sa capacité à se tenir debout fascine. Il suscite un véritable culte : certains crânes étaient disposés de manière <strong>rituelle</strong>, représentant la puissance sauvage et le sacré.</p>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     DIAPO 2 — CONTES & LÉGENDES
+════════════════════════════════════════════ -->
+<section id="legendes">
+  <div class="section-header reveal">
+    <div class="icon">⚔️</div>
+    <div>
+      <span class="slide-num">Diapositive 2</span>
+      <h2>L'ours dans les contes et légendes</h2>
+    </div>
+  </div>
+
+  <div class="highlight reveal">
+    L'ours occupe une place unique dans l'imaginaire collectif, oscillant entre la figure du 
+    <strong>guerrier invincible</strong> et celle de la <strong>créature à protéger</strong>. 
+    Cette dualité se retrouve à travers deux récits marquants qui illustrent le lien changeant entre l'homme et l'animal.
+  </div>
+
+  <div class="stories">
+    <!-- BERSERKERS -->
+    <div class="story reveal">
+      <div class="story-header">
+        <span class="story-icon">🪖</span>
+        <h3>1. L'ours guerrier — Les Berserkers</h3>
+      </div>
+      <div class="story-body">
+        <p style="font-size:0.97rem;line-height:1.75;margin-bottom:1.2rem;">
+          Dans la <strong>mythologie nordique</strong> et les sagas scandinaves, l'ours est l'incarnation 
+          de la force brute et de l'invulnérabilité.
+        </p>
+        <div class="w-grid">
+          <div class="w-item">
+            <span class="w-label">📖 Le récit</span>
+            <p>Les Berserkers étaient des <strong>guerriers d'élite dévoués à Odin</strong>. 
+            Avant le combat, ils entraient dans une fureur sacrée et revêtaient des peaux d'ours — 
+            le mot <em>berserkr</em> signifiant d'ailleurs <strong>« chemise d'ours »</strong>.</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">🐾 L'aspect de l'animal</span>
+            <p>L'ours représente ici le <strong>fauve redoutable</strong>, la puissance sauvage que l'homme cherche 
+            à s'approprier par un processus de <em>métamorphose</em> pour devenir invincible face à l'ennemi.</p>
+          </div>
         </div>
-        <p class="subtitle">Tu peux mettre tes images en haut des cards en rempla cant les fichiers dans le dossier images.</p>
+      </div>
+    </div>
 
-        <section class="grille-animaux">
-            <article class="carte-animal">
-                <img src="./images/lion.jpg" alt="Lion" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+lion.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">LION</h2>
-                    <p class="carte-sous-titre">Categorie: Mammiferes</p>
-                    <p class="carte-statut">Selection de Antoine.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+    <!-- TEDDY BEAR -->
+    <div class="story reveal">
+      <div class="story-header">
+        <span class="story-icon">🧸</span>
+        <h3>2. L'ours protégé — Le Teddy Bear</h3>
+      </div>
+      <div class="story-body">
+        <p style="font-size:0.97rem;line-height:1.75;margin-bottom:1.2rem;">
+          À l'opposé de la fureur guerrière, l'histoire moderne a transformé l'ours en un 
+          <strong>symbole de vulnérabilité</strong>.
+        </p>
+        <div class="w-grid">
+          <div class="w-item">
+            <span class="w-label">📖 Le récit</span>
+            <p>En <strong>novembre 1902</strong>, dans le Mississippi, le président 
+            <strong>Theodore Roosevelt</strong> refusa de tirer sur un ours noir capturé et attaché pour lui — 
+            jugeant cet acte <em>« anti-sportif »</em>. L'événement, immortalisé par un dessin de presse, 
+            inspira la création du premier ours en peluche.</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">🐾 L'aspect de l'animal</span>
+            <p>L'ours est ici perçu comme un <strong>être sensible méritant la compassion</strong>. 
+            Il n'est plus le prédateur à abattre, mais le compagnon à préserver — 
+            marquant la naissance du <strong>« nounours »</strong> universel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            <article class="carte-animal">
-                <img src="./images/aigle.jpg" alt="Aigle" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+aigle.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">AIGLE</h2>
-                    <p class="carte-sous-titre">Categorie: Oiseaux</p>
-                    <p class="carte-statut">Selection de Antoine.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+  <div class="highlight reveal">
+    🔄 <strong>Entre fureur et tendresse :</strong> Deux récits, une même figure animale — 
+    le passage de la <strong>force guerrière brute</strong> des Berserkers à la 
+    <strong>douceur et la vulnérabilité</strong> du Teddy Bear. L'ours, miroir de l'évolution des valeurs humaines à travers les siècles.
+  </div>
+</section>
 
-            <article class="carte-animal">
-                <img src="./images/tortue.jpg" alt="Tortue" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+tortue.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">TORTUE</h2>
-                    <p class="carte-sous-titre">Categorie: Reptiles</p>
-                    <p class="carte-statut">Selection de Antoine.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
-        </section>
-    </main>
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     DIAPO 3 — L'OURS AU MOYEN ÂGE
+════════════════════════════════════════════ -->
+<section id="moyenage">
+  <div class="section-header reveal">
+    <div class="icon">🏰</div>
+    <div>
+      <span class="slide-num">Diapositive 3</span>
+      <h2>L'Ours au Moyen Âge</h2>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-dot">👑</div>
+      <div class="tl-content">
+        <h4>Ancien Roi des animaux</h4>
+        <p>Avant le lion, c'est l'ours qui régnait dans l'imaginaire européen. 
+        Symbole de puissance absolue, il était le premier des animaux dans les bestiaires médiévaux.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot">🦁</div>
+      <div class="tl-content">
+        <h4>Détrôné par le lion</h4>
+        <p>L'émergence du lion comme <strong>roi des animaux</strong> dans les bestiaires chrétiens a progressivement 
+        relégué l'ours au second plan — une évolution qui reflète des choix symboliques et politiques de l'Église.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot">✝️</div>
+      <div class="tl-content">
+        <h4>Influence chrétienne</h4>
+        <p>L'Église a progressivement <strong>domestiqué la figure de l'ours</strong> — représentant la bête sauvage 
+        domptée par la foi. Cette démarche symbolisait la domination de la religion sur les forces de la nature 
+        et les anciens cultes animistes.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot">🔄</div>
+      <div class="tl-content">
+        <h4>Évolution de l'Antiquité au Moyen Âge</h4>
+        <p>La conception de l'ours change profondément : de <strong>dieu ou totem vénéré</strong> dans l'Antiquité, 
+        il devient une figure ambivalente au Moyen Âge, à la fois redoutable et soumise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     DIAPO 4 — L'OURS AUJOURD'HUI (ARTS)
+════════════════════════════════════════════ -->
+<section id="arts">
+  <div class="section-header reveal">
+    <div class="icon">🎨</div>
+    <div>
+      <span class="slide-num">Diapositive 4</span>
+      <h2>L'Ours aujourd'hui — Arts</h2>
+    </div>
+  </div>
+
+  <div class="highlight reveal">
+    🐻 <strong>Perception actuelle :</strong> L'ours contemporain oscille entre deux images — 
+    le <strong>compagnon attendrissant</strong> de nos enfances et le <strong>fauve redoutable</strong> 
+    de la nature sauvage.
+  </div>
+
+  <div class="culture-item reveal">
+    <div class="culture-icon">📚</div>
+    <div>
+      <h3>Baloo — Le Livre de la jungle — Kipling & Disney</h3>
+      <p>
+        En littérature et au cinéma, Baloo est une figure incontournable. Dans l'œuvre de Kipling, 
+        c'est avant tout un <strong>mentor sage</strong> qui guide Mowgli à travers les lois de la jungle. 
+        Disney (1967) l'a transformé en un personnage <strong>joyeux et insouciant</strong>, au grand cœur. 
+        À travers lui, l'ours symbolise la liberté, la bienveillance et la philosophie du "carpe diem" : 
+        <em>vivre simplement, en harmonie avec la nature.</em>
+      </p>
+      <img src="balou.jfif" alt="description" style="width:100%; border-radius:16px; margin-top:1rem; box-shadow:4px 4px 0 var(--beige-dark);">
+    </div>
+  </div>
+
+  <div class="culture-item reveal">
+    <div class="culture-icon">🎬</div>
+    <div>
+      <h3>L'Ours — Jean-Jacques Annaud (1988)</h3>
+      <p>
+        Film de référence dans la représentation réaliste et poétique de l'animal. 
+        Annaud y dépeint l'ours non comme une bête féroce, mais comme un 
+        <strong>être sensible, intelligent et capable de peur</strong>. 
+        Presque sans dialogue, le film communique par l'image et les émotions pures — 
+        une vision qui invite à repenser la place de l'homme dans la nature.
+      </p>
+      <img src="Jacques.jpg" alt="description" style="width:100%; border-radius:16px; margin-top:1rem; box-shadow:4px 4px 0 var(--beige-dark);">
+    </div>
+  </div>
+  <div class="culture-item reveal">
+    <div class="culture-icon">🗿</div>
+    <div>
+      <h3>L'Ours blanc — François Pompon (1922)</h3>
+      <p>
+        Exposée au Musée d'Orsay, cette sculpture est un manifeste du <strong>style épuré</strong>. 
+        Formes lisses, lignes pures, sans détail superflu — Pompon voulait capturer l'<em>essence</em> 
+        de l'animal, pas son apparence exacte. L'ours y apparaît <strong>calme, serein</strong>, 
+        presque pacifique. Une œuvre fondatrice de la sculpture moderne qui allie 
+        simplicité, puissance et douceur.
+      </p>
+      <img src="Francois.jpg" alt="description" style="width:100%; border-radius:16px; margin-top:1rem; box-shadow:4px 4px 0 var(--beige-dark);">
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     DIAPO 5 — ARTS VISUELS & EXCEPTIONS
+════════════════════════════════════════════ -->
+<section id="visuels">
+  <div class="section-header reveal">
+    <div class="icon">🌍</div>
+    <div>
+      <span class="slide-num">Diapositive 5</span>
+      <h2>Exceptions mondiales</h2>
+    </div>
+  </div>
+  <div class="except-grid">
+    <div class="except-card reveal">
+      <span class="big">🌸</span>
+      <h4>Exception japonaise</h4>
+      <p>Au Japon, l'ours est principalement associé à la <strong>bienveillance</strong> et à la protection — 
+      une lecture culturelle bien éloignée de la bête féroce occidentale.</p>
+    </div>
+    <div class="except-card reveal">
+      <span class="big">🌍</span>
+      <h4>Une figure universelle</h4>
+      <p>Chaque culture réinterprète l'ours à travers son propre prisme — 
+      preuve que cet animal touche quelque chose d'universel dans la psyché humaine.</p>
+    </div>
+  </div>
+
+  <p class="reveal" style="font-size:1.05rem;font-weight:700;margin:2rem 0 1rem;color:var(--gold-dark);">
+    💬 Deux expressions qui résument la dualité :
+  </p>
+  <div class="expr-duo">
+    <div class="expr-card reveal">
+      <span class="big">😤</span>
+      <strong>Ours mal léché</strong>
+      <p>Personne aux manières rustres, asociale, qui évite la compagnie des autres.</p>
+    </div>
+    <div class="expr-card reveal">
+      <span class="big">💪</span>
+      <strong>Fort comme un ours</strong>
+      <p>Avoir une force physique exceptionnelle, hors du commun.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     DIAPO 6 — CONCLUSION
+════════════════════════════════════════════ -->
+<section id="conclusion">
+  <div class="section-header">
+    <div class="icon">🏁</div>
+    <div>
+      <span class="slide-num" style="color:var(--beige-light);opacity:0.6;">Diapositive 6</span>
+      <h2>Conclusion</h2>
+    </div>
+  </div>
+
+  <span class="big-bear">🐻</span>
+
+  <div class="concl-pills">
+    <span class="concl-pill">⚖️ Dualité</span>
+    <span class="concl-pill">🌿 Liberté</span>
+    <span class="concl-pill">🤝 Lien Homme-Animal</span>
+    <span class="concl-pill">✨ Bienveillance</span>
+  </div>
+
+  <p>
+    L'ours est un animal <strong>complexe et fascinant</strong>, à la fois puissant et paisible, 
+    redouté et aimé. Il incarne un pont entre la <strong>nature sauvage</strong> et l'<strong>imaginaire humain</strong> — 
+    symbole de liberté et de bienveillance traversant les sciences, les mythes et les arts.
+    <br><br>
+    À retenir : une figure qui incarne avant tout la <strong>fragilité et la beauté de la nature</strong>, 
+    miroir de ce que l'humanité projette sur le monde animal depuis des millénaires.
+  </p>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<!-- ── FOOTER ── -->
+<footer style="text-align:center; padding:2rem; font-family:'Fredoka One',cursive; font-size:0.95rem; color:var(--brown-light); letter-spacing:1px; border-top: 2px solid var(--beige-dark); margin-top:2rem;">
+  🐻 Fait par <a href="https://mesangeantoine.fr/" target="_blank" style="color:var(--gold-dark); font-family:'Fredoka One',cursive; text-decoration:none; border-bottom: 2px solid var(--gold);">Mesange Antoine</a>
+</footer>
 </body>
 </html>
