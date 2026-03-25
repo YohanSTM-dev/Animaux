@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Louis - Animaux</title>
+    <style>
+        :root {
+            --bg: #f3ede2;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --accent: #cc5c1a;
+            --accent-hover: #a84b15;
+            --border: #e6ddce;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            width: min(1100px, 94vw);
+            margin: 0 auto;
+            padding: 28px 0 56px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+        }
+
+        .subtitle {
+            margin: 6px 0 18px;
+            color: var(--muted);
+        }
+
+        .btn-retour {
+            text-decoration: none;
+            background: var(--accent);
+            color: #ffffff;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 9px 16px;
+            white-space: nowrap;
+        }
+
+        .btn-retour:hover {
+            background: var(--accent-hover);
+        }
+
+        .grille-animaux {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .carte-animal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carte-image {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+            background: #f9fafb;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .carte-contenu {
+            padding: 16px;
+            display: grid;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .carte-titre {
+            margin: 0;
+            font-size: 1.08rem;
+            font-weight: 800;
+        }
+
+        .carte-sous-titre {
+            margin: 0;
+            color: #374151;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .carte-statut {
+            margin: 0;
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+
+        .btn-fiche {
+            justify-self: start;
+            text-decoration: none;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 8px 14px;
+            margin-top: 4px;
+        }
+
+        .btn-fiche:hover {
+            background: var(--accent-hover);
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="header">
+            <h1>Animaux de Louis</h1>
+            <a class="btn-retour" href="../index.html">Retour a la liste</a>
+        </div>
+        <p class="subtitle">Tu peux mettre tes images en haut des cards en rempla cant les fichiers dans le dossier images.</p>
+
+        <section class="grille-animaux">
+            <article class="carte-animal">
+                <img src="./images/lion.jpg" alt="Lion" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+lion.jpg';">
+                <div class="carte-contenu">
+                    <h2 class="carte-titre">LION</h2>
+                    <p class="carte-sous-titre">Categorie: Mammiferes</p>
+                    <p class="carte-statut">Selection de Louis.</p>
+                    <a href="#" class="btn-fiche">Voir la fiche</a>
+                </div>
+            </article>
+
+            <article class="carte-animal">
+                <img src="./images/aigle.jpg" alt="Aigle" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+aigle.jpg';">
+                <div class="carte-contenu">
+                    <h2 class="carte-titre">AIGLE</h2>
+                    <p class="carte-sous-titre">Categorie: Oiseaux</p>
+                    <p class="carte-statut">Selection de Louis.</p>
+                    <a href="#" class="btn-fiche">Voir la fiche</a>
+                </div>
+            </article>
+
+            <article class="carte-animal">
+                <img src="./images/tortue.jpg" alt="Tortue" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+tortue.jpg';">
+                <div class="carte-contenu">
+                    <h2 class="carte-titre">TORTUE</h2>
+                    <p class="carte-sous-titre">Categorie: Reptiles</p>
+                    <p class="carte-statut">Selection de Louis.</p>
+                    <a href="#" class="btn-fiche">Voir la fiche</a>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
