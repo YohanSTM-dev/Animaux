@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Calamar & l'Homme — BTS SIO2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:    #060c18;
+      --deep:   #070d1b;
+      --ocean:  #0d2b4e;
+      --teal:   #0e7490;
+      --aqua:   #22d3ee;
+      --foam:   #e0f7ff;
+      --cream:  #f5f0e8;
+      --accent: #f97316;
+      --text:   #cde6f2;
+      --muted:  #7ba8be;
+      --card-bg: rgba(10,18,36,0.85);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--deep);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      line-height: 1.75;
+    }
+
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(ellipse 80% 50% at 15% 85%, rgba(14,116,144,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 70% at 85% 15%, rgba(6,18,40,.92) 0%, transparent 70%),
+        linear-gradient(180deg, #060c18 0%, #091524 50%, #0d2b4e 100%);
+    }
+
+    .particles { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+    .particle {
+      position:absolute; border-radius:50%;
+      background: rgba(34,211,238,.12);
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform:translateY(105vh) scale(0); opacity:0; }
+      10%  { opacity:1; }
+      90%  { opacity:.4; }
+      100% { transform:translateY(-5vh) scale(1); opacity:0; }
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 3rem 2rem;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid rgba(34,211,238,.3);
+      color: var(--aqua); font-size:.7rem;
+      letter-spacing:.35em; text-transform:uppercase;
+      padding:.45rem 1.2rem; border-radius:999px;
+      margin-bottom:2rem;
+      animation: fadeUp .9s ease both;
+    }
+    .hero h1 {
+      font-family:'Playfair Display', serif;
+      font-size: clamp(3.5rem, 11vw, 8.5rem);
+      font-weight:900; line-height:.9;
+      color: var(--cream);
+      animation: fadeUp .9s ease .15s both;
+    }
+    .hero h1 em {
+      display:block; font-style:italic;
+      font-size:.42em; color:var(--aqua);
+      letter-spacing:.1em; margin-top:.3em;
+    }
+    .hero-meta {
+      margin-top:1.8rem;
+      font-size:.82rem; letter-spacing:.12em;
+      color:var(--muted); text-transform:uppercase;
+      animation: fadeUp .9s ease .3s both;
+    }
+    .hero-img-wrap {
+      margin-top:2.8rem;
+      width:min(680px,90vw);
+      border-radius:3px; overflow:hidden;
+      box-shadow:0 40px 90px rgba(0,0,0,.7), 0 0 0 1px rgba(34,211,238,.1);
+      animation: fadeUp .9s ease .45s both;
+      position:relative;
+    }
+    .hero-img-wrap img { width:100%; display:block; filter:saturate(.85) brightness(.88); transition:filter .5s; }
+    .hero-img-wrap:hover img { filter:saturate(1.05) brightness(.97); }
+    .hero-img-wrap figcaption {
+      position:absolute; bottom:0; left:0; right:0;
+      padding:.85rem 1.4rem;
+      background:linear-gradient(0deg, rgba(6,12,24,.95) 0%, transparent 100%);
+      font-size:.7rem; color:var(--muted); letter-spacing:.05em;
+    }
+    .scroll-cue {
+      position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:.5rem;
+      color:var(--muted); font-size:.65rem; letter-spacing:.25em; text-transform:uppercase;
+      animation:fadeUp .9s ease 1.1s both;
+    }
+    .scroll-cue::after {
+      content:''; width:1px; height:38px;
+      background:linear-gradient(var(--aqua), transparent);
+      animation: pulse 2.2s ease infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.25} 50%{opacity:1} }
+
+    /* NAV */
+    nav {
+      position:sticky; top:0; z-index:100;
+      background:rgba(6,12,24,.88); backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(34,211,238,.1);
+      display:flex; justify-content:center; flex-wrap:wrap;
+    }
+    nav a {
+      color:var(--muted); text-decoration:none;
+      font-size:.7rem; letter-spacing:.18em; text-transform:uppercase;
+      padding:.9rem 1.2rem; position:relative; transition:color .3s;
+    }
+    nav a::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+      background:var(--aqua); transform:scaleX(0); transition:transform .3s;
+    }
+    nav a:hover { color:var(--aqua); }
+    nav a:hover::after { transform:scaleX(1); }
+
+    /* LAYOUT */
+    main { max-width:960px; margin:0 auto; padding:0 2rem; }
+
+    /* SECTION */
+    section {
+      padding:5.5rem 0 4rem;
+      border-bottom:1px solid rgba(34,211,238,.07);
+      opacity:0; transform:translateY(36px);
+      transition:opacity .75s ease, transform .75s ease;
+    }
+    section.visible { opacity:1; transform:translateY(0); }
+
+    .section-tag {
+      font-size:.65rem; letter-spacing:.38em; text-transform:uppercase;
+      color:var(--aqua); opacity:.65; margin-bottom:.9rem;
+    }
+    h2 {
+      font-family:'Playfair Display', serif;
+      font-size:clamp(1.9rem, 4.5vw, 2.9rem);
+      font-weight:700; color:var(--cream); line-height:1.15;
+      margin-bottom:.5rem;
+    }
+    h2 em { font-style:italic; color:var(--aqua); }
+    .section-intro {
+      font-size:.78rem; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--muted); margin-bottom:2.5rem; padding-bottom:.8rem;
+      border-bottom:1px solid rgba(34,211,238,.08);
+    }
+
+    .sub { margin-top:3.2rem; }
+    .sub-label {
+      font-size:.62rem; letter-spacing:.3em; text-transform:uppercase;
+      color:var(--accent); opacity:.85; margin-bottom:.5rem;
+    }
+    h3 {
+      font-family:'Playfair Display', serif;
+      font-size:1.35rem; font-weight:700; color:var(--cream);
+      margin-bottom:1.4rem; line-height:1.3;
+    }
+    p { font-size:1rem; margin-bottom:1.2rem; }
+    strong { color:var(--cream); font-weight:500; }
+
+    /* IMAGE FLOTTANTE côté texte */
+    .float-right {
+      float:right; margin:0 0 1.5rem 2.2rem;
+      width:min(310px, 42%);
+      border-radius:2px; overflow:hidden;
+      box-shadow:0 16px 50px rgba(0,0,0,.6), 0 0 0 1px rgba(34,211,238,.1);
+    }
+    .float-left {
+      float:left; margin:0 2.2rem 1.5rem 0;
+      width:min(290px, 40%);
+      border-radius:2px; overflow:hidden;
+      box-shadow:0 16px 50px rgba(0,0,0,.6), 0 0 0 1px rgba(34,211,238,.1);
+    }
+    .float-right img, .float-left img {
+      width:100%; display:block;
+      filter:saturate(.88) brightness(.88);
+      transition:filter .5s, transform .5s;
+    }
+    .float-right:hover img, .float-left:hover img {
+      filter:saturate(1.1) brightness(.98); transform:scale(1.02);
+    }
+    .float-right figcaption, .float-left figcaption {
+      padding:.6rem 1rem;
+      background:rgba(13,43,78,.7);
+      font-size:.68rem; color:var(--muted); letter-spacing:.04em;
+      border-top:1px solid rgba(34,211,238,.1);
+    }
+    .clearfix::after { content:''; display:table; clear:both; }
+
+    /* Figure pleine largeur */
+    .fig-full {
+      margin:2.5rem 0; border-radius:2px; overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(34,211,238,.09);
+    }
+    .fig-full img { width:100%; display:block; filter:saturate(.88) brightness(.88); transition:filter .5s; }
+    .fig-full:hover img { filter:saturate(1.05); }
+    .fig-full figcaption {
+      padding:.85rem 1.4rem;
+      background:rgba(13,43,78,.65);
+      font-size:.72rem; color:var(--muted);
+      border-top:1px solid rgba(34,211,238,.1);
+    }
+
+    /* Deux images côte à côte */
+    .fig-duo { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin:2rem 0; }
+    @media(max-width:560px){ .fig-duo { grid-template-columns:1fr; } }
+    .fig-duo figure {
+      border-radius:2px; overflow:hidden;
+      box-shadow:0 12px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(34,211,238,.09);
+    }
+    .fig-duo figure img { width:100%; display:block; filter:saturate(.88) brightness(.88); transition:filter .5s; }
+    .fig-duo figure:hover img { filter:saturate(1.05); }
+    .fig-duo figcaption {
+      padding:.6rem 1rem;
+      background:rgba(13,43,78,.65);
+      font-size:.67rem; color:var(--muted);
+      border-top:1px solid rgba(34,211,238,.1);
+    }
+
+    /* Blockquote */
+    blockquote {
+      border-left:3px solid var(--aqua);
+      margin:2rem 0; padding:1rem 0 1rem 2rem;
+      font-family:'Playfair Display', serif;
+      font-style:italic; font-size:1.12rem;
+      color:var(--foam); line-height:1.65;
+    }
+
+    /* Stat strip */
+    .stats {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:1px; background:rgba(34,211,238,.1);
+      border:1px solid rgba(34,211,238,.1); margin:2.5rem 0;
+    }
+    .stat { background:var(--card-bg); padding:1.5rem 1.2rem; text-align:center; }
+    .stat-val {
+      font-family:'Playfair Display', serif;
+      font-size:1.6rem; font-weight:900; color:var(--aqua); display:block;
+    }
+    .stat-lab {
+      font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--muted); margin-top:.35rem; display:block;
+    }
+
+    /* Liste */
+    ul.ink { list-style:none; padding:0; margin:1.2rem 0 1.8rem; }
+    ul.ink li {
+      padding:.65rem 0 .65rem 1.8rem; position:relative;
+      border-bottom:1px solid rgba(34,211,238,.06);
+      font-size:.98rem; line-height:1.65;
+    }
+    ul.ink li::before { content:'→'; position:absolute; left:0; color:var(--aqua); opacity:.55; }
+
+    /* 5W cards */
+    .five-w {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+      gap:1rem; margin:1.8rem 0 2rem;
+    }
+    .w-card {
+      background:var(--card-bg); border:1px solid rgba(34,211,238,.12);
+      border-radius:2px; padding:1.1rem 1rem;
+    }
+    .w-card .wlabel {
+      font-size:.6rem; letter-spacing:.3em; text-transform:uppercase;
+      color:var(--aqua); opacity:.7; margin-bottom:.4rem; display:block;
+    }
+    .w-card p { font-size:.87rem; margin:0; }
+
+    /* Conclusion */
+    .conclusion {
+      padding:5rem 0 3rem;
+      opacity:0; transform:translateY(36px);
+      transition:opacity .75s ease, transform .75s ease;
+    }
+    .conclusion.visible { opacity:1; transform:translateY(0); }
+
+    /* Sources */
+    .sources-section {
+      padding:3rem 0 5rem;
+      opacity:0; transform:translateY(36px);
+      transition:opacity .75s ease, transform .75s ease;
+    }
+    .sources-section.visible { opacity:1; transform:translateY(0); }
+    .sources-section h3 {
+      font-family:'Playfair Display', serif;
+      font-size:1.5rem; color:var(--cream); margin-bottom:1.5rem;
+    }
+    .sources-section ol { padding-left:1.4rem; }
+    .sources-section li { font-size:.82rem; color:var(--muted); line-height:1.7; margin-bottom:.5rem; }
+    .sources-section a { color:var(--aqua); text-decoration:none; opacity:.8; }
+    .sources-section a:hover { opacity:1; text-decoration:underline; }
+
+    footer {
+      text-align:center; padding:2rem;
+      font-size:.7rem; color:var(--muted); opacity:.45;
+      border-top:1px solid rgba(34,211,238,.07);
+    }
+
+    @media(max-width:600px){
+      .float-right, .float-left { float:none; width:100%; margin:0 0 1.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="hero-badge">BTS SIO2 · Les animaux et l'Homme · Oral</span>
+  <h1>Le Calamar<em>& l'Homme</em></h1>
+  <p class="hero-meta">Teuthida · Mollusca · Cephalopoda &nbsp;·&nbsp; Exposé de zoologie culturelle</p>
+  <figure class="hero-img-wrap">
+    <img src="calamar1.jpg"
+         alt="Calamar géant dans les profondeurs"
+         onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Giant_squid_Newfoundland_1878.jpg/800px-Giant_squid_Newfoundland_1878.jpg'" />
+    <figcaption>Illustration naturaliste d'un grand calamar — créature des profondeurs océaniques</figcaption>
+  </figure>
+  <div class="scroll-cue">Défiler</div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#presentation">I. Présentation</a>
+  <a href="#legendes">II. Contes & Légendes</a>
+  <a href="#moyen-age">III. Moyen Âge</a>
+  <a href="#aujourd-hui">IV. Aujourd'hui</a>
+  <a href="#conclusion">Conclusion</a>
+</nav>
+
+<main>
+
+<!-- ══ I. PRÉSENTATION ══ -->
+<section id="presentation">
+  <p class="section-tag">Partie I</p>
+  <h2>Présentation <em>de l'animal</em></h2>
+  <p class="section-intro">Étymologie · Premières représentations · Interprétations fondatrices</p>
+
+  <!-- Ia -->
+  <div class="sub clearfix">
+    <p class="sub-label">Question a — Étymologie</p>
+    <h3>L'origine du mot « Calamar »</h3>
+
+    <figure class="float-right">
+      <img src="calamar_ancien.webp"
+           alt="Référence grecque Teuthis calamar"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Loligo_vulgaris_Merculiano.jpg/400px-Loligo_vulgaris_Merculiano.jpg'" />
+      <figcaption>La racine grecque <em>teuthis</em> (τευθίς) — nom du céphalopode en grec ancien</figcaption>
+    </figure>
+
+    <p>Le mot <strong>« calamar »</strong> provient du latin médiéval <strong><em>calamarium</em></strong>, dérivé de <em>calamus</em> — « roseau, plume à écrire ». La métaphore est immédiate : la <strong>poche à encre</strong> du céphalopode évoquait l'encrier du scribe, et son gladius (os interne transparent) rappelait la plume de roseau. L'animal portait ainsi en son nom même son premier usage utilitaire pour l'homme.</p>
+
+    <p>En grec ancien, le calamar se nommait <strong><em>teuthis</em></strong> (τευθίς), racine qui a donné le nom scientifique de l'ordre <em>Teuthida</em>. Cette racine se retrouve en italien (<em>totano</em>), en espagnol (<em>calamar</em>), et dans toutes les langues méditerranéennes. Le latin <em>loligo</em>, autre nom antique, a donné <em>Loligo vulgaris</em>, nom scientifique du calamar commun.</p>
+  </div>
+
+  <!-- Ib -->
+  <div class="sub clearfix">
+    <p class="sub-label">Question b — Premiers textes et représentations</p>
+    <h3>Les premières traces : époque, civilisation, interprétation</h3>
+
+    <figure class="float-left">
+      <img src="vase_minoen.webp"
+           alt="Vase minoen céphalopode 1500 av JC Crète"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Ceramica_minoia_NAMA_6725.JPG/400px-Ceramica_minoia_NAMA_6725.JPG'" />
+      <figcaption>Vase minoen au céphalopode, ~1500 av. J.-C. (Crète, Musée d'Héraklion) — symbole de la mer nourricière et de sa puissance cyclique</figcaption>
+    </figure>
+
+    <p>Les <strong>premières représentations</strong> de céphalopodes remontent à la <strong>civilisation minoenne</strong> (Crète, ~1500 av. J.-C.). Des céramiques dites « de style marin » montrent des pieuvres et calamars aux tentacules stylisés sur des vases rituels. Pour les Minoens, peuple insulaire vivant de la pêche, la créature symbolise la <strong>puissance féconde et mystérieuse de la mer</strong> : un signe positif, protecteur.</p>
+
+    <figure class="float-right">
+      <img src="gravure_calamar.jpg"
+           alt="Gravure naturaliste ancienne 1861 calamar"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Loligo_vulgaris_2.jpg/400px-Loligo_vulgaris_2.jpg'" />
+      <figcaption>Gravure naturaliste publiée en 1861 — avec l'essor des sciences naturelles, le calamar devient objet d'étude et d'illustration précise</figcaption>
+    </figure>
+
+    <p><strong>Aristote</strong> (~350 av. J.-C., Grèce) est le premier naturaliste à décrire scientifiquement le calamar dans son <em>Histoire des animaux</em> (Livre IV). Il distingue la seiche, la pieuvre et le calamar, décrit son mode de nage et son jet d'encre. Pour lui, la créature suscite l'<strong>admiration</strong> (intelligence, complexité) mais aussi une <strong>méfiance</strong> : son encre qui obscurcit l'eau est déjà perçue comme une forme de tromperie.</p>
+
+    <p><strong>Pline l'Ancien</strong> (Rome, Ier siècle ap. J.-C.) rapporte dans son <em>Historia Naturalis</em> des récits de calamars géants attaquant des pêcheurs. La créature, jusqu'ici symbole de la mer nourricière, acquiert progressivement une dimension de <strong>danger et de peur</strong> : elle représente l'inconnu des profondeurs, là où l'homme ne peut pas aller.</p>
+  </div>
+</section>
+
+<!-- ══ II. CONTES & LÉGENDES ══ -->
+<section id="legendes">
+  <p class="section-tag">Partie II</p>
+  <h2>L'animal dans les <em>contes & légendes</em> du monde entier</h2>
+  <p class="section-intro">Deux récits · Résumé en 5W · Deux aspects différents · Explications culturelles</p>
+
+  <p>Le calamar a nourri deux grandes familles de récits à travers le monde : l'une le présentant comme un <strong>monstre destructeur</strong>, l'autre comme une figure <strong>bienveillante ou sacrée</strong>. Ces visions opposées révèlent le rapport qu'entretient chaque civilisation avec la mer.</p>
+
+  <!-- Récit 1 -->
+  <div class="sub clearfix">
+    <p class="sub-label">Récit 1 — Aspect menaçant / terreur</p>
+    <h3>Le Kraken — Mythologie nordique (Islande & Norvège, XIIe siècle)</h3>
+
+    <figure class="float-right">
+      <img src="kraken.jpg"
+           alt="Le Kraken monstre marin mythologie nordique"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Pieter_Coecke_van_Aelst_Temptation_detail.jpg/400px-Pieter_Coecke_van_Aelst_Temptation_detail.jpg'" />
+      <figcaption>Représentation du Kraken — le « monstre qui coule les navires » des légendes nordiques, directement inspiré du calamar géant</figcaption>
+    </figure>
+
+    <div class="five-w">
+      <div class="w-card"><span class="wlabel">Qui ?</span><p>Le Kraken, monstre marin colossal inspiré du calamar géant</p></div>
+      <div class="w-card"><span class="wlabel">Quoi ?</span><p>Il surgit des abysses, ses tentacules géantes encerclent et coulent les navires</p></div>
+      <div class="w-card"><span class="wlabel">Où ?</span><p>Mers du Nord, côtes islandaises et norvégiennes</p></div>
+      <div class="w-card"><span class="wlabel">Quand ?</span><p>Premiers récits écrits vers 1180 dans le <em>Konungs skuggsjá</em></p></div>
+      <div class="w-card"><span class="wlabel">Pourquoi ?</span><p>Il monte des profondeurs, encercle les bateaux, plonge en créant un tourbillon fatal</p></div>
+    </div>
+
+    <p>Le Kraken incarne l'aspect <strong>terreur et puissance destructrice</strong> : la mer est un ennemi imprévisible qui peut engloutir l'homme. Ce récit reflète l'expérience des pêcheurs nordiques confrontés aux tempêtes et à l'immensité hostile de l'Atlantique Nord. Des spécimens d'<em>Architeuthis dux</em> pouvant dépasser 13 mètres ont réellement été observés échoués, alimentant directement la mythologie.</p>
+  </div>
+
+  <!-- Récit 2 -->
+  <div class="sub clearfix">
+    <p class="sub-label">Récit 2 — Aspect sacré / familier</p>
+    <h3>L'Ika (烏賊) — Tradition shinto et culture japonaise</h3>
+
+    <figure class="float-left">
+      <img src="gravure_japonaise.png"
+           alt="Gravure japonaise surimono 1825 calamar mer"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Loligo_vulgaris_Merculiano.jpg/400px-Loligo_vulgaris_Merculiano.jpg'" />
+      <figcaption>Surimono japonais (1814, British Museum) — gravure représentant la relation intime entre la mer, ses créatures et la culture nippone</figcaption>
+    </figure>
+
+    <div class="five-w">
+      <div class="w-card"><span class="wlabel">Qui ?</span><p>L'<em>ika</em> (calamar), figure divine et nourricière dans le shinto</p></div>
+      <div class="w-card"><span class="wlabel">Quoi ?</span><p>Messager des dieux de la mer, offrande rituelle dans les sanctuaires</p></div>
+      <div class="w-card"><span class="wlabel">Où ?</span><p>Japon, côtes du Pacifique et de la mer du Japon</p></div>
+      <div class="w-card"><span class="wlabel">Quand ?</span><p>Traditions shinto depuis l'Antiquité, représentations dès le XVIe siècle</p></div>
+      <div class="w-card"><span class="wlabel">Pourquoi ?</span><p>Offrandes de calamars séchés dans les sanctuaires ; fêtes de la mer mettant l'animal à l'honneur</p></div>
+    </div>
+
+    <p>Dans la culture japonaise, le calamar est une figure <strong>nourricière, familière et quasi sacrée</strong>. Contrairement à l'Europe du Nord, la mer est perçue comme une mère généreuse. L'<em>ika</em> est central dans la cuisine, l'art et le shinto.</p>
+
+    <blockquote>
+      "Là où les Vikings voyaient dans le calamar un monstre engloutisseur de navires, les Japonais y voyaient un messager des dieux et le don quotidien de la mer."
+    </blockquote>
+
+    <p><strong>Explication culturelle :</strong> Ces deux visions opposées s'expliquent par le rapport de chaque société à la mer. Les peuples nordiques affrontent des mers dangereuses avec des embarcations précaires : ils y projettent leurs angoisses. Les Japonais, île-nation dont la survie dépend de la pêche depuis des millénaires, ont intégré la mer — et ses créatures — comme une force bienveillante à respecter, non à craindre.</p>
+  </div>
+</section>
+
+<!-- ══ III. MOYEN ÂGE ══ -->
+<section id="moyen-age">
+  <p class="section-tag">Partie III</p>
+  <h2>L'animal <em>au Moyen Âge</em></h2>
+  <p class="section-intro">Bestiaires · Continuité ou rupture · Lecture chrétienne</p>
+
+  <!-- IIIa -->
+  <div class="sub clearfix">
+    <p class="sub-label">Question a — Dans le bestiaire médiéval</p>
+    <h3>Le calamar comme symbole moral</h3>
+
+    <figure class="float-right">
+      <img src="calamar_moyen-age.jpg"
+           alt="Enluminure bestiaire médiéval créature marine symbole"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Harley_MS_4751_f.47r_-_detail.jpg/400px-Harley_MS_4751_f.47r_-_detail.jpg'" />
+      <figcaption>Enluminure d'un bestiaire médiéval (XIIe s.) — chaque créature marine y est chargée d'une signification morale chrétienne</figcaption>
+    </figure>
+
+    <p>Dans les <strong>bestiaires médiévaux</strong> — encyclopédies illustrées mêlant description naturelle et allégorie morale — le calamar est assimilé au <strong>Léviathan</strong>, le monstre marin des Écritures (Job 41), figure du chaos et du diable.</p>
+
+    <figure class="float-left">
+      <img src="léviathan.jpg"
+           alt="Léviathan Gustave Doré Bible monstre marin"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Leviathan_by_Thomas_Hobbes.jpg/400px-Leviathan_by_Thomas_Hobbes.jpg'" />
+      <figcaption>Gustave Doré, <em>Le Léviathan</em> (illustration biblique, 1865) — le monstre des abysses incarne le mal et le chaos dans la tradition judéo-chrétienne</figcaption>
+    </figure>
+
+    <p>L'exemple précis le plus parlant est le <strong>Manuscrit d'Aberdeen</strong> (~1200, Écosse), qui décrit le <em>polypus</em> (céphalopode) comme une créature capable de changer de couleur pour piéger ses proies. Le clerc y lit une <strong>métaphore du diable trompeur</strong> : comme l'animal qui prend la couleur de son environnement pour duper ses victimes, Satan prend l'apparence du bien pour piéger les âmes. Le jet d'encre obscurcissant les eaux devient l'image du péché obscurcissant la raison.</p>
+  </div>
+
+  <!-- IIIb -->
+  <div class="sub clearfix">
+    <p class="sub-label">Question b — Continuité ou rupture ?</p>
+    <h3>Par rapport à la Préhistoire, l'Antiquité et l'avant-écriture</h3>
+
+    <p>Il y a à la fois <strong>continuité et transformation profonde</strong>. En Préhistoire et dans l'Antiquité grecque, le calamar suscitait la peur (monstre marin) mais aussi l'émerveillement : les Minoens en faisaient un symbole positif, Aristote l'étudiait avec curiosité scientifique, sans jugement moral.</p>
+
+    <p>Au Moyen Âge, la représentation se <strong>charge d'une dimension morale absente auparavant</strong> : la créature n'est plus simplement dangereuse ou mystérieuse — elle devient porteuse d'un sens allégorique chrétien. Son comportement naturel est lu comme symbole du mal.</p>
+
+    <div class="stats">
+      <div class="stat"><span class="stat-val">Préhistoire</span><span class="stat-lab">Émerveillement · représentation artistique · fertilité marine</span></div>
+      <div class="stat"><span class="stat-val">Antiquité</span><span class="stat-lab">Curiosité scientifique + crainte · Aristote, Pline</span></div>
+      <div class="stat"><span class="stat-val">Moyen Âge</span><span class="stat-lab">Symbole du mal · tromperie · allégorie chrétienne</span></div>
+    </div>
+
+    <p>La rupture principale : avant le Moyen Âge, le calamar est observé pour ce qu'il est. Après, il est relu à travers le prisme de la foi chrétienne, qui impose un sens moral à chaque créature naturelle.</p>
+  </div>
+
+  <!-- IIIc -->
+  <div class="sub clearfix">
+    <p class="sub-label">Question c — La religion chrétienne comme explication</p>
+    <h3>Lire la nature comme un livre moral</h3>
+
+    <p>Cette interprétation s'explique par la <strong>domination de la pensée chrétienne</strong> au Moyen Âge. Dans la Bible, la mer est un espace de chaos et d'obscurité, peuplé de monstres opposés à l'ordre divin. Le Léviathan est l'archétype de la bête des profondeurs associée au diable.</p>
+
+    <p>Dans ce cadre interprétatif, tout animal au comportement mystérieux ou trompeur — comme le calamar qui disparaît dans un nuage d'encre ou change de couleur — est naturellement associé aux forces du mal. La scolastique médiévale conçoit le monde naturel non comme un objet d'étude, mais comme un <strong>livre de signes moraux</strong> que Dieu a déposé pour guider l'humanité.</p>
+
+    <blockquote>
+      "Le calamar qui obscurcit les eaux de son encre est, pour le clerc médiéval, l'image de l'hérétique qui corrompt les âmes simples par ses discours trompeurs."
+    </blockquote>
+  </div>
+</section>
+
+<!-- ══ IV. AUJOURD'HUI ══ -->
+<section id="aujourd-hui">
+  <p class="section-tag">Partie IV</p>
+  <h2>L'animal <em>aujourd'hui</em></h2>
+  <p class="section-intro">Regard contemporain · Deux œuvres · Exceptions mondiales</p>
+
+  <!-- IVa -->
+  <div class="sub clearfix">
+    <p class="sub-label">Question a — Regard actuel + œuvres (picturales, ciné, littéraires)</p>
+    <h3>Du monstre à la mascotte : deux œuvres de référence</h3>
+
+    <p>Aujourd'hui, le calamar oscille entre <strong>fascination scientifique</strong> (premier film d'un calamar géant vivant en 2006), <strong>ressource alimentaire mondiale</strong> (4 millions de tonnes pêchées par an) et <strong>figure culturelle pop</strong>. Le regard contemporain a largement dépassé la vision démoniaque médiévale.</p>
+
+    <div class="fig-duo">
+      <figure>
+        <img src="jules_verne_calamar.jpg"
+             alt="Jules Verne 20000 lieues sous les mers calamar géant illustration Riou"
+             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Villaret_squid_attack.jpg/400px-Villaret_squid_attack.jpg'" />
+        <figcaption><strong>Jules Verne</strong>, <em>Vingt mille lieues sous les mers</em> (1870) — illustration d'Édouard Riou. Le Nautilus attaqué par un calamar géant : naissance du calamar comme figure de la science-fiction et de la littérature d'aventure.</figcaption>
+      </figure>
+      <figure>
+        <img src="scientifique.jpg"
+             alt="Calamar des Caraïbes bioluminescence couleurs"
+             onerror="this.src='https://esopelia.fr/wp-content/uploads/2023/05/calamar-geant-revelations-creature-profondeurs.jpg'" />
+        <figcaption><strong>Documentaires naturalistes</strong> (BBC, NatGeo) — les caméras sous-marines ont transformé le calamar de monstre légendaire en merveille scientifique accessible au grand public. La bioluminescence et le camouflage fascinent aujourd'hui des millions de spectateurs.</figcaption>
+      </figure>
+    </div>
+
+    <p><strong>Œuvre 1 — Jules Verne, <em>Vingt mille lieues sous les mers</em> (1870, France, Littérature) :</strong> Verne réinvente la terreur du Kraken nordique à travers le prisme de la science moderne. Le monstre est réel, mesurable, observable — mais toujours menaçant. Cette œuvre fonde la représentation du calamar géant dans la littérature et le cinéma populaires du XXe siècle (de King Kong à Pirates des Caraïbes en passant par Cloverfield).</p>
+
+    <p><strong>Œuvre 2 — Nintendo, <em>Splatoon</em> (2015, Japon, Jeu vidéo) :</strong> Les héros sont des adolescents mi-humains mi-calamars capables de se transformer en encre colorée. Le calamar y est une figure <strong>attachante, ludique et "cool"</strong>, vendue à plus de 13 millions d'exemplaires dans le monde. Cette réappropriation japonaise prolonge la tradition de familiarité nippone avec la créature, adaptée à la culture pop du XXIe siècle.</p>
+  </div>
+
+  <!-- IVb -->
+  <div class="sub clearfix">
+    <p class="sub-label">Question b — Exceptions dans le monde</p>
+    <h3>Des regards encore très différents selon les cultures</h3>
+
+    <figure class="float-right">
+      <img src="plat_calamar.jpg"
+           alt="Sushi calamar ika Japon cuisine"
+           onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Caribbean_reef_squid.jpg/400px-Caribbean_reef_squid.jpg'" />
+      <figcaption>Le calamar (<em>ika</em>) en sushi — au Japon, en Corée et dans les pays méditerranéens, la familiarité gastronomique génère une relation culturelle positive et décomplexée avec l'animal</figcaption>
+    </figure>
+
+    <p>Malgré la mondialisation, des exceptions notables persistent. Dans de nombreuses <strong>communautés religieuses juives et islamiques</strong>, les céphalopodes restent des animaux impurs ou proscrits (non écailleux), totalement absents de la culture symbolique et alimentaire.</p>
+
+    <p>Dans certaines cultures <strong>d'Afrique subsaharienne continentale</strong>, le calamar est simplement inconnu — là où la mer n'est pas un horizon culturel, la créature n'existe pas dans l'imaginaire collectif.</p>
+
+    <p>À l'inverse, dans les cultures <strong>méditerranéennes</strong> (Espagne, Italie, Grèce, Portugal) et <strong>est-asiatiques</strong> (Japon, Corée), le calamar est omniprésent et aimé : calamars frits, encre de seiche dans les pâtes, tentacules grillés.</p>
+
+    <p><strong>Explication :</strong> Ces différences s'expliquent par trois facteurs — la <strong>géographie</strong> (pays côtiers vs continentaux), la <strong>religion</strong> (lois alimentaires), et l'<strong>histoire économique</strong> (les peuples dont la survie a dépendu de la pêche ont développé un attachement culturel fort à ses créatures).</p>
+  </div>
+</section>
+
+</main>
+
+<!-- CONCLUSION -->
+<div style="max-width:960px; margin:0 auto; padding:0 2rem;">
+  <div class="conclusion" id="conclusion">
+    <p class="section-tag">Conclusion</p>
+    <h2>Ce qu'il faut retenir du <em>calamar & de l'Homme</em></h2>
+
+    <figure class="fig-full" style="margin-bottom:2.5rem">
+      <img src="calamr_caraibes.jpg"
+           alt="Calamar vivant dans son milieu naturel"
+           onerror="this.src='https://esopelia.fr/wp-content/uploads/2023/05/calamar-geant-revelations-creature-profondeurs.jpg'" />
+      <figcaption>Le calamar des Caraïbes dans son milieu naturel — un animal qui fascine encore aujourd'hui scientifiques comme artistes</figcaption>
+    </figure>
+
+    <p>À travers les siècles et les cultures, le calamar a fonctionné comme un <strong>miroir du rapport de l'Homme à la mer et à l'inconnu</strong>. Trois grandes constantes se dégagent :</p>
+
+    <ul class="ink">
+      <li><strong>Le calamar comme figure de l'altérité radicale :</strong> sa morphologie étrange (tentacules, camouflage, encre, yeux géants) en fait l'archétype de la créature incompréhensible. Chaque époque l'a chargé de ses peurs ou fascinations propres — monstre démoniaque au Moyen Âge, merveille scientifique au XIXe siècle, icône pop au XXIe.</li>
+      <li><strong>Le rapport à la mer comme déterminant culturel majeur :</strong> les sociétés côtières (Japon, Méditerranée) ont développé un regard familier et bienveillant ; celles qui craignaient la mer y ont projeté leurs angoisses sous forme de monstres.</li>
+      <li><strong>Du monstre à la mascotte :</strong> la trajectoire contemporaine du calamar est celle d'une réappropriation ludique et scientifique (Splatoon, documentaires, sushi bars) qui témoigne du recul de la peur primitive face à la curiosité et à la connaissance.</li>
+    </ul>
+
+    <blockquote>
+      "Ce que l'Homme a vu dans le calamar au fil des âges, c'est avant tout ce qu'il craignait ou désirait trouver dans les profondeurs — de lui-même autant que de la mer."
+    </blockquote>
+  </div>
+
+  <!-- Sources -->
+  <div class="sources-section">
+    <h3>Sources & références</h3>
+    <ol>
+      <li>Aristote, <em>Histoire des animaux</em>, Livre IV, ~350 av. J.-C. (trad. Barthélémy-Saint-Hilaire, 1883)</li>
+      <li>Pline l'Ancien, <em>Historia Naturalis</em>, Livre IX, Ier siècle ap. J.-C.</li>
+      <li>Manuscrit d'Aberdeen, <em>Bestiarum Vocabulum</em>, ~1200 (Aberdeen University Library, Ms 24)</li>
+      <li><em>Konungs skuggsjá</em> [Le Miroir du Roi], texte norvégien, ~1250 — première description écrite du Kraken</li>
+      <li>Jules Verne, <em>Vingt mille lieues sous les mers</em>, Hetzel, 1870</li>
+      <li>Norman, M. (2000). <em>Cephalopods: A World Guide</em>. ConchBooks.</li>
+      <li>Kubodera, T. & Mori, K. (2005). First-ever observations of a live giant squid. <em>Proceedings of the Royal Society B</em>, 272. <a href="https://doi.org/10.1098/rspb.2005.3158" target="_blank" rel="noopener">doi:10.1098/rspb.2005.3158</a></li>
+      <li>Nintendo, <em>Splatoon</em> (2015) — analyse culturelle : Consalvo, M. (2016). <em>Atari to Zelda: Japan's Videogames in Global Contexts</em>. MIT Press.</li>
+      <li>IUCN Red List — <em>Architeuthis dux</em> : <a href="https://www.iucnredlist.org/species/163079/988286" target="_blank" rel="noopener">iucnredlist.org</a></li>
+    </ol>
+  </div>
+</div>
+
+<footer>
+  <p>BTS SIO2 · Les animaux et l'Homme · Exposé oral · Le Calamar &amp; l'Homme · Teuthida — Mollusca — Cephalopoda</p>
+</footer>
+
+<script>
+  // Particules flottantes
+  const c = document.getElementById('particles');
+  for(let i=0;i<28;i++){
+    const p=document.createElement('div'); p.className='particle';
+    const s=Math.random()*5+2;
+    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*18+14}s;animation-delay:${Math.random()*18}s;opacity:${Math.random()*.35+.08}`;
+    c.appendChild(p);
+  }
+  // Scroll reveal
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
+  },{threshold:.08});
+  document.querySelectorAll('section,.conclusion,.sources-section').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
