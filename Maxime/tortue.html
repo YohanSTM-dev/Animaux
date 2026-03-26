@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TESTUDO — L'Univers de la Tortue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep:    #030d1a;
+    --abyss:   #060f1f;
+    --navy:    #0a1628;
+    --ocean:   #0d2137;
+    --teal:    #0e4d5c;
+    --cyan:    #0a7d8c;
+    --turq:    #00b4c8;
+    --aqua:    #4dd9e8;
+    --foam:    #a8eef5;
+    --pearl:   #e8f8fb;
+    --gold:    #c9a96e;
+    --amber:   #e6c07b;
+    --shell:   #8b7355;
+    --moss:    #2d5a27;
+    --sage:    #4a7c59;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--pearl);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--turq);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width .2s, height .2s, background .2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1px solid var(--aqua);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: all .12s ease-out;
+    opacity: .5;
+  }
+
+  /* OCEAN BACKGROUND CANVAS */
+  #ocean-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .35;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: linear-gradient(to bottom, rgba(3,13,26,.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .3em;
+    color: var(--turq);
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex; gap: 3rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--foam);
+    text-decoration: none;
+    opacity: .6;
+    transition: opacity .3s, color .3s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--turq); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 70%, rgba(0,180,200,.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 30%, rgba(14,77,92,.2) 0%, transparent 60%),
+      linear-gradient(180deg, var(--deep) 0%, var(--abyss) 100%);
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,180,200,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,180,200,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift {
+    from { transform: translateY(0); }
+    to { transform: translateY(60px); }
+  }
+  .hero-content {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .5em;
+    color: var(--turq);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp .8s .3s forwards;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(5rem, 14vw, 14rem);
+    font-weight: 900;
+    line-height: .85;
+    letter-spacing: -.02em;
+    background: linear-gradient(135deg, var(--pearl) 0%, var(--foam) 30%, var(--turq) 60%, var(--aqua) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: fadeUp .8s .5s forwards;
+  }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--foam);
+    opacity: 0;
+    margin-top: 1.5rem;
+    animation: fadeUp .8s .7s forwards;
+  }
+  .hero-tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .3em;
+    color: var(--cyan);
+    opacity: 0;
+    margin-top: 3rem;
+    animation: fadeUp .8s .9s forwards;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .8rem;
+    opacity: 0;
+    animation: fadeUp .8s 1.2s forwards;
+  }
+  .scroll-hint span {
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .3em;
+    color: var(--cyan);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--turq), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: .3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  /* SECTION BASE */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 8rem 0;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+  .section-number {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .4em;
+    color: var(--turq);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+    background: linear-gradient(135deg, var(--pearl), var(--foam), var(--turq));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(to right, var(--turq), transparent);
+    margin-bottom: 3rem;
+  }
+  p { font-size: 1.15rem; line-height: 1.9; color: var(--foam); font-weight: 300; }
+  strong { color: var(--amber); font-weight: 600; }
+  em { color: var(--aqua); font-style: italic; }
+
+  /* REVEAL ANIMATION */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .3s; }
+  .reveal-delay-4 { transition-delay: .4s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ======== SECTION 1 — ÉTYMOLOGIE ======== */
+  .s1 { background: transparent; }
+
+  .etym-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    margin-bottom: 8rem;
+  }
+  .etym-visual {
+    position: relative;
+    height: 520px;
+  }
+  .shell-diagram {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .shell-diagram svg {
+    width: 400px;
+    height: 400px;
+    filter: drop-shadow(0 0 40px rgba(0,180,200,.3));
+  }
+  .shell-label {
+    position: absolute;
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .15em;
+    color: var(--turq);
+    text-transform: uppercase;
+    background: rgba(3,13,26,.8);
+    border: 1px solid rgba(0,180,200,.3);
+    padding: .3rem .7rem;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .label-carapace { top: 8%; left: 50%; transform: translateX(-50%); }
+  .label-scutes    { top: 25%; right: 2%; }
+  .label-plastron  { bottom: 15%; left: 50%; transform: translateX(-50%); }
+  .label-tete      { top: 38%; left: 2%; }
+
+  .word-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .word-card {
+    background: linear-gradient(135deg, rgba(14,77,92,.2), rgba(0,180,200,.05));
+    border: 1px solid rgba(0,180,200,.2);
+    border-left: 3px solid var(--turq);
+    padding: 1.5rem 2rem;
+    border-radius: 0 8px 8px 0;
+    transition: all .3s;
+  }
+  .word-card:hover {
+    background: linear-gradient(135deg, rgba(14,77,92,.35), rgba(0,180,200,.1));
+    transform: translateX(8px);
+    border-left-color: var(--amber);
+  }
+  .word-card .lang {
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .2em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+  }
+  .word-card .word {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--amber);
+    margin-bottom: .4rem;
+  }
+  .word-card .meaning { font-size: 1rem; color: var(--foam); }
+
+  .phys-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+  .phys-card {
+    background: rgba(14,77,92,.12);
+    border: 1px solid rgba(0,180,200,.15);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all .4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .phys-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,180,200,.05), transparent);
+    opacity: 0;
+    transition: opacity .4s;
+  }
+  .phys-card:hover::before { opacity: 1; }
+  .phys-card:hover { transform: translateY(-6px); border-color: rgba(0,180,200,.4); box-shadow: 0 20px 40px rgba(0,0,0,.4), 0 0 20px rgba(0,180,200,.1); }
+  .phys-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .phys-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--amber); margin-bottom: .8rem; }
+  .phys-card p { font-size: .95rem; line-height: 1.7; }
+
+  /* ANCIENT RECORDS */
+  .ancient-section { margin-top: 8rem; }
+  .ancient-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-style: italic;
+    color: var(--foam);
+    margin-bottom: 4rem;
+    text-align: center;
+  }
+  .timeline {
+    position: relative;
+    padding: 2rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--teal), transparent);
+    transform: translateX(-50%);
+  }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 0;
+    margin-bottom: 4rem;
+    align-items: center;
+  }
+  .timeline-item:nth-child(even) .t-content { grid-column: 3; }
+  .timeline-item:nth-child(even) .t-spacer { grid-column: 2; }
+  .timeline-item:nth-child(even) .t-image { grid-column: 1; grid-row: 1; }
+  .t-content {
+    background: linear-gradient(135deg, rgba(14,77,92,.15), rgba(0,180,200,.05));
+    border: 1px solid rgba(0,180,200,.2);
+    border-radius: 12px;
+    padding: 2.5rem;
+    position: relative;
+  }
+  .t-dot {
+    width: 16px; height: 16px;
+    background: var(--turq);
+    border-radius: 50%;
+    margin: auto;
+    box-shadow: 0 0 20px var(--turq);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 10px var(--turq); }
+    50% { box-shadow: 0 0 30px var(--turq), 0 0 60px rgba(0,180,200,.3); }
+  }
+  .t-era {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .3em;
+    color: var(--turq);
+    text-transform: uppercase;
+    margin-bottom: .8rem;
+  }
+  .t-title-card {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--amber);
+    margin-bottom: 1rem;
+  }
+  .t-tags {
+    display: flex; flex-wrap: wrap; gap: .5rem;
+    margin-top: 1.2rem;
+  }
+  .t-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .1em;
+    padding: .3rem .8rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .tag-civ  { background: rgba(201,169,110,.15); color: var(--amber); border: 1px solid rgba(201,169,110,.3); }
+  .tag-sym  { background: rgba(0,180,200,.1); color: var(--turq); border: 1px solid rgba(0,180,200,.3); }
+  .tag-cont { background: rgba(74,124,89,.15); color: #6dc87e; border: 1px solid rgba(74,124,89,.3); }
+  .t-image {
+    padding: 0 2rem;
+  }
+  .t-img-frame {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(0,180,200,.2);
+    aspect-ratio: 4/3;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .t-img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .85;
+    filter: saturate(.8) sepia(.1);
+    transition: all .5s;
+  }
+  .t-img-frame:hover img { opacity: 1; filter: saturate(1) sepia(0); transform: scale(1.05); }
+  .img-caption {
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    color: var(--cyan);
+    text-align: center;
+    margin-top: .8rem;
+    letter-spacing: .1em;
+    opacity: .7;
+  }
+
+  /* ======== SECTION 2 — RÉCITS ======== */
+  .s2 {
+    background: linear-gradient(180deg, transparent 0%, rgba(14,77,92,.08) 50%, transparent 100%);
+  }
+  .recits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 6rem;
+  }
+  .recit-card {
+    background: linear-gradient(160deg, rgba(10,33,55,.8), rgba(14,77,92,.2));
+    border: 1px solid rgba(0,180,200,.2);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all .4s;
+  }
+  .recit-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(0,0,0,.5), 0 0 30px rgba(0,180,200,.1); }
+  .recit-header {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+  }
+  .recit-header img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(.7) brightness(.7);
+    transition: all .6s;
+  }
+  .recit-card:hover .recit-header img { filter: saturate(.9) brightness(.85); transform: scale(1.05); }
+  .recit-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6,15,31,.95) 0%, transparent 60%);
+  }
+  .recit-number {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(0,180,200,.15);
+    line-height: 1;
+  }
+  .recit-badge {
+    position: absolute;
+    bottom: 1.5rem; left: 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .2em;
+    color: var(--turq);
+    text-transform: uppercase;
+    background: rgba(3,13,26,.8);
+    border: 1px solid rgba(0,180,200,.4);
+    padding: .3rem .8rem;
+    border-radius: 4px;
+  }
+  .recit-body { padding: 2.5rem; }
+  .recit-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--amber);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .five-w {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    margin-bottom: 2rem;
+  }
+  .w-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+    align-items: start;
+    font-size: 1rem;
+  }
+  .w-label {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .15em;
+    color: var(--turq);
+    text-transform: uppercase;
+    padding-top: .15rem;
+  }
+  .w-value { color: var(--foam); font-size: .95rem; line-height: 1.6; }
+  .recit-summary { font-size: 1rem; color: rgba(232,248,251,.7); line-height: 1.8; border-top: 1px solid rgba(0,180,200,.15); padding-top: 1.5rem; margin-top: 1.5rem; }
+
+  /* ANALYSE CULTURELLE */
+  .analyse-section {
+    background: rgba(10,33,55,.5);
+    border: 1px solid rgba(0,180,200,.15);
+    border-radius: 20px;
+    padding: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .analyse-section::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,180,200,.06), transparent 60%);
+    pointer-events: none;
+  }
+  .analyse-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--foam);
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 2rem;
+    align-items: stretch;
+  }
+  .compare-col {
+    background: rgba(3,13,26,.4);
+    border-radius: 12px;
+    padding: 2.5rem;
+  }
+  .compare-col h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--amber);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .compare-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-style: italic;
+    color: rgba(0,180,200,.4);
+  }
+  .compare-point {
+    display: flex;
+    align-items: flex-start;
+    gap: .8rem;
+    margin-bottom: 1.2rem;
+    font-size: .95rem;
+    line-height: 1.7;
+  }
+  .compare-point::before {
+    content: '◆';
+    color: var(--turq);
+    font-size: .5rem;
+    margin-top: .5rem;
+    flex-shrink: 0;
+  }
+
+  /* ======== SECTION 3 — MOYEN ÂGE ======== */
+  .s3 { background: transparent; }
+  .medieval-hero {
+    position: relative;
+    height: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 5rem;
+  }
+  .medieval-hero img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: sepia(.4) saturate(.6) brightness(.6);
+  }
+  .medieval-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(3,13,26,.9) 40%, transparent 100%);
+    display: flex;
+    align-items: center;
+    padding: 5rem;
+  }
+  .medieval-quote {
+    max-width: 500px;
+  }
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--pearl);
+    margin-bottom: 1.5rem;
+  }
+  .quote-src {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .2em;
+    color: var(--turq);
+    text-transform: uppercase;
+  }
+  .bestiary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 5rem;
+    align-items: start;
+    margin-bottom: 5rem;
+  }
+  .bestiary-illustration {
+    position: sticky;
+    top: 120px;
+  }
+  .ill-frame {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(201,169,110,.25);
+    box-shadow: 0 0 60px rgba(0,0,0,.5), inset 0 0 40px rgba(201,169,110,.05);
+    position: relative;
+  }
+  .ill-frame img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: sepia(.5) saturate(.7) brightness(.75);
+    aspect-ratio: 3/4;
+  }
+  .ill-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(3,13,26,.6) 0%, transparent 50%);
+  }
+  .ill-caption {
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .1em;
+    color: var(--gold);
+    text-align: center;
+    margin-top: 1rem;
+    opacity: .8;
+  }
+  .bestiary-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--amber);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .bestiary-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--foam);
+    margin: 2.5rem 0 1rem;
+  }
+  .evolution-bar {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 3rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(0,180,200,.2);
+  }
+  .evo-block {
+    flex: 1;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+  }
+  .evo-block:first-child { background: rgba(14,77,92,.3); }
+  .evo-block:nth-child(2) { background: rgba(10,77,92,.2); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--turq); flex: 0 0 50px; }
+  .evo-block:last-child { background: rgba(139,115,85,.15); }
+  .evo-era {
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .2em;
+    color: var(--turq);
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+  .evo-block:last-child .evo-era { color: var(--gold); }
+  .evo-desc { font-size: .9rem; line-height: 1.6; }
+  .chrétien-box {
+    background: linear-gradient(135deg, rgba(139,115,85,.1), rgba(201,169,110,.05));
+    border: 1px solid rgba(201,169,110,.25);
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin-top: 3rem;
+  }
+  .chrétien-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 1.5rem; }
+  .chrétien-box p { font-size: .95rem; }
+
+  /* ======== SECTION 4 — AUJOURD'HUI ======== */
+  .s4 {
+    background: linear-gradient(180deg, transparent 0%, rgba(10,180,200,.04) 50%, transparent 100%);
+  }
+  .oeuvres-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    margin-bottom: 6rem;
+  }
+  .oeuvre-card {
+    background: rgba(10,33,55,.6);
+    border: 1px solid rgba(0,180,200,.2);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all .4s;
+    position: relative;
+  }
+  .oeuvre-card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,.6), 0 0 40px rgba(0,180,200,.1); }
+  .oeuvre-img {
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+  }
+  .oeuvre-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(.7) brightness(.7);
+    transition: all .6s;
+  }
+  .oeuvre-card:hover .oeuvre-img img { filter: saturate(.9) brightness(.85); transform: scale(1.08); }
+  .oeuvre-type {
+    position: absolute;
+    top: 1.2rem; left: 1.2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .2em;
+    padding: .3rem .8rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+  .type-lit { background: rgba(201,169,110,.2); color: var(--amber); border: 1px solid rgba(201,169,110,.4); }
+  .type-cin { background: rgba(0,180,200,.15); color: var(--turq); border: 1px solid rgba(0,180,200,.4); }
+  .type-pic { background: rgba(74,124,89,.2); color: #6dc87e; border: 1px solid rgba(74,124,89,.4); }
+  .oeuvre-body { padding: 2.5rem; }
+  .oeuvre-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--amber);
+    margin-bottom: .4rem;
+  }
+  .oeuvre-author {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .15em;
+    color: var(--turq);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .oeuvre-body p { font-size: .95rem; line-height: 1.8; }
+  .oeuvre-stars {
+    display: flex; gap: .3rem;
+    margin-top: 1rem;
+    color: var(--amber);
+    font-size: .9rem;
+  }
+
+  /* EXCEPTIONS */
+  .exceptions-section { margin-top: 4rem; }
+  .exceptions-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--foam);
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .exception-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .exception-card {
+    background: linear-gradient(160deg, rgba(14,77,92,.15), rgba(0,180,200,.05));
+    border: 1px solid rgba(0,180,200,.18);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    transition: all .4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .exception-card::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--turq), transparent);
+    opacity: 0;
+    transition: opacity .4s;
+  }
+  .exception-card:hover { transform: translateY(-6px); }
+  .exception-card:hover::before { opacity: 1; }
+  .exc-flag { font-size: 2.5rem; margin-bottom: 1rem; }
+  .exc-country {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--amber);
+    margin-bottom: .8rem;
+  }
+  .exc-card p { font-size: .9rem; line-height: 1.7; }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 4rem;
+    text-align: center;
+    border-top: 1px solid rgba(0,180,200,.1);
+  }
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .2em;
+    color: var(--teal);
+    text-transform: uppercase;
+  }
+
+  /* WAVE SEPARATOR */
+  .wave-sep {
+    position: relative;
+    height: 100px;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .wave-sep svg { width: 100%; height: 100%; }
+
+  /* FLOATING PARTICLES */
+  .particles-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--turq);
+    opacity: 0;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0%   { opacity: 0; transform: translateY(0) scale(0); }
+    10%  { opacity: .4; }
+    90%  { opacity: .1; }
+    100% { opacity: 0; transform: translateY(-100vh) scale(1); }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .container { padding: 0 1.5rem; }
+    .etym-layout, .bestiary-grid, .recits-grid, .oeuvres-grid { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .phys-grid, .exception-cards { grid-template-columns: 1fr 1fr; }
+    .timeline-item { grid-template-columns: 1fr; }
+    .timeline::before { left: 20px; }
+    .t-dot { margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<canvas id="ocean-canvas"></canvas>
+<div class="particles-container" id="particles"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Testudo</div>
+  <ul class="nav-links">
+    <li><a href="#etymologie">I. Origines</a></li>
+    <li><a href="#recits">II. Récits</a></li>
+    <li><a href="#medieval">III. Moyen Âge</a></li>
+    <li><a href="#moderne">IV. Aujourd'hui</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Une exploration universelle</div>
+    <h1 class="hero-title">TESTUDO</h1>
+    <p class="hero-subtitle">La tortue à travers les âges &amp; les cultures</p>
+    <p class="hero-tagline">De la préhistoire à nos jours · Sagesse · Longévité · Mystère</p>
+  </div>
+  <div class="scroll-hint">
+    <span>Explorer</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-sep">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+    <path d="M0,50 C240,100 480,0 720,50 C960,100 1200,0 1440,50 L1440,100 L0,100 Z" fill="rgba(14,77,92,0.08)"/>
+  </svg>
+</div>
+
+<!-- SECTION 1 -->
+<section class="s1" id="etymologie">
+  <div class="container">
+    <span class="section-number reveal">01 — Origines &amp; Étymologie</span>
+    <h2 class="section-title reveal reveal-delay-1">Le Nom &amp; le Corps</h2>
+    <div class="section-divider reveal reveal-delay-2"></div>
+
+    <div class="etym-layout">
+      <!-- SVG Tortue anatomique -->
+      <div class="etym-visual reveal">
+        <div class="shell-diagram">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="shellGrad" cx="50%" cy="45%" r="50%">
+                <stop offset="0%" stop-color="#1a6b4a" stop-opacity=".9"/>
+                <stop offset="60%" stop-color="#0d4a2f" stop-opacity=".9"/>
+                <stop offset="100%" stop-color="#062a18" stop-opacity=".9"/>
+              </radialGradient>
+              <radialGradient id="plastronGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#4a7c59" stop-opacity=".9"/>
+                <stop offset="100%" stop-color="#1a4a2f" stop-opacity=".9"/>
+              </radialGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- Shadow -->
+            <ellipse cx="200" cy="360" rx="120" ry="18" fill="rgba(0,0,0,.4)"/>
+            <!-- Body/Plastron -->
+            <ellipse cx="200" cy="240" rx="100" ry="50" fill="url(#plastronGrad)" stroke="rgba(0,180,200,.3)" stroke-width="1"/>
+            <!-- Carapace -->
+            <ellipse cx="200" cy="200" rx="130" ry="100" fill="url(#shellGrad)" stroke="rgba(0,180,200,.4)" stroke-width="1.5"/>
+            <!-- Scutes pattern -->
+            <path d="M170,130 L200,110 L230,130 L240,165 L200,180 L160,165 Z" fill="rgba(0,180,200,.1)" stroke="rgba(0,180,200,.25)" stroke-width="1"/>
+            <path d="M140,165 L170,150 L200,180 L170,210 L135,195 Z" fill="rgba(0,180,200,.08)" stroke="rgba(0,180,200,.2)" stroke-width="1"/>
+            <path d="M230,150 L260,165 L265,195 L230,210 L200,180 Z" fill="rgba(0,180,200,.08)" stroke="rgba(0,180,200,.2)" stroke-width="1"/>
+            <path d="M135,195 L170,210 L165,245 L130,240 Z" fill="rgba(0,180,200,.06)" stroke="rgba(0,180,200,.15)" stroke-width="1"/>
+            <path d="M265,195 L270,240 L230,245 L235,210 Z" fill="rgba(0,180,200,.06)" stroke="rgba(0,180,200,.15)" stroke-width="1"/>
+            <path d="M165,245 L200,265 L235,245 L200,235 Z" fill="rgba(0,180,200,.08)" stroke="rgba(0,180,200,.2)" stroke-width="1"/>
+            <!-- Glow lines -->
+            <ellipse cx="200" cy="200" rx="130" ry="100" fill="none" stroke="rgba(0,180,200,.15)" stroke-width="3" filter="url(#glow)"/>
+            <!-- Tête -->
+            <ellipse cx="200" cy="100" rx="28" ry="22" fill="#1a6b4a" stroke="rgba(0,180,200,.4)" stroke-width="1.5"/>
+            <circle cx="192" cy="96" r="4" fill="rgba(0,180,200,.8)"/>
+            <circle cx="208" cy="96" r="4" fill="rgba(0,180,200,.8)"/>
+            <circle cx="193" cy="97" r="1.5" fill="#000"/>
+            <circle cx="209" cy="97" r="1.5" fill="#000"/>
+            <!-- Neck -->
+            <path d="M185,118 C186,108 214,108 215,118 L215,135 C214,140 186,140 185,135 Z" fill="#1a5a3a" stroke="rgba(0,180,200,.2)" stroke-width="1"/>
+            <!-- Pattes -->
+            <ellipse cx="110" cy="175" rx="22" ry="14" fill="#1a5a3a" stroke="rgba(0,180,200,.25)" stroke-width="1" transform="rotate(-30,110,175)"/>
+            <ellipse cx="290" cy="175" rx="22" ry="14" fill="#1a5a3a" stroke="rgba(0,180,200,.25)" stroke-width="1" transform="rotate(30,290,175)"/>
+            <ellipse cx="115" cy="240" rx="22" ry="14" fill="#1a5a3a" stroke="rgba(0,180,200,.25)" stroke-width="1" transform="rotate(30,115,240)"/>
+            <ellipse cx="285" cy="240" rx="22" ry="14" fill="#1a5a3a" stroke="rgba(0,180,200,.25)" stroke-width="1" transform="rotate(-30,285,240)"/>
+            <!-- Queue -->
+            <path d="M190,295 Q185,330 175,345" stroke="#1a5a3a" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <!-- Shine -->
+            <ellipse cx="175" cy="165" rx="30" ry="18" fill="rgba(255,255,255,.06)" transform="rotate(-20,175,165)"/>
+          </svg>
+        </div>
+        <div class="shell-label label-carapace">Carapace — Dossière</div>
+        <div class="shell-label label-scutes">Écailles / Scutes</div>
+        <div class="shell-label label-plastron">Plastron ventral</div>
+        <div class="shell-label label-tete">Tête rétractable</div>
+      </div>
+
+      <!-- Étymologie -->
+      <div class="reveal reveal-delay-2">
+        <div class="word-cards">
+          <div class="word-card">
+            <div class="lang">Latin classique</div>
+            <div class="word">testudo, -inis</div>
+            <div class="meaning">Désigne à la fois l'animal et la <strong>formation militaire romaine</strong> en boucliers — référence directe à la carapace protectrice.</div>
+          </div>
+          <div class="word-card">
+            <div class="lang">Grec ancien</div>
+            <div class="word">chelōnē (χελώνη)</div>
+            <div class="meaning">Racine encore présente dans <em>Chelonia</em>, l'ordre scientifique des tortues. Étymologie liée au mot <strong>"caillou, pierre"</strong> — pour la dureté de la carapace.</div>
+          </div>
+          <div class="word-card">
+            <div class="lang">Vieux français</div>
+            <div class="word">tortue</div>
+            <div class="meaning">Du latin <em>tortus</em> (tordu, recourbé) : allusion aux <strong>pattes arquées</strong> caractéristiques de l'animal. Attesté dès le XIIIe siècle.</div>
+          </div>
+        </div>
+        <p>La tortue appartient à l'ordre des <strong>Chéloniens</strong>, apparu il y a environ <strong>230 millions d'années</strong> — elle est donc l'un des rares témoins vivants de l'ère des dinosaures. Sa carapace, formée de <em>60 à 80 os soudés</em>, est en réalité une extension de sa colonne vertébrale et de ses côtes, et non un bouclier rapporté.</p>
+      </div>
+    </div>
+
+    <!-- Caractéristiques physiques -->
+    <div class="reveal">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--foam);margin-bottom:2.5rem;text-align:center;font-style:italic;">Particularités physiques remarquables</h3>
+    </div>
+    <div class="phys-grid">
+      <div class="phys-card reveal reveal-delay-1">
+        <span class="phys-icon">🛡️</span>
+        <h3>La Carapace</h3>
+        <p>Formée de <strong>kératine et d'os</strong>, elle peut résister à une pression de plusieurs tonnes. Elle est sensible au toucher : la tortue <em>ressent</em> à travers elle.</p>
+      </div>
+      <div class="phys-card reveal reveal-delay-2">
+        <span class="phys-icon">🫁</span>
+        <h3>Longévité</h3>
+        <p>Certaines espèces vivent <strong>plus de 150 ans</strong>. La tortue géante des Galapagos « Jonathan » a été datée à <em>190 ans</em> — l'animal terrestre le plus âgé connu.</p>
+      </div>
+      <div class="phys-card reveal reveal-delay-3">
+        <span class="phys-icon">🌡️</span>
+        <h3>Métabolisme</h3>
+        <p>Ectotherme (à sang froid), la tortue régule sa température par <strong>comportements thermiques</strong>. Peut jeûner <em>plusieurs mois</em>, voire hiberner.</p>
+      </div>
+      <div class="phys-card reveal reveal-delay-1">
+        <span class="phys-icon">🔇</span>
+        <h3>Communication</h3>
+        <p>Longtemps cru muette, la tortue émet en réalité des <strong>sons graves</strong> inaudibles à l'oreille humaine, notamment lors de l'accouplement ou de la nidification.</p>
+      </div>
+      <div class="phys-card reveal reveal-delay-2">
+        <span class="phys-icon">🌊</span>
+        <h3>Navigation</h3>
+        <p>Les tortues marines parcourent des <strong>milliers de kilomètres</strong> grâce à un sens magnétique inné. Elles retrouvent <em>la plage de leur naissance</em> pour pondre.</p>
+      </div>
+      <div class="phys-card reveal reveal-delay-3">
+        <span class="phys-icon">🥚</span>
+        <h3>Reproduction</h3>
+        <p>Certaines femelles peuvent conserver du <strong>sperme viable</strong> plusieurs années. Le sexe des petits est déterminé par <em>la température d'incubation</em> du nid.</p>
+      </div>
+    </div>
+
+    <!-- Timeline antiquité -->
+    <div class="ancient-section">
+      <h3 class="ancient-title reveal">Les premières représentations de la tortue dans l'histoire humaine</h3>
+      <div class="timeline">
+
+        <div class="timeline-item reveal">
+          <div class="t-content">
+            <div class="t-era">~10 000 av. J.-C. · Préhistoire</div>
+            <div class="t-title-card">Gravures rupestres d'Afrique du Sud</div>
+            <p style="font-size:.95rem;line-height:1.8;">Dans les grottes du <strong>Drakensberg</strong> (Afrique du Sud), des peintures San représentent la tortue associée à la <em>pluie et à la fertilité</em>. Sa carapace est interprétée comme un <strong>symbole du dôme céleste</strong>, lien entre ciel et terre. Ces peuples chasseurs-cueilleurs voyaient en elle un intermédiaire entre le monde des vivants et celui des ancêtres.</div>
+            <div class="t-tags">
+              <span class="t-tag tag-civ">Peuples San</span>
+              <span class="t-tag tag-cont">Afrique</span>
+              <span class="t-tag tag-sym">Fertilité · Cosmos</span>
+            </div>
+          </div>
+          <div class="t-dot" style="margin:auto;"></div>
+          <div class="t-image">
+            <div class="t-img-frame">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/San_rock_painting_%28Ukhahlamba%29.jpg/640px-San_rock_painting_%28Ukhahlamba%29.jpg" alt="Art rupestre San" loading="lazy"/>
+            </div>
+            <p class="img-caption">Peintures rupestres San · Drakensberg · ~10 000 av. J.-C.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-1">
+          <div class="t-image">
+            <div class="t-img-frame">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Kurma_Avatar_of_Vishnu.jpg/640px-Kurma_Avatar_of_Vishnu.jpg" alt="Kurma avatar Vishnu" loading="lazy"/>
+            </div>
+            <p class="img-caption">Kurma, avatar-tortue de Vishnu · Inde ancienne</p>
+          </div>
+          <div class="t-dot" style="margin:auto;"></div>
+          <div class="t-content">
+            <div class="t-era">~3 000 av. J.-C. · Antiquité — Inde védique</div>
+            <div class="t-title-card">Kurma — L'Avatar Tortue de Vishnu</div>
+            <p style="font-size:.95rem;line-height:1.8;">Dans les textes védiques du <strong>Rigveda</strong> puis du <strong>Mahabharata</strong>, Vishnu prend la forme de <em>Kurma</em>, une gigantesque tortue cosmique dont la carapace soutient le Mont Mandara durant le barattage de l'océan primordial. La tortue porte littéralement le <strong>monde sur son dos</strong>, symbolisant la stabilité de l'univers.</p>
+            <div class="t-tags">
+              <span class="t-tag tag-civ">Civilisation védique</span>
+              <span class="t-tag tag-cont">Asie du Sud</span>
+              <span class="t-tag tag-sym">Soutien cosmique · Divinité</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-2">
+          <div class="t-content">
+            <div class="t-era">~2 500 av. J.-C. · Antiquité — Chine</div>
+            <div class="t-title-card">Plastromantie — Divination par carapace</div>
+            <p style="font-size:.95rem;line-height:1.8;">Durant la <strong>Dynastie Shang</strong>, les scribes chinois gravaient des questions aux ancêtres sur des <em>plastrons de tortue</em> (os oraculaires). Chauffées jusqu'à la fissure, ces carapaces permettaient de lire l'avenir. Ces inscriptions, les plus anciennes formes d'<strong>écriture chinoise</strong>, font de la tortue le premier vecteur de l'écriture en Asie orientale.</p>
+            <div class="t-tags">
+              <span class="t-tag tag-civ">Dynastie Shang</span>
+              <span class="t-tag tag-cont">Asie de l'Est</span>
+              <span class="t-tag tag-sym">Divination · Sagesse · Longévité</span>
+            </div>
+          </div>
+          <div class="t-dot" style="margin:auto;"></div>
+          <div class="t-image">
+            <div class="t-img-frame">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Plastron_from_the_Shang_dynasty.jpg/640px-Plastron_from_the_Shang_dynasty.jpg" alt="Os oraculaire Shang" loading="lazy"/>
+            </div>
+            <p class="img-caption">Os oraculaire (plastron) · Dynastie Shang · ~1 200 av. J.-C.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-1">
+          <div class="t-image">
+            <div class="t-img-frame">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Turtle_coin_ancient_greece.jpg/640px-Turtle_coin_ancient_greece.jpg" alt="Monnaie tortue Égine" loading="lazy"/>
+            </div>
+            <p class="img-caption">Statère à la tortue · Île d'Égine · ~700 av. J.-C.</p>
+          </div>
+          <div class="t-dot" style="margin:auto;"></div>
+          <div class="t-content">
+            <div class="t-era">~700 av. J.-C. · Antiquité — Grèce</div>
+            <div class="t-title-card">Hermès, la Lyre et le Statère d'Égine</div>
+            <p style="font-size:.95rem;line-height:1.8;">Selon <em>l'Hymne homérique à Hermès</em>, le dieu enfant invente la première <strong>lyre</strong> en tendant des cordes sur une carapace de tortue — le premier instrument de musique de l'humanité mythologique. Parallèlement, l'île d'<strong>Égine</strong> frappe la première monnaie grecque, ornée d'une tortue de mer : symbole de prospérité maritime et d'échanges commerciaux.</p>
+            <div class="t-tags">
+              <span class="t-tag tag-civ">Grèce antique</span>
+              <span class="t-tag tag-cont">Europe méditerranéenne</span>
+              <span class="t-tag tag-sym">Musique · Commerce · Hermès</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-sep">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+    <path d="M0,30 C360,80 720,0 1080,50 C1260,75 1350,40 1440,30 L1440,100 L0,100 Z" fill="rgba(0,180,200,0.06)"/>
+  </svg>
+</div>
+
+<!-- SECTION 2 -->
+<section class="s2" id="recits">
+  <div class="container">
+    <span class="section-number reveal">02 — Mythologie &amp; Récits</span>
+    <h2 class="section-title reveal reveal-delay-1">Deux Visions du Monde</h2>
+    <div class="section-divider reveal reveal-delay-2"></div>
+    <p class="reveal reveal-delay-2" style="max-width:700px;margin-bottom:5rem;">À travers les cultures, la tortue a inspiré des récits fondateurs aux significations radicalement opposées. La lenteur devient sagesse ou fardeau ; la carapace, protection ou retraite. Voici deux récits emblématiques.</p>
+
+    <div class="recits-grid">
+      <!-- Récit 1 -->
+      <div class="recit-card reveal">
+        <div class="recit-header">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Hare-Tortoise-Fables-de-La-Fontaine-by-Gustave-Moreau.jpg/640px-Hare-Tortoise-Fables-de-La-Fontaine-by-Gustave-Moreau.jpg" alt="Lièvre et tortue" loading="lazy"/>
+          <div class="recit-overlay"></div>
+          <div class="recit-number">I</div>
+          <div class="recit-badge">Fable · Grèce antique</div>
+        </div>
+        <div class="recit-body">
+          <div class="recit-title">« Le Lièvre et la Tortue »</div>
+          <div class="five-w">
+            <div class="w-item"><span class="w-label">Qui ?</span><span class="w-value">Une tortue humble et un lièvre orgueilleux</span></div>
+            <div class="w-item"><span class="w-label">Quoi ?</span><span class="w-value">Une course entre les deux animaux pour prouver la supériorité de la constance sur la vitesse</span></div>
+            <div class="w-item"><span class="w-label">Où ?</span><span class="w-value">Dans la campagne grecque, sur un chemin menant à un chêne marqué à l'avance</span></div>
+            <div class="w-item"><span class="w-label">Quand ?</span><span class="w-value">Fable d'Ésope (VIe s. av. J.-C.), reprise par La Fontaine en 1668</span></div>
+            <div class="w-item"><span class="w-label">Pourquoi ?</span><span class="w-value">Morale : la persévérance et la régularité triomphent toujours de la brillance sans effort</span></div>
+          </div>
+          <div class="recit-summary">Le lièvre, certain de sa victoire, s'endort en cours de route. La tortue, sans jamais se décourager, avance à son rythme lent mais constant. Elle franchit la ligne d'arrivée bien avant que le lièvre ne se réveille. <strong>« Rien ne sert de courir, il faut partir à point. »</strong></div>
+        </div>
+      </div>
+
+      <!-- Récit 2 -->
+      <div class="recit-card reveal reveal-delay-2">
+        <div class="recit-header">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Aataentsic_Sky_Woman.jpg/640px-Aataentsic_Sky_Woman.jpg" alt="Femme du Ciel Iroquois" loading="lazy"/>
+          <div class="recit-overlay"></div>
+          <div class="recit-number">II</div>
+          <div class="recit-badge">Cosmogonie · Amérindiens Iroquois</div>
+        </div>
+        <div class="recit-body">
+          <div class="recit-title">« La Femme du Ciel et la Grande Tortue »</div>
+          <div class="five-w">
+            <div class="w-item"><span class="w-label">Qui ?</span><span class="w-value">Aataentsic (Femme du Ciel), les animaux primordiaux, et la Grande Tortue</span></div>
+            <div class="w-item"><span class="w-label">Quoi ?</span><span class="w-value">La création du monde terrestre sur le dos d'une gigantesque tortue</span></div>
+            <div class="w-item"><span class="w-label">Où ?</span><span class="w-value">L'océan primordial infini, avant l'existence de toute terre ferme</span></div>
+            <div class="w-item"><span class="w-label">Quand ?</span><span class="w-value">Mythe de création transmis oralement depuis des millénaires, peuple Haudenosaunee (Iroquois)</span></div>
+            <div class="w-item"><span class="w-label">Pourquoi ?</span><span class="w-value">Expliquer l'origine du monde : la tortue incarne la stabilité primordiale, le fondement de toute vie</span></div>
+          </div>
+          <div class="recit-summary">Tombée du ciel, Aataentsic est rattrapée par les oiseaux et déposée sur la carapace de la Grande Tortue. Les animaux plongent pour ramener de la terre du fond de l'océan. L'Amérique du Nord (<em>"Turtle Island"</em>) naît ainsi sur le dos de la tortue. <strong>La terre entière repose sur elle.</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analyse culturelle -->
+    <div class="analyse-section reveal">
+      <h3 class="analyse-title">Comprendre les différences culturelles</h3>
+      <div class="compare-grid">
+        <div class="compare-col">
+          <h3>🌿 Vision occidentale</h3>
+          <div class="compare-point">La tortue est un <strong>symbole moral</strong> : elle enseigne la vertu de la persévérance. Sa lenteur n'est pas une faiblesse, mais une philosophie de vie.</div>
+          <div class="compare-point">La fable d'Ésope s'inscrit dans une tradition de <strong>récits pédagogiques</strong> grecs où les animaux incarnent des qualités humaines (la sagesse, la vanité, la prudence).</div>
+          <div class="compare-point">La tortue reste un <strong>personnage secondaire</strong> du bestiaire : admirée, mais pas sacrée. Elle illustre une vérité universelle dans un cadre narratif humanocentré.</div>
+          <div class="compare-point">Cette vision reflète un monde où l'<strong>animal est au service du message humain</strong>, outil symbolique d'une leçon de vie.</div>
+        </div>
+        <div class="compare-vs">vs</div>
+        <div class="compare-col">
+          <h3>🌊 Vision amérindienne</h3>
+          <div class="compare-point">La tortue est <strong>l'origine du monde</strong> lui-même. Elle n'illustre pas une leçon — elle <em>est</em> le cosmos, le substrat de toute existence.</div>
+          <div class="compare-point">Dans la cosmogonie haudenosaunee, la tortue n'est pas metaphore mais <strong>réalité fondatrice</strong>. L'Amérique du Nord se nomme encore "Turtle Island" en langues autochtones.</div>
+          <div class="compare-point">Cette vision reflète un rapport au monde <strong>non-hiérarchique</strong> : l'animal n'est pas inférieur à l'humain. Il peut être l'ancêtre, le fondateur, le dieu.</div>
+          <div class="compare-point">La lenteur de la tortue n'est pas une qualité à imiter : c'est la <strong>patience même de la Création</strong>, immuable et éternelle.</div>
+        </div>
+      </div>
+      <p style="margin-top:3rem;text-align:center;font-style:italic;color:var(--aqua);font-size:1.05rem;">Ces deux récits révèlent une fracture fondamentale : <strong>la tortue comme miroir de l'humain</strong> (Occident) contre <strong>la tortue comme fondement du monde</strong> (Amériques). L'animal reste le même ; les cosmologies divergent radicalement.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-sep">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+    <path d="M0,60 C480,10 960,90 1440,40 L1440,100 L0,100 Z" fill="rgba(14,77,92,0.08)"/>
+  </svg>
+</div>
+
+<!-- SECTION 3 -->
+<section class="s3" id="medieval">
+  <div class="container">
+    <span class="section-number reveal">03 — Le Bestiaire Médiéval</span>
+    <h2 class="section-title reveal reveal-delay-1">La Tortue au Moyen Âge</h2>
+    <div class="section-divider reveal reveal-delay-2"></div>
+
+    <div class="medieval-hero reveal">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Rochester_Bestiary_turtle.jpg/800px-Rochester_Bestiary_turtle.jpg" alt="Bestiaire médiéval tortue" loading="lazy"/>
+      <div class="medieval-overlay">
+        <div class="medieval-quote">
+          <div class="quote-text">« Elle porte sa maison sur le dos comme un moine son habit — fermée au monde, ouverte à Dieu. »</div>
+          <div class="quote-src">Physiologus · IIe siècle · Traduit &amp; glosé au Moyen Âge</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bestiary-grid">
+      <div class="bestiary-illustration reveal">
+        <div class="ill-frame">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/MS_Bodl_764_f40v.jpg/480px-MS_Bodl_764_f40v.jpg" alt="Enluminure bestiaire d'Oxford" loading="lazy"/>
+        </div>
+        <p class="ill-caption">Bestiaire d'Oxford (MS Bodley 764) · XIIIe s. · Oxford</p>
+        <div style="margin-top:2rem;">
+          <div class="ill-frame" style="margin-top:1rem;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Bestiary_turtle.jpg/480px-Bestiary_turtle.jpg" alt="Enluminure tortue combat" loading="lazy"/>
+          </div>
+          <p class="ill-caption">Tortue combattant l'Éléphant · Bestiaire latin · XIIe s.</p>
+        </div>
+      </div>
+
+      <div class="bestiary-content reveal reveal-delay-2">
+        <h2>La Tortue dans le <em>Physiologus</em> et les Bestiaires</h2>
+        <p>Au Moyen Âge, la connaissance des animaux passe quasi exclusivement par les <strong>bestiaires</strong> — encyclopédies illustrées héritées du <em>Physiologus</em> grec (IIe siècle). Ces ouvrages n'ont pas pour ambition de décrire la nature avec précision, mais de lire en chaque créature un <em>message divin</em> encodé par le Créateur.</p>
+
+        <h3>La tortue dans les bestiaires : entre lenteur et sagesse retirée</h3>
+        <p>La tortue médiévale est décrite comme un animal <strong>craintif et solitaire</strong>, qui se retire dans sa carapace à la moindre menace. Les clercs voient dans ce comportement une figure du <em>moine cloîtré</em>, replié dans sa cellule pour protéger son âme du monde corrupteur. Sa longévité est interprétée comme un signe de la <strong>tempérance divine</strong> — vivre peu, manger peu, vivre longtemps.</p>
+
+        <p style="margin-top:1.5rem;">Certains bestiaires décrivent aussi la tortue de mer combattant le <strong>Dauphin</strong> ou l'<strong>Éléphant</strong>, symbolisant la lutte entre le Bien et le Mal, la lenteur vertueuse contre la force brute du péché.</p>
+
+        <!-- Comparaison évolution -->
+        <div class="evolution-bar reveal">
+          <div class="evo-block">
+            <div class="evo-era">Antiquité</div>
+            <div class="evo-desc">Cosmique, divine, associée aux dieux (Hermès, Vishnu). Symbole de stabilité universelle et de fertilité.</div>
+          </div>
+          <div class="evo-block">→</div>
+          <div class="evo-block">
+            <div class="evo-era">Moyen Âge</div>
+            <div class="evo-desc">Moralisée, christianisée. Symbole de retrait du monde, de tempérance et de vie contemplative.</div>
+          </div>
+        </div>
+
+        <h3>Un glissement significatif</h3>
+        <p>L'image de la tortue au Moyen Âge <strong>change profondément</strong> par rapport à l'Antiquité. Elle n'est plus la gardienne du cosmos ou l'intermédiaire entre les dieux et les hommes : elle devient un <em>exemple de conduite chrétienne</em>. Sa carapace n'est plus une armure cosmique — c'est le symbole de l'<strong>humilité et du retrait des vanités mondaines</strong>.</p>
+
+        <div class="chrétien-box reveal">
+          <h3>🕊️ Lecture chrétienne de la tortue</h3>
+          <p>Dans la théologie médiévale, <strong>chaque animal est une lettre de l'alphabet divin</strong>. La tortue, portant sa maison sur le dos, rappelle que le chrétien doit porter sa <em>foi comme demeure intérieure</em>, indépendante du monde matériel. Sa lenteur symbolise le <strong>chemin vers le Ciel</strong> : lent, mais constant. Sa longévité évoque l'<em>éternité divine</em>.</p>
+          <p style="margin-top:1.2rem;">De plus, la tortue marine, née sur terre et vivant en mer, symbolise la <strong>double nature de l'âme</strong> : terrestre par le corps, aspirant aux profondeurs infinies de Dieu. Certains moralistes médiévaux voyaient même dans sa carapace l'image de l'<em>Arche de Noé</em> : un abri fermé qui protège la vie au milieu du déluge.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-sep">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+    <path d="M0,40 C300,90 700,10 1100,60 C1270,80 1380,30 1440,40 L1440,100 L0,100 Z" fill="rgba(0,180,200,0.05)"/>
+  </svg>
+</div>
+
+<!-- SECTION 4 -->
+<section class="s4" id="moderne">
+  <div class="container">
+    <span class="section-number reveal">04 — La Tortue Aujourd'hui</span>
+    <h2 class="section-title reveal reveal-delay-1">Regards Contemporains</h2>
+    <div class="section-divider reveal reveal-delay-2"></div>
+    <p class="reveal reveal-delay-2" style="max-width:700px;margin-bottom:5rem;">De la littérature au cinéma, la tortue continue de fasciner l'imaginaire contemporain — parfois comme symbole écologique menacé, parfois comme figure d'humour et de sagesse, rarement comme simple animal.</p>
+
+    <div class="oeuvres-grid">
+      <!-- Oeuvre 1 -->
+      <div class="oeuvre-card reveal">
+        <div class="oeuvre-img">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/TMNT_Group_Image.jpg/640px-TMNT_Group_Image.jpg" alt="Tortues Ninja" loading="lazy"/>
+          <div class="oeuvre-type type-cin">Cinéma / Bande Dessinée</div>
+        </div>
+        <div class="oeuvre-body">
+          <div class="oeuvre-title">Les Tortues Ninja</div>
+          <div class="oeuvre-author">Kevin Eastman &amp; Peter Laird · 1984 → aujourd'hui</div>
+          <p>Créées en 1984 dans un comic book autopublié, les <strong>Teenage Mutant Ninja Turtles</strong> (Léonard, Donatello, Raphaël, Michel-Ange) sont quatre tortues mutantes formées aux arts martiaux. Adaptées en dessin animé (1987), films (1990, 2014), jeux vidéo et séries, elles deviennent un <em>phénomène culturel mondial</em>. Paradoxe fascinant : la tortue, symbole de lenteur, incarne ici la vitesse, le combat et l'héroïsme. La carapace reste l'attribut central — bouclier invincible d'un combattant agile.</p>
+          <div class="oeuvre-stars">★★★★★</div>
+        </div>
+      </div>
+
+      <!-- Oeuvre 2 -->
+      <div class="oeuvre-card reveal reveal-delay-2">
+        <div class="oeuvre-img">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Grapes_of_wrath_1939.jpg/640px-Grapes_of_wrath_1939.jpg" alt="Les Raisins de la colère" loading="lazy"/>
+          <div class="oeuvre-type type-lit">Littérature</div>
+        </div>
+        <div class="oeuvre-body">
+          <div class="oeuvre-title">Les Raisins de la Colère</div>
+          <div class="oeuvre-author">John Steinbeck · 1939 · Prix Pulitzer 1940</div>
+          <p>Dans ce roman culte du <em>New Deal</em> américain, Steinbeck consacre un chapitre entier à une <strong>tortue terrestre</strong> traversant une route. La scène, d'une précision minutieuse, est une métaphore directe de la famille Joad — paysans ruinés par la Grande Dépression — avançant vers la Californie malgré les obstacles et l'indifférence du monde. La tortue <em>renversée par une voiture</em>, qui parvient pourtant à se redresser et à continuer, symbolise la <strong>résilience des humbles</strong>. Un des passages les plus commentés de la littérature américaine du XXe siècle.</p>
+          <div class="oeuvre-stars">★★★★★</div>
+        </div>
+      </div>
+
+      <!-- Oeuvre 3 -->
+      <div class="oeuvre-card reveal reveal-delay-1">
+        <div class="oeuvre-img">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Loggerhead_sea_turtle.jpg/640px-Loggerhead_sea_turtle.jpg" alt="Tortue marine" loading="lazy"/>
+          <div class="oeuvre-type type-pic">Photographie d'Art</div>
+        </div>
+        <div class="oeuvre-body">
+          <div class="oeuvre-title">« Sea Turtle Migration » — National Geographic</div>
+          <div class="oeuvre-author">Brian Skerry · 2000s · Photographe océanographique</div>
+          <p>Le photographe <strong>Brian Skerry</strong>, collaborateur historique du <em>National Geographic</em>, a consacré une grande partie de sa carrière à documenter les migrations de tortues marines. Ses clichés monumentaux — tortues caouannes traversant des eaux bleu abyssal, portant algues et bernacles sur leur dos — ont transformé la perception publique de ces animaux. Ces images ont directement alimenté des campagnes de protection internationale, et sont aujourd'hui des <em>icônes du mouvement écologiste marin</em>. La tortue y devient symbole de l'<strong>océan menacé</strong>.</p>
+          <div class="oeuvre-stars">★★★★☆</div>
+        </div>
+      </div>
+
+      <!-- Oeuvre 4 -->
+      <div class="oeuvre-card reveal reveal-delay-3">
+        <div class="oeuvre-img">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Finding_Nemo_%282003%29.jpg/640px-Finding_Nemo_%282003%29.jpg" alt="Finding Nemo Crush" loading="lazy"/>
+          <div class="oeuvre-type type-cin">Cinéma d'Animation</div>
+        </div>
+        <div class="oeuvre-body">
+          <div class="oeuvre-title">Le Monde de Nemo — Squiz &amp; Crush</div>
+          <div class="oeuvre-author">Andrew Stanton · Pixar / Disney · 2003</div>
+          <p>Dans ce chef-d'œuvre d'animation, la tortue <strong>Crush</strong> et son fils <em>Squiz</em> incarnent la philosophie surfeuse et zen : vivant avec le courant, sans jamais forcer. Crush — 150 ans, cool, paternal — est l'une des figures les plus aimées du film. Pixar réactualise ici le symbole antique : la tortue guide le héros vers sa destination, comme autrefois elle portait le monde. Ce personnage a contribué à <strong>populariser la protection des tortues marines</strong> auprès de millions d'enfants dans le monde entier.</p>
+          <div class="oeuvre-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXCEPTIONS MONDIALES -->
+    <div class="exceptions-section">
+      <h3 class="exceptions-title reveal">Exceptions culturelles dans le monde contemporain</h3>
+      <p class="reveal" style="text-align:center;max-width:600px;margin:0 auto 4rem;font-size:1rem;opacity:.7;">Dans un monde globalisé, certaines cultures maintiennent des rapports singuliers à la tortue — qu'il s'agisse de vénération persistante, d'usage alimentaire assumé, ou de tabous stricts.</p>
+      <div class="exception-cards">
+        <div class="exception-card reveal">
+          <div class="exc-flag">🇨🇳</div>
+          <div class="exc-country">Chine — Une dualité paradoxale</div>
+          <p>En Chine contemporaine, la tortue est à la fois <strong>symbole suprême de longévité</strong> (bibelots, tatouages, amulettes) et… une <em>insulte grave</em>. Traiter quelqu'un de "tortue" (王八, wángbā) signifie le qualifier de cocu ou de fils indigne. Cette dualité reflète l'ambivalence millénaire de la culture chinoise envers un animal sacré mais aussi asocial.</p>
+        </div>
+        <div class="exception-card reveal reveal-delay-1">
+          <div class="exc-flag">🌴</div>
+          <div class="exc-country">Polynésie — Animal totémique protégé</div>
+          <p>Dans la culture polynésienne et hawaïenne, la tortue verte (<em>honu</em>) est un animal <strong>sacré et protecteur</strong>. Les familles revendiquent une ascendance de la tortue comme ancêtre totem. Au Hawaï, la chasser ou la blesser est un <em>tabou culturel absolu</em>, renforcé aujourd'hui par la loi fédérale américaine. Elle symbolise la navigation, la chance et la connexion avec les ancêtres.</p>
+        </div>
+        <div class="exception-card reveal reveal-delay-2">
+          <div class="exc-flag">🇲🇾</div>
+          <div class="exc-country">Malaisie — Conservation contre tradition</div>
+          <p>La Malaisie abrite certaines des plus grandes plages de ponte au monde pour les tortues géantes (<em>leatherback</em>). Longtemps, les œufs de tortues étaient un <strong>mets de luxe</strong> légalement vendu en marché. Face à l'effondrement des populations, une tension profonde persiste entre la <em>tradition culinaire locale</em> et les impératifs de conservation internationale — illustrant le conflit entre héritage culturel et urgence écologique.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="font-size:1.8rem;font-family:'Playfair Display',serif;color:var(--turq);font-style:italic;margin-bottom:1.5rem;-webkit-text-fill-color:var(--turq);">Testudo</p>
+  <p>230 millions d'années d'existence · Témoin de la naissance et de l'extinction des dinosaures</p>
+  <p style="margin-top:.8rem;opacity:.4;">Site vitrine · Tous droits réservés</p>
+</footer>
+
+<script>
+// === CURSOR ===
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+function animRing() { rx += (mx-rx)*.12; ry += (my-ry)*.12; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a,button,.phys-card,.recit-card,.oeuvre-card,.exception-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; ring.style.width='60px'; ring.style.height='60px'; ring.style.borderColor='var(--amber)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width='12px'; cursor.style.height='12px'; ring.style.width='40px'; ring.style.height='40px'; ring.style.borderColor='var(--aqua)'; });
+});
+
+// === OCEAN CANVAS ===
+const canvas = document.getElementById('ocean-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, time = 0;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+const waves = Array.from({length:5}, (_,i) => ({
+  amp: 30+i*15, freq: .003+i*.001, speed: .0004+i*.0002, phase: i*Math.PI/3,
+  color: `rgba(0,${100+i*25},${160+i*15},${.06-i*.01})`
+}));
+
+function drawOcean() {
+  ctx.clearRect(0,0,W,H);
+  time += .5;
+  waves.forEach(w => {
+    ctx.beginPath();
+    ctx.moveTo(0, H*.6);
+    for(let x=0;x<=W;x+=4) {
+      const y = H*.55 + Math.sin(x*w.freq + time*w.speed + w.phase)*w.amp + Math.sin(x*w.freq*.7 + time*w.speed*1.3)*w.amp*.4;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+    ctx.fillStyle = w.color;
+    ctx.fill();
+  });
+
+  // Bioluminescence dots
+  if(Math.random() < .03) {
+    const bx = Math.random()*W, by = H*.4 + Math.random()*H*.4;
+    ctx.beginPath(); ctx.arc(bx,by,Math.random()*2+1,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,180,200,.6)'; ctx.fill();
+    ctx.shadowColor='rgba(0,180,200,.8)'; ctx.shadowBlur=10; ctx.fill(); ctx.shadowBlur=0;
+  }
+  requestAnimationFrame(drawOcean);
+}
+drawOcean();
+
+// === PARTICLES ===
+const pc = document.getElementById('particles');
+for(let i=0;i<20;i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random()*3+1;
+  p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;bottom:-${size}px;animation-duration:${10+Math.random()*20}s;animation-delay:${Math.random()*15}s;opacity:${Math.random()*.3}`;
+  pc.appendChild(p);
+}
+
+// === REVEAL ON SCROLL ===
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: .12, rootMargin: '0px 0px -60px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// === PARALLAX HERO ===
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  const heroContent = document.querySelector('.hero-content');
+  if(heroContent) heroContent.style.transform = `translateY(${y*.35}px)`;
+  const grid = document.querySelector('.hero-grid');
+  if(grid) grid.style.transform = `translateY(${y*.15}px)`;
+});
+
+// === SMOOTH NAV HIGHLIGHT ===
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY + 120;
+  sections.forEach(s => {
+    if(scrollY >= s.offsetTop && scrollY < s.offsetTop + s.offsetHeight) {
+      navLinks.forEach(l => { l.style.opacity = l.getAttribute('href')==='#'+s.id ? '1' : '.5'; l.style.color = l.getAttribute('href')==='#'+s.id ? 'var(--turq)' : 'var(--foam)'; });
+    }
+  });
+});
+</script>
+</body>
+</html>
