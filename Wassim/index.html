@@ -406,6 +406,19 @@
 
     document.addEventListener('DOMContentLoaded', splitParagraphsOnPeriod);
 
+    // ===== RETRAITEMENT DES LIENS EN SOUS-DOSSIER =====
+    (function adjustLinksForSubfolder() {
+      const path = window.location.pathname;
+      if (path.includes('/Animaux/') && !path.endsWith('/Animaux/index.html')) {
+        document.querySelectorAll('.nav-links a').forEach(a => {
+          const href = a.getAttribute('href');
+          if (href === 'Animaux/index.html' || href === 'index.html') {
+            a.setAttribute('href', '../index.html');
+          }
+        });
+      }
+    })();
+
   </script>
 </body>
 </html>
