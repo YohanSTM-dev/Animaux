@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Martin Pêcheur — Exposé</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:       #0077B6;
+    --blue-dark:  #023E8A;
+    --blue-light: #00B4D8;
+
+    --orange:     #F77F00;
+    --orange-dark:#C85C00;
+    --orange-light:#FFB347;
+    --orange-faint:#FFF4E6;
+
+    --cream:     #FAF7F2;
+    --ink:       #1A1410;
+    --ink-mid:   #3D2E28;
+    --ink-light: #7A6560;
+    --border:    #DDD0C8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 540px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    filter: brightness(0.55) saturate(1.1);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(247,127,0,0.07) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(247,127,0,0.04) 60px);
+    pointer-events: none;
+  }
+
+  .hero-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue-dark), var(--orange), var(--blue-dark));
+  }
+
+  .hero-content {
+    position: relative;
+    padding: 3rem;
+    z-index: 2;
+  }
+
+  .hero-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-badge span::before { content: '▸ '; opacity: 0.5; }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 900;
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+  }
+
+  .hero h1 .accent { color: var(--orange); display: block; }
+
+  .hero-sci {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-credit {
+    position: absolute;
+    bottom: 0.6rem; right: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+  }
+
+  /* ─── LAYOUT ─── */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    padding: 4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--blue);
+    opacity: 0.16;
+    flex-shrink: 0;
+    margin-top: -0.5rem;
+    user-select: none;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blue);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  /* ─── TYPOGRAPHY ─── */
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--blue-dark);
+    margin: 2rem 0 0.7rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  p { margin-bottom: 1rem; color: var(--ink-mid); }
+  em { font-style: italic; color: var(--ink); }
+  strong { font-weight: 700; color: var(--ink); }
+
+  mark {
+    background: rgba(247,127,0,0.12);
+    color: var(--blue-dark);
+    padding: 0.05em 0.2em;
+    border-radius: 2px;
+  }
+
+  /* ─── PULL QUOTE ─── */
+  .pull-quote {
+    border-left: 4px solid var(--blue);
+    padding: 0.75rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--orange-faint);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--blue-dark);
+    line-height: 1.5;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ─── IMAGE COMPONENTS ─── */
+  figure {
+    margin: 1.5rem 0;
+    break-inside: avoid;
+  }
+
+  figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 3px;
+    background: var(--border);
+  }
+
+  figure img.img-failed { display: none; }
+
+  figcaption {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    margin-top: 0.5rem;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  figcaption a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  /* Floated image (right column) */
+  .fig-right {
+    float: right;
+    width: 42%;
+    margin: 0 0 1.5rem 2rem;
+  }
+
+  .fig-left {
+    float: left;
+    width: 38%;
+    margin: 0 2rem 1.5rem 0;
+  }
+
+  .fig-full {
+    float: none;
+    width: 100%;
+    margin: 2rem 0;
+  }
+
+  .fig-half {
+    width: 48%;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .clearfix::after { content: ''; display: table; clear: both; }
+
+  /* ─── LEGEND CARDS ─── */
+  .legend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 640px) { .legend-grid { grid-template-columns: 1fr; } }
+
+  .legend-card {
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--blue);
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 0 0 4px 4px;
+  }
+
+  .card-origin {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.4rem;
+  }
+
+  .legend-card h4 {
+    margin: 0 0 0.15rem;
+    font-size: 1rem;
+    color: var(--ink);
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .source-ref {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.56rem;
+    color: var(--ink-light);
+    margin-bottom: 0.75rem;
+  }
+
+  .five-w {
+    list-style: none;
+    margin: 0.75rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .five-w li {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+
+  .w-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: var(--orange-faint);
+    border: 1px solid rgba(247,127,0,0.2);
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 0.1rem;
+    min-width: 3.5rem;
+    text-align: center;
+  }
+
+  .card-aspect {
+    margin-top: 0.75rem;
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--border);
+    font-size: 0.86rem;
+    color: var(--ink-light);
+    font-style: italic;
+  }
+
+  .card-aspect strong {
+    font-style: normal;
+    color: var(--blue-dark);
+  }
+
+  /* ─── DIFF TABLE ─── */
+  .diff-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.88rem;
+  }
+
+  .diff-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--blue);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    text-align: left;
+  }
+
+  .diff-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--ink-mid);
+  }
+
+  .diff-table tr:nth-child(even) td { background: var(--orange-faint); }
+  .diff-table td:first-child { font-weight: 600; color: var(--ink); white-space: nowrap; }
+
+  /* ─── OEUVRE ─── */
+  .oeuvre {
+    display: flex;
+    gap: 1.5rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .oeuvre::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--blue);
+    border-radius: 4px 0 0 4px;
+  }
+
+  .oeuvre-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--blue);
+    opacity: 0.18;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: -0.2rem;
+  }
+
+  .oeuvre-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.3rem;
+  }
+
+  .oeuvre-body h4 { margin: 0 0 0.5rem; font-size: 1.05rem; color: var(--ink); font-family: 'Playfair Display', serif; font-style: italic; }
+  .oeuvre-body p  { font-size: 0.92rem; margin-bottom: 0; }
+
+  /* ─── INFOBOX ─── */
+  .infobox {
+    background: var(--orange-faint);
+    border-left: 3px solid var(--blue);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .infobox p { font-size: 0.92rem; margin: 0; }
+
+  /* ─── ART STRIP ─── */
+  .art-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .art-strip figure { margin: 0; }
+
+  .art-strip figure img {
+    height: 240px;
+    object-fit: cover;
+  }
+
+  /* ─── CONCLUSION ─── */
+  .conclusion { padding: 4rem 0; }
+
+  .conclusion-inner {
+    background: var(--blue);
+    color: #fff;
+    padding: 3rem;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .conclusion-inner::before {
+    content: '«';
+    position: absolute;
+    top: -1.5rem; left: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 12rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .conclusion-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin-bottom: 1.25rem;
+  }
+
+  .conclusion-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.92);
+    position: relative;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--blue-dark);
+    color: rgba(250,247,242,0.4);
+    text-align: center;
+    padding: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+    color: var(--blue);
+    opacity: 0.35;
+    font-size: 0.6rem;
+  }
+
+  .ornament::before, .ornament::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  @media (max-width: 600px) {
+    .fig-right, .fig-left { float: none; width: 100%; margin: 1.5rem 0; }
+    .art-strip { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero">
+  <img class="hero-img"
+       src="https://commons.wikimedia.org/wiki/Special:FilePath/Common_Kingfisher_Alcedo_atthis.jpg"
+       alt="Martin pêcheur commun (Alcedo atthis)"
+       onerror="this.style.filter='brightness(0) saturate(0)';this.style.background='#1a1410'">
+  <div class="hero-grid"></div>
+  <div class="hero-bar"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span>BTS SIO2</span>
+      <span>Les animaux et l'Homme</span>
+      <span>Exposé oral</span>
+    </div>
+    <div class="hero-tag">Fiche animal</div>
+    <h1>
+      Martin
+      <span class="accent">Pêcheur</span>
+    </h1>
+    <p class="hero-sci">Alcedo atthis — L'alcyon d'Europe</p>
+  </div>
+  <p class="hero-credit">© Wikimedia Commons — CC BY-SA</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     I — PRÉSENTATION
+══════════════════════════════════════ -->
+<div class="page">
+  <section class="section" id="presentation">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div>
+        <span class="section-label">Partie 1</span>
+        <h2 class="section-title">Présentation de l'animal</h2>
+      </div>
+    </div>
+
+    <figure class="fig-right">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Common_Kingfisher_-_Luc_Viatour.jpg"
+           alt="Martin pêcheur — photo Luc Viatour"
+           onerror="this.classList.add('img-failed')">
+      <figcaption>Martin-pêcheur commun en vol — © <a href="https://commons.wikimedia.org/wiki/User:Lviatour" target="_blank">Luc Viatour</a>, CC BY-SA 3.0</figcaption>
+    </figure>
+
+    <div class="clearfix">
+      <h3>a. Étymologie</h3>
+      <p>
+        Le nom <mark>« martin pêcheur »</mark> vient de deux mots simples : <em>Martin</em>, un prénom très courant au Moyen Âge (il serait aussi appelé « oiseau de Saint Martin »), et <em>pêcheur</em>, qui décrit directement ce que fait l'oiseau : il plonge dans l'eau pour attraper des poissons.
+      </p>
+      <p>
+        Son nom scientifique, <em>Alcedo atthis</em>, vient du latin <em>alcedo</em>, lui-même issu du grec <em>alkyon</em> (« alcyon »). Ce mot renvoie directement au mythe grec d'Alcyone, une princesse transformée en martin pêcheur. Le deuxième mot, <em>atthis</em>, est le prénom d'une jeune femme célébrée par la poétesse grecque Sappho pour sa grâce et sa douceur.
+      </p>
+
+      <div class="ornament">✦</div>
+
+      <h3>b. Premières représentations connues</h3>
+      <p>
+        En <strong>Grèce antique</strong>, le philosophe <strong>Aristote</strong> (IVe s. av. J.-C.) évoque l'alcyon dans son œuvre <em>Histoire des animaux</em>. Il le décrit comme un oiseau marin auquel on attribue la capacité de nicher sur la mer, et dont la présence est associée aux « jours alcyoniens », une période hivernale de calme des flots. Plus tard, le poète romain <strong>Ovide</strong> lui consacre tout un mythe dans ses <em>Métamorphoses</em> (vers 8 ap. J.-C.).
+      </p>
+      <p>
+        En <strong>Chine</strong>, sous la <mark>dynastie Han</mark> (IIe s. av. J.-C.), les plumes bleues et vertes du martin pêcheur servaient à décorer les bijoux et les coiffes des nobles. Cet art s'appelait le <em>tiancui</em>. L'oiseau représentait la beauté et le prestige.
+      </p>
+
+      <div class="pull-quote">
+        Dans ces deux civilisations très différentes, le martin pêcheur est vu de la même façon : un animal beau et mystérieux, ni dangereux ni banal, qui semble appartenir à deux mondes à la fois.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       II — LÉGENDES
+  ══════════════════════════════════════ -->
+  <section class="section" id="legendes">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <div>
+        <span class="section-label">Partie 2</span>
+        <h2 class="section-title">L'animal dans les contes et légendes du monde entier</h2>
+      </div>
+    </div>
+
+    <!-- Image pleine largeur — Draper Halcyone -->
+    <figure class="fig-full">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Herbert_James_Draper_-_Halcyone_(1915).jpg"
+           alt="Halcyone — Herbert James Draper, 1915"
+           style="max-height: 380px; object-fit: cover; object-position: center 30%;"
+           onerror="this.classList.add('img-failed')">
+      <figcaption>Halcyone attendant Céyx sur le rivage — Herbert James Draper, 1915. Huile sur toile. Domaine public — <a href="https://commons.wikimedia.org/wiki/File:Herbert_James_Draper_-_Halcyone_(1915).jpg" target="_blank">Wikimedia Commons</a></figcaption>
+    </figure>
+
+    <div class="legend-grid">
+      <!-- Récit 1 -->
+      <div class="legend-card">
+        <div class="card-origin">Grèce antique</div>
+        <h4>Le mythe d'Alcyone et Céyx</h4>
+        <p class="source-ref">Ovide, Métamorphoses, Livre XI — vers 8 ap. J.-C.</p>
+        <ul class="five-w">
+          <li><span class="w-label">Qui</span><span>Alcyone, fille d'Éole (dieu des vents), et son mari Céyx, roi de Trachis.</span></li>
+          <li><span class="w-label">Quoi</span><span>Céyx se noie en mer lors d'un voyage. Désespérée, Alcyone se jette à la mer. Les dieux les transforment tous les deux en martins pêcheurs.</span></li>
+          <li><span class="w-label">Où</span><span>Les côtes de la mer Égée, dans la Grèce mythologique.</span></li>
+          <li><span class="w-label">Quand</span><span>Mythe des temps anciens, raconté par Ovide au Ier siècle ap. J.-C.</span></li>
+          <li><span class="w-label">Pourquoi</span><span>Pour récompenser leur amour fidèle. Le père d'Alcyone calme la mer en hiver pour qu'elle couve ses œufs : ce sont les <strong>jours alcyoniens</strong> (jours de calme et de paix).</span></li>
+        </ul>
+        <div class="card-aspect"><strong>Aspect mis en avant :</strong> l'amour fidèle, la transformation comme récompense divine.</div>
+      </div>
+
+      <!-- Récit 2 -->
+      <div class="legend-card">
+        <div class="card-origin">Légende lorraine — France</div>
+        <h4>Le Martin pêcheur, envoyé par Noé</h4>
+        <p class="source-ref">Paul Sébillot, Le Folklore de la France — La faune et la flore, fin XIXe s.</p>
+        <ul class="five-w">
+          <li><span class="w-label">Qui</span><span>Le martin pêcheur, envoyé par Noé après la colombe.</span></li>
+          <li><span class="w-label">Quoi</span><span>Noé l'envoie voir si la terre réapparaissait. En s'envolant, il s'enfonce dans le bleu du ciel — son plumage gris se colore de bleu. Puis il vole vers le soleil : les plumes de son ventre roussissent.</span></li>
+          <li><span class="w-label">Où</span><span>Lorraine, tradition orale française.</span></li>
+          <li><span class="w-label">Quand</span><span>Conte populaire chrétien, transmission orale.</span></li>
+          <li><span class="w-label">Pourquoi</span><span>Ce conte explique l'origine des couleurs de l'oiseau — le bleu du dos vient du ciel, l'orangé du ventre vient du soleil couchant.</span></li>
+        </ul>
+        <div class="card-aspect"><strong>Aspect mis en avant :</strong> l'oiseau comme messager de Dieu, récit explicatif de sa beauté.</div>
+      </div>
+    </div>
+
+    <!-- Noah's Ark image -->
+    <figure class="fig-right" style="width:38%;">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Edward_Hicks_-_Noah's_Ark.jpg"
+           alt="L'Arche de Noé — Edward Hicks, 1846"
+           onerror="this.classList.add('img-failed')">
+      <figcaption>L'Arche de Noé — Edward Hicks, 1846. Philadelphia Museum of Art. Domaine public — <a href="https://commons.wikimedia.org/wiki/File:Edward_Hicks_-_Noah%27s_Ark.jpg" target="_blank">Wikimedia Commons</a></figcaption>
+    </figure>
+
+    <div class="clearfix">
+      <h3>Pourquoi ces deux récits sont-ils si différents ?</h3>
+      <table class="diff-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Vision antique (Ovide)</th>
+            <th>Vision lorraine (France)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>L'animal sert à…</td>
+            <td>Raconter une histoire humaine (l'amour, la perte)</td>
+            <td>Expliquer l'apparence de l'animal (origine de ses couleurs)</td>
+          </tr>
+          <tr>
+            <td>La religion</td>
+            <td>Des dieux qui ressemblent aux humains</td>
+            <td>Dieu unique, héritage biblique (Noé)</td>
+          </tr>
+          <tr>
+            <td>En résumé</td>
+            <td>L'animal comme <em>symbole humain</em></td>
+            <td>L'animal comme <em>messager divin et élément d'un récit explicatif</em></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       III — MOYEN ÂGE
+  ══════════════════════════════════════ -->
+  <section class="section" id="moyenage">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <div>
+        <span class="section-label">Partie 3</span>
+        <h2 class="section-title">L'animal au Moyen Âge</h2>
+      </div>
+    </div>
+
+    <figure class="fig-left" style="width:35%;">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Plate_108-_Alcyone_Offering_Prayers_to_Juno_(Halcyone_ob_mariti_reditum_Iunoni_supplicat),_from_Ovid's_'Metamorphoses'_MET_DP866543.jpg"
+           alt="Alcyone priant Junon — Virgil Solis pour Ovide, XVIe s."
+           onerror="this.classList.add('img-failed')">
+      <figcaption>Alcyone priant Junon — Gravure de Virgil Solis pour les <em>Métamorphoses</em> d'Ovide, XVIe s. Metropolitan Museum of Art, domaine public — <a href="https://www.metmuseum.org/art/collection/search/395553" target="_blank">Met Open Access</a></figcaption>
+    </figure>
+
+    <div class="clearfix">
+      <h3>a. Dans les bestiaires médiévaux</h3>
+      <p>
+        Au Moyen Âge, on écrivait des livres appelés <mark>bestiaires</mark> qui décrivaient les animaux et leur donnaient un sens moral ou religieux. Le martin pêcheur y apparaît comme un oiseau qui niche sur la mer en hiver, protégé des tempêtes grâce à Dieu. Il représente la <strong>paix, la sérénité et la confiance en Dieu</strong>. On le retrouve notamment dans le bestiaire de <strong>Guillaume le Clerc</strong> (XIIIe siècle).
+      </p>
+
+      <h3>b. Est-ce la même image que dans l'Antiquité ?</h3>
+      <p>
+        Oui, en grande partie. Le mythe grec des « jours alcyoniens » est repris presque tel quel, mais réinterprété de façon chrétienne. L'idée que l'oiseau est protégé par une force supérieure existe déjà chez les Grecs — au Moyen Âge, cette force supérieure devient simplement <strong>Dieu</strong>.
+      </p>
+
+      <h3>c. Le rôle de la religion chrétienne</h3>
+      <p>
+        Le christianisme domine toute la pensée médiévale. Le martin pêcheur s'y intègre bien : son <mark>plumage bleu</mark> rappelle la Vierge Marie (le bleu est sa couleur). L'image de l'oiseau qui plane sur l'eau évoque l'Esprit-Saint dans la Bible. Et la paix qu'il apporte rappelle la paix de Dieu.
+      </p>
+
+      <div class="infobox">
+        <p><strong>À retenir :</strong> Contrairement au loup ou au serpent, dont l'image devient très négative au Moyen Âge, le martin pêcheur garde une image <strong>positive et douce</strong> à travers les siècles. La religion chrétienne n'a fait que renforcer cette bonne réputation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       IV — AUJOURD'HUI
+  ══════════════════════════════════════ -->
+  <section class="section" id="aujourdhui">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <div>
+        <span class="section-label">Partie 4</span>
+        <h2 class="section-title">L'animal aujourd'hui</h2>
+      </div>
+    </div>
+
+    <h3>a. Deux œuvres centrées sur le martin pêcheur</h3>
+
+    <!-- Van Gogh + Harper side by side -->
+    <div class="art-strip">
+      <figure>
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Common_Kingfisher_2018.jpg"
+             alt="Martin pêcheur en vol"
+             onerror="this.classList.add('img-failed')">
+        <figcaption>Martin pêcheur en vol, Alcedo atthis — photo 2018. CC BY-SA — <a href="https://commons.wikimedia.org/wiki/File:Common_Kingfisher_2018.jpg" target="_blank">Wikimedia Commons</a></figcaption>
+      </figure>
+      <figure>
+        <img src="https://iiif.micr.io/jWJAb/full/800,/0/default.jpg"
+             alt="Martin pêcheur au bord de l'eau — Van Gogh, 1887"
+             onerror="this.classList.add('img-failed')">
+        <figcaption>Vincent van Gogh, <em>Kingfisher by the Waterside</em>, 1887. Van Gogh Museum, Amsterdam. Domaine public</figcaption>
+      </figure>
+    </div>
+
+    <div class="oeuvre">
+      <div class="oeuvre-num">1</div>
+      <div class="oeuvre-body">
+        <div class="oeuvre-meta">Littérature · 1983 · États-Unis</div>
+        <h4>The Kingfisher — Amy Clampitt</h4>
+        <p>Ce recueil de poèmes de la poétesse américaine <strong>Amy Clampitt</strong> (1920–1994) porte le nom du martin pêcheur et en fait sa figure principale. Pour elle, l'oiseau représente la beauté de la nature : quelque chose de fugace et parfait, qu'on voit à peine avant qu'il disparaisse. C'est l'une des œuvres littéraires les plus connues consacrées à cet oiseau.</p>
+      </div>
+    </div>
+
+    <div class="oeuvre">
+      <div class="oeuvre-num">2</div>
+      <div class="oeuvre-body">
+        <div class="oeuvre-meta">Illustration · 1974 · États-Unis</div>
+        <h4>Birds and Words — Charley Harper</h4>
+        <p>Le peintre américain <strong>Charley Harper</strong> (1922–2007) est connu pour ses illustrations d'oiseaux très géométriques et colorées. Dans ce livre, il représente le martin pêcheur comme une forme presque abstraite — une flèche bleue qui plonge. Ses illustrations montrent l'oiseau comme un symbole de précision et de beauté.</p>
+      </div>
+    </div>
+
+    <h3>b. Des exceptions dans le monde ?</h3>
+
+    <figure class="fig-right" style="width:36%;">
+      <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/56943/130520/main-image"
+           alt="Martin pêcheur et iris — Hiroshige, 1832-34"
+           style="max-height:320px; object-fit:cover; object-position:center top;"
+           onerror="this.classList.add('img-failed');">
+      <figcaption>Martin pêcheur et iris — Utagawa Hiroshige, Japon, 1832-34. Metropolitan Museum of Art, domaine public</figcaption>
+    </figure>
+
+    <div class="clearfix">
+      <p>
+        Au <strong>Japon</strong>, le martin pêcheur est appelé <em>kawasemi</em> (「翡翠」, « jade de rivière »). Il est représenté dans l'art traditionnel japonais depuis des siècles, notamment dans les estampes du peintre <strong>Hiroshige</strong> (XIXe s.). Il symbolise la patience, le calme et le bonheur. Il n'a jamais perdu de sa popularité là-bas.
+      </p>
+      <p>
+        En <strong>Europe</strong>, aujourd'hui, le martin pêcheur est surtout connu comme un <mark>indicateur de la qualité de l'eau</mark> : si on en voit un sur une rivière, c'est que l'eau est propre et riche en poissons. Sa disparition dans certaines régions inquiète les associations de protection de la nature. Il est passé du statut de symbole mystique à celui de <strong>symbole de la nature fragilisée</strong>.
+      </p>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════
+     CONCLUSION
+══════════════════════════════════════ -->
+<div class="page">
+  <div class="conclusion" id="conclusion">
+    <div class="conclusion-inner">
+      <div class="conclusion-label">✦ Conclusion</div>
+      <p class="conclusion-text">
+        Le martin pêcheur fascine les hommes depuis l'Antiquité. Symbole d'amour chez les Grecs, image de paix au Moyen Âge, sujet de poèmes et de tableaux aujourd'hui. Ce qui ne change pas, c'est l'effet que fait cet oiseau : Une beauté à l'image de sa rapidité .
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  BTS SIO2 — Les animaux et l'Homme &nbsp;·&nbsp; Exposé oral &nbsp;·&nbsp; Le Martin Pêcheur
+  &nbsp;·&nbsp; Images : Wikimedia Commons / Metropolitan Museum of Art (open access) / domaine public
+</footer>
+
+</body>
+</html>
