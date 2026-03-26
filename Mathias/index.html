@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinosaures — BTS SIO2 Les animaux et l'Homme</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #a8c97a;
+    --green-light: #c8e0a0;
+    --green-dark: #7aa050;
+    --lime: #6db33f;
+    --lime-dark: #4d8a25;
+    --brown: #3d3020;
+    --brown-dark: #221a0e;
+    --brown-light: #6b5a3e;
+    --cream: #f0edd8;
+    --white: #f8f5e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--green);
+    background-image:
+      linear-gradient(rgba(61,48,32,0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,48,32,0.09) 1px, transparent 1px);
+    background-size: 40px 40px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--brown);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+
+  .hero-dinos {
+    display: flex;
+    gap: 2rem;
+    font-size: 6rem;
+    margin-bottom: 1rem;
+    animation: floatDinos 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatDinos {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-14px); }
+  }
+
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(3.5rem, 11vw, 8.5rem);
+    color: var(--lime);
+    letter-spacing: -2px;
+    text-shadow: 4px 4px 0 var(--brown-dark), 6px 6px 0 rgba(61,48,32,0.2);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    animation: popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.6) rotate(-3deg); }
+    to   { opacity: 1; transform: scale(1) rotate(0); }
+  }
+
+  .hero-sub {
+    font-size: 1.2rem;
+    color: var(--brown-light);
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    animation: fadeUp 0.7s 0.4s both;
+  }
+
+  .hero-bts {
+    font-size: 0.9rem;
+    color: var(--brown-light);
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    opacity: 0.75;
+    animation: fadeUp 0.7s 0.5s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.7s 0.6s both;
+  }
+
+  .hero-tag {
+    background: rgba(248,245,232,0.75);
+    backdrop-filter: blur(4px);
+    border: 2px solid rgba(109,179,63,0.4);
+    border-radius: 30px;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--brown);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(168,201,122,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--green-dark);
+    padding: 0.8rem 2rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.95rem;
+    color: var(--brown-dark);
+    text-decoration: none;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    transition: all 0.2s;
+    background: rgba(248,245,232,0.4);
+  }
+  nav a:hover {
+    background: var(--lime);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(109,179,63,0.4);
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-header .icon {
+    font-size: 2.8rem;
+    background: var(--lime);
+    width: 70px; height: 70px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 4px 4px 0 var(--brown-dark);
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--lime-dark);
+    line-height: 1.1;
+  }
+
+  .section-header .slide-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--brown-light);
+    opacity: 0.7;
+    display: block;
+  }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── HIGHLIGHT ── */
+  .highlight {
+    background: linear-gradient(135deg, var(--lime) 0%, var(--lime-dark) 100%);
+    color: white;
+    border-radius: 24px;
+    padding: 2rem 2.5rem;
+    margin: 2rem 0;
+    box-shadow: 6px 6px 0 var(--brown-dark);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    font-weight: 600;
+  }
+  .highlight strong { color: white; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.5); }
+
+  /* ── ÉTYMOLOGIE ── */
+  .etym-block {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 2rem 2.5rem;
+    border: 2px solid var(--green-dark);
+    box-shadow: 5px 5px 0 var(--green-dark);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .etym-greek {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3.2rem;
+    color: var(--lime);
+    text-shadow: 3px 3px 0 var(--green-dark);
+    flex-shrink: 0;
+  }
+
+  .etym-text { font-size: 1rem; line-height: 1.7; }
+  .etym-text strong { color: var(--lime-dark); }
+
+  /* ── TIMELINE ── */
+  .timeline { display: grid; gap: 1.2rem; margin-top: 2rem; }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .tl-dot {
+    background: var(--lime);
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 3px 3px 0 var(--brown-dark);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .tl-content {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.1rem 1.4rem;
+    border: 2px solid var(--green-dark);
+    box-shadow: 3px 3px 0 var(--green-dark);
+  }
+  .tl-content h4 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem;
+    color: var(--lime-dark);
+    margin-bottom: 0.3rem;
+  }
+  .tl-content p { font-size: 0.93rem; line-height: 1.6; }
+
+  /* ── CULTURE CARDS ── */
+  .culture-item {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    border: 2px solid var(--green-dark);
+    box-shadow: 5px 5px 0 var(--green-dark);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .culture-item:hover { transform: translate(-4px, -4px); box-shadow: 9px 9px 0 var(--green-dark); }
+
+  .culture-icon {
+    background: var(--lime);
+    width: 80px; height: 80px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 3px 3px 0 var(--brown-dark);
+    flex-shrink: 0;
+  }
+
+  .culture-item h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--lime-dark);
+    margin-bottom: 0.6rem;
+  }
+  .culture-item p { font-size: 0.97rem; line-height: 1.75; }
+
+  /* ── STORIES / 5W ── */
+  .stories { display: grid; gap: 2rem; margin-top: 2rem; }
+
+  .story {
+    background: var(--white);
+    border-radius: 20px;
+    border: 2px solid var(--green-dark);
+    box-shadow: 5px 5px 0 var(--green-dark);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .story:hover { transform: translate(-4px, -4px); box-shadow: 9px 9px 0 var(--green-dark); }
+
+  .story-header {
+    background: var(--lime);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .story-header .story-icon { font-size: 2rem; }
+  .story-header h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: white;
+    text-shadow: 2px 2px 0 var(--brown-dark);
+  }
+
+  .story-body { padding: 1.5rem; }
+  .story-body > p { font-size: 0.97rem; line-height: 1.7; margin-bottom: 1rem; }
+
+  .w-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+
+  .w-item {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid var(--green-dark);
+  }
+  .w-item .w-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.85rem;
+    color: var(--lime-dark);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .w-item p { font-size: 0.85rem; line-height: 1.4; }
+
+  /* ── EXCEPT GRID ── */
+  .except-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .except-card {
+    background: var(--cream);
+    border-radius: 18px;
+    padding: 1.4rem;
+    border: 2px solid var(--green-dark);
+    box-shadow: 3px 3px 0 var(--green-dark);
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .except-card:hover { transform: translateY(-5px); }
+  .except-card .big { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+  .except-card h4 {
+    font-family: 'Fredoka One', cursive;
+    color: var(--lime-dark);
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+  }
+  .except-card p { font-size: 0.88rem; line-height: 1.5; }
+
+  /* ── QUESTION BOX ── */
+  .question-box {
+    background: var(--cream);
+    border-left: 6px solid var(--lime);
+    border-radius: 0 16px 16px 0;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0 0.5rem;
+    font-size: 0.93rem;
+    font-style: italic;
+    color: var(--brown-light);
+  }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 2px solid var(--green-dark);
+    box-shadow: 4px 4px 0 var(--green-dark);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 var(--green-dark);
+  }
+  .card h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: var(--lime-dark);
+    margin-bottom: 0.6rem;
+  }
+  .card p { font-size: 0.93rem; line-height: 1.7; }
+
+  /* ── EXPRESSIONS DUO ── */
+  .expr-duo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin-top: 1.5rem;
+  }
+
+  .expr-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 1.5rem;
+    border: 2px solid var(--green-dark);
+    box-shadow: 3px 3px 0 var(--green-dark);
+    text-align: center;
+  }
+  .expr-card .big { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+  .expr-card strong {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem;
+    color: var(--lime-dark);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .expr-card p { font-size: 0.88rem; line-height: 1.5; }
+
+  /* ── CONCLUSION ── */
+  .big-dino {
+    display: block;
+    text-align: center;
+    font-size: 8rem;
+    margin: 1.5rem 0;
+    animation: floatDinos 3s ease-in-out infinite alternate;
+  }
+
+  .concl-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .concl-pill {
+    background: var(--lime);
+    color: white;
+    border-radius: 30px;
+    padding: 0.5rem 1.3rem;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    box-shadow: 3px 3px 0 var(--brown-dark);
+  }
+
+  /* ── SEPARATOR ── */
+  .sep {
+    max-width: 960px;
+    margin: 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green-dark), transparent);
+    opacity: 0.4;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.95rem;
+    color: var(--brown-light);
+    letter-spacing: 1px;
+    border-top: 2px solid var(--green-dark);
+    margin-top: 2rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-dinos">🦕 🦖 🦴</div>
+  <h1>Dinosaures</h1>
+  <p class="hero-sub">Terrible lézard · Jurassique · Préhistoire</p>
+  <p class="hero-bts">BTS SIO2 — Les animaux et l'Homme · Oral</p>
+  <div class="hero-tags">
+    <span class="hero-tag">I. Présentation</span>
+    <span class="hero-tag">II. Contes &amp; Légendes</span>
+    <span class="hero-tag">III. Moyen-Âge</span>
+    <span class="hero-tag">IV. Aujourd'hui</span>
+    <span class="hero-tag">✅ Conclusion</span>
+  </div>
+</div>
+
+<nav>
+  <a href="#etymologie">🔤 I. Présentation</a>
+  <a href="#contes">📖 II. Contes</a>
+  <a href="#moyenage">🏰 III. Moyen-Âge</a>
+  <a href="#culture">🎬 IV. Aujourd'hui</a>
+  <a href="#conclusion">🏁 Conclusion</a>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     DIAPO I — PRÉSENTATION & ÉTYMOLOGIE
+══════════════════════════════════════════ -->
+<section id="etymologie">
+  <div class="section-header reveal">
+    <div class="icon">🔤</div>
+    <div>
+      <span class="slide-num">Diapositive I — Présentation de l'animal</span>
+      <h2>Étymologie & premières représentations</h2>
+    </div>
+  </div>
+
+  <div class="question-box reveal">
+    📌 Donnez l'étymologie du nom de l'animal (racines et sens premier). Quels sont les premiers textes ou dessins représentant l'animal ?
+  </div>
+
+  <div class="etym-block reveal">
+    <div class="etym-greek">δεινός</div>
+    <div class="etym-text">
+      <p>Le mot <strong>Dinosaures</strong> vient du grec ancien :</p>
+      <p>→ <strong>δεινός / deinós</strong> — « terrible », « redoutable »</p>
+      <p>→ <strong>σαῦρος / saûros</strong> — « lézard »</p>
+      <p>Soit littéralement : <strong>le terrible lézard</strong>.</p>
+    </div>
+  </div>
+
+  <div class="etym-block reveal">
+    <div class="etym-greek">saûros</div>
+    <div class="etym-text">
+      <p>Ce nom reflète la vision victorienne : des créatures <strong>colossales et menaçantes</strong>.
+      Pourtant, beaucoup de dinosaures étaient en réalité <strong>herbivores et paisibles</strong>,
+      et certains n'étaient pas plus grands qu'un poulet.</p>
+    </div>
+  </div>
+
+  <div class="highlight reveal">
+    💡 <strong>À retenir :</strong> Le terme "dinosaure" n'est pas une classification de leur comportement,
+    mais un nom hérité d'une époque où l'on cherchait à
+    <strong>frapper l'imaginaire du public victorien</strong>.
+    C'est l'anatomiste anglais <strong>Richard Owen</strong> qui le forge en <strong>1842</strong>.
+  </div>
+
+  <p class="reveal" style="font-weight:700; font-size:1.05rem; color:var(--lime-dark); margin-bottom:1rem;">
+    🖼️ Premières représentations — Avant Richard Owen
+  </p>
+
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-dot">🪨</div>
+      <div class="tl-content">
+        <h4>Préhistoire — les empreintes fossiles</h4>
+        <p>Bien avant l'écriture, des civilisations du monde entier tombaient sur des <strong>os et empreintes géants</strong>.
+        En Chine antique, on les interprétait comme des <strong>ossements de dragons</strong> — symboles de puissance et de sagesse.
+        En Amérique, les Amérindiens intégraient ces découvertes à leurs mythes de <strong>serpents tonnerre</strong>.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot">🐉</div>
+      <div class="tl-content">
+        <h4>Antiquité grecque — le mythe du Griffon</h4>
+        <p>Des chercheurs pensent que le mythe du <strong>Griffon</strong> (créature mi-aigle, mi-lion) viendrait
+        des fossiles de <em>Protoceratops</em> découverts dans les déserts d'Asie centrale par des marchands et explorateurs.
+        Interprétation : <strong>danger, gardien de trésors, puissance surnaturelle</strong>.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot">🔭</div>
+      <div class="tl-content">
+        <h4>Richard Owen — 1842 (Angleterre)</h4>
+        <p>L'anatomiste britannique regroupe plusieurs espèces sous le taxon <em>Dinosaures</em>.
+        C'est lui qui nomme scientifiquement ces animaux. En <strong>1854</strong>, des sculptures grandeur nature
+        sont exposées à Crystal Palace à Londres — c'est la première fois que le grand public voit des dinosaures reconstitués.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════════════════════════════════════════
+     DIAPO II — CONTES & LÉGENDES (5W)
+══════════════════════════════════════════ -->
+<section id="contes">
+  <div class="section-header reveal">
+    <div class="icon">📖</div>
+    <div>
+      <span class="slide-num">Diapositive II — L'animal dans les contes et légendes du monde entier</span>
+      <h2>Deux récits, deux aspects</h2>
+    </div>
+  </div>
+
+  <div class="question-box reveal">
+    📌 Trouvez deux récits résumés en 5W (Qui, Quoi, Où, Quand, Pourquoi) présentant l'animal sous 2 aspects différents. Quels éléments culturels expliquent ces différences ?
+  </div>
+
+  <div class="highlight reveal">
+    🌍 Le dinosaure (ou ses fossiles) a traversé les cultures du monde entier. Tantôt
+    <strong>monstre terrifiant</strong>, tantôt <strong>dragon sage et protecteur</strong> — la même réalité
+    fossile produit des récits radicalement opposés selon les civilisations.
+  </div>
+
+  <div class="stories">
+
+    <!-- RÉCIT 1 : Dragon chinois -->
+    <div class="story reveal">
+      <div class="story-header">
+        <span class="story-icon">🐲</span>
+        <h3>Récit 1 — Le Dragon de l'Empereur (Chine antique)</h3>
+      </div>
+      <div class="story-body">
+        <p>Dans la tradition chinoise, les ossements de dinosaures sont appelés <em>"os de dragon"</em>.
+        L'Empereur Huangdi, le "Seigneur Jaune", est censé chevaucher un dragon et en tirer son pouvoir divin.
+        Les fossiles découverts lors de travaux agricoles étaient <strong>broyés en poudre médicinale</strong>
+        ou conservés comme reliques sacrées.</p>
+        <div class="w-grid">
+          <div class="w-item">
+            <span class="w-label">👤 Qui</span>
+            <p>L'Empereur Huangdi et les paysans chinois découvrant des fossiles</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">❓ Quoi</span>
+            <p>Des ossements géants interprétés comme des <strong>restes de dragons</strong> sacrés</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">📍 Où</span>
+            <p>Chine, principalement dans les provinces riches en fossiles (Sichuan, Mongolie intérieure)</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">📅 Quand</span>
+            <p>Depuis l'Antiquité chinoise (~2500 av. J.-C.), encore présent au XXe siècle</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">💡 Pourquoi</span>
+            <p>Le dragon incarne la <strong>sagesse, la prospérité et la protection</strong> — aspect bienveillant</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RÉCIT 2 : Serpent Tonnerre -->
+    <div class="story reveal">
+      <div class="story-header">
+        <span class="story-icon">⚡</span>
+        <h3>Récit 2 — Le Serpent Tonnerre (Amérindiens Lakota)</h3>
+      </div>
+      <div class="story-body">
+        <p>Les Lakotas des Grandes Plaines appelaient les fossiles de dinosaures <em>Unktehi</em> — des
+        créatures monstrueuses ayant vécu avant les hommes, tuées par le Thunderbird (oiseau tonnerre).
+        Découvrir un fossile était un <strong>mauvais présage</strong>, signe que des forces anciennes et dévastatrices
+        rôdaient encore. Ces os étaient évités ou enterrés à nouveau.</p>
+        <div class="w-grid">
+          <div class="w-item">
+            <span class="w-label">👤 Qui</span>
+            <p>Les guerriers et chamanes Lakota des Grandes Plaines</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">❓ Quoi</span>
+            <p>Des fossiles = restes d'<strong>Unktehi</strong>, monstres antédiluviens destructeurs</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">📍 Où</span>
+            <p>Grandes Plaines d'Amérique du Nord (Dakota, Nebraska) — riches en fossiles du Crétacé</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">📅 Quand</span>
+            <p>Traditions orales transmises depuis des millénaires, documentées au XIXe siècle</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">💡 Pourquoi</span>
+            <p>La créature incarne la <strong>menace, le chaos, le danger primordial</strong> — aspect terrifiant</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="highlight reveal" style="margin-top:2rem;">
+    🔄 <strong>Éléments culturels expliquant les différences :</strong> En Chine, le dragon est
+    intégré au pouvoir politique et à la médecine — il est domestiqué symboliquement. Dans la culture Lakota,
+    la nature est perçue comme un espace de forces indomptables. La même réalité fossile produit
+    <strong>admiration d'un côté, terreur de l'autre</strong> — selon le rapport que chaque culture entretient avec la nature.
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════════════════════════════════════════
+     DIAPO III — MOYEN-ÂGE
+══════════════════════════════════════════ -->
+<section id="moyenage">
+  <div class="section-header reveal">
+    <div class="icon">🏰</div>
+    <div>
+      <span class="slide-num">Diapositive III — L'animal au Moyen-Âge</span>
+      <h2>Le dinosaure dans les bestiaires médiévaux</h2>
+    </div>
+  </div>
+
+  <div class="question-box reveal">
+    📌 Que représente l'animal dans le bestiaire du Moyen-Âge ? Continuité ou rupture avec la Préhistoire/Antiquité ? Rôle de la religion chrétienne ?
+  </div>
+
+  <div class="highlight reveal">
+    🐲 Au Moyen-Âge, le <strong>dragon</strong> est l'héritier direct des fossiles de dinosaures.
+    Il peuple les bestiaires, les enluminures et les cathédrales. Mais sa signification se transforme profondément
+    sous l'influence du <strong>christianisme</strong>.
+  </div>
+
+  <div class="culture-item reveal">
+    <div class="culture-icon">📜</div>
+    <div>
+      <h3>Le Dragon dans les bestiaires — Exemple : le Lindworm</h3>
+      <p>
+        Les <strong>bestiaires médiévaux</strong> (livres illustrés décrivant des animaux réels ou mythiques)
+        représentent régulièrement des créatures aux allures de dinosaures : dragons à longue queue,
+        serpents géants ailés. Le <em>Lindworm</em> scandinave — serpent dragon sans pattes —
+        rappelle étrangement les grands sauropodes. Dans ces récits, la créature est
+        <strong>redoutable, menaçante, symbole du Mal</strong> à terrasser.
+      </p>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-dot">🔄</div>
+      <div class="tl-content">
+        <h4>Continuité avec l'Antiquité</h4>
+        <p>Le dragon médiéval hérite directement des dragons gréco-romains (<em>draco</em>) et des mythes orientaux.
+        La <strong>peur de la créature géante</strong> traverse les civilisations sans interruption.
+        Les fossiles continuent d'alimenter l'imaginaire : des os de cétacés et de dinosaures sont exposés dans des églises comme
+        restes de "vrais" dragons.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot">✝️</div>
+      <div class="tl-content">
+        <h4>Rupture avec la religion chrétienne</h4>
+        <p>Le christianisme opère une <strong>rupture symbolique majeure</strong> : le dragon n'est plus un être
+        neutre ou vénéré, il devient la figure du <strong>Mal absolu</strong>, incarnation du diable.
+        L'Apocalypse de Jean décrit Satan comme "le grand dragon". Saint Georges terrassant le dragon
+        symbolise la <strong>victoire du christianisme sur le paganisme et sur la nature sauvage</strong>.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot">⛪</div>
+      <div class="tl-content">
+        <h4>La religion comme outil d'interprétation</h4>
+        <p>La Bible ne mentionne pas les dinosaures, donc leur existence fossile pose problème.
+        Au Moyen-Âge, les ossements géants sont attribués à des <strong>géants bibliques</strong> (Goliath, les Nephilim)
+        ou à des créatures antédiluviennes. La nature n'est pas explorée pour elle-même,
+        mais <strong>filtrée par le prisme du texte sacré</strong>.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot">🗡️</div>
+      <div class="tl-content">
+        <h4>Saint Georges et le Dragon — XIe siècle</h4>
+        <p>Le mythe de Saint Georges terrassant le dragon devient l'une des images les plus répandues
+        de l'Europe médiévale. Il symbolise <strong>l'Homme (et la Foi) dominant la Nature dangereuse</strong>.
+        Cette vision — la nature comme ennemie à vaincre — contraste radicalement avec le respect
+        des cultures chamaniques précédentes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════════════════════════════════════════
+     DIAPO IV — AUJOURD'HUI (ARTS + EXCEPTIONS)
+══════════════════════════════════════════ -->
+<section id="culture">
+  <div class="section-header reveal">
+    <div class="icon">🎬</div>
+    <div>
+      <span class="slide-num">Diapositive IV — L'animal aujourd'hui</span>
+      <h2>Arts, cinéma, littérature &amp; exceptions culturelles</h2>
+    </div>
+  </div>
+
+  <div class="question-box reveal">
+    📌 Comment cet animal est-il considéré aujourd'hui ? 2 exemples d'œuvres. Y a-t-il des exceptions dans le monde ? Pourquoi ?
+  </div>
+
+  <div class="highlight reveal">
+    🦖 <strong>Jurassic Park</strong> marque un tournant : les dinosaures deviennent des <strong>animaux à part entière</strong> —
+    avec comportements, instincts, hiérarchies sociales. Et une réflexion profonde sur la <strong>génétique et l'éthique scientifique</strong>.
+  </div>
+
+
+  <!-- Œuvre 2 : Spielberg -->
+  <div class="culture-item reveal">
+    <div class="culture-icon">🎬</div>
+    <div>
+      <h3>Œuvre 1 — Jurassic Park, Steven Spielberg (film, 1993)</h3>
+      <p>
+        Chef-d'œuvre de la science-fiction, le film révolutionne les effets spéciaux.
+        Les vélociaptors y sont décrits comme <strong>intelligents, coordonnés, chassant en meute</strong>.
+        Le sous-texte génétique est central — Ian Malcolm y prononce la phrase restée célèbre :
+        <em>"Vos scientifiques étaient si préoccupés de savoir s'ils pouvaient, qu'ils ne se sont jamais
+        demandé s'ils devaient."</em> Les dinosaures sont ici à la fois <strong>fascinants et dangereux</strong>,
+        miroir de ce que l'homme projette sur la nature quand il cherche à la contrôler.
+      </p>
+    </div>
+  </div>
+
+  <!-- Œuvre 3 : The Dinosaur Heresies -->
+  <div class="culture-item reveal">
+    <div class="culture-icon">🧬</div>
+    <div>
+      <h3>Œuvre 2 — The Dinosaur Heresies, Robert T. Bakker (essai scientifique, 1986)</h3>
+      <p>
+        Ouvrage révolutionnaire signée par le paléontologue Robert T. Bakker, remettant en question la vision classique des dinosaures.
+        Bakker défend l'hypothèse que les dinosaures étaient des créatures <strong>dynamiques, sanguin-chauds, intelligentes</strong> —
+        bien loin des monstres lents et stupides décris jusqu'alors. Cet essai a <strong>transformé la paléontologie</strong>
+        et justifie la représentation moderne des dinosaures dans Jurassic Park. C'est une victoire de la <strong>rigueur scientifique</strong>
+        face aux idées reçues : les dinosaures n'étaient pas des échecs évolutifs, mais des animaux d'une <strong>complexité remarquable</strong>.
+      </p>
+    </div>
+  </div>
+
+  <p class="reveal" style="font-weight:700; font-size:1.05rem; color:var(--lime-dark); margin: 2rem 0 0.5rem;">
+    🌍 Exceptions dans le monde — Pourquoi ?
+  </p>
+
+  <div class="except-grid">
+    <div class="except-card reveal">
+      <span class="big">🇨🇳</span>
+      <h4>Exception chinoise</h4>
+      <p>En Chine, le dinosaure reste associé au <strong>dragon bienveillant</strong>.
+      La Chine est d'ailleurs l'un des pays qui découvre le plus de fossiles aujourd'hui —
+      et les célèbre comme une <strong>fierté nationale</strong>.</p>
+    </div>
+    <div class="except-card reveal">
+      <span class="big">🇲🇬</span>
+      <h4>Exception malgache</h4>
+      <p>À Madagascar, des légendes parlent du <em>Vouivre</em> ou de créatures
+      géantes dans les forêts. Certains chercheurs y voient un souvenir oral
+      de grands <strong>reptiles disparus récemment</strong>.</p>
+    </div>
+    <div class="except-card reveal">
+      <span class="big">🐦</span>
+      <h4>Exception scientifique</h4>
+      <p>Pour les paléontologues, les dinosaures ne sont pas disparus :
+      <strong>les oiseaux sont des dinosaures aviens</strong>.
+      Cette vision renouvelle totalement notre rapport à ces animaux.</p>
+    </div>
+  </div>
+
+  <div class="highlight reveal" style="margin-top:2rem;">
+    🔄 <strong>Entre fascination et crainte :</strong> Aujourd'hui, les dinosaures occupent une place unique —
+    à la fois <strong>symboles de la puissance de la nature</strong> et <strong>avertissement</strong> sur les limites
+    de la science. L'imaginaire collectif les perçoit comme des animaux réels, pas comme des monstres mythiques.
+    C'est là la grande rupture avec les représentations médiévales.
+  </div>
+
+  <!-- Lien avec les oiseaux -->
+  <div class="stories" style="margin-top:2rem;">
+    <div class="story reveal">
+      <div class="story-header">
+        <span class="story-icon">🪶</span>
+        <h3>Les oiseaux : dinosaures encore vivants</h3>
+      </div>
+      <div class="story-body">
+        <p>Le consensus scientifique est aujourd'hui clair : les oiseaux sont des
+        <strong>dinosaures aviens</strong>. L'<em>Archaeopteryx</em> (–150 millions d'années),
+        découvert en 1861, possède à la fois des plumes, des dents, des griffes et une queue osseuse.
+        Il est le chaînon manquant entre théropodes et oiseaux modernes.</p>
+        <div class="w-grid">
+          <div class="w-item">
+            <span class="w-label">🌍 Survie</span>
+            <p>Seuls les dinosaures à plumes de petite taille ont survécu à l'impact de –66 Ma.</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">🧬 ADN</span>
+            <p>Le génome du poulet partage des séquences avec celui de certains dinosaures non-aviens.</p>
+          </div>
+          <div class="w-item">
+            <span class="w-label">💡 Implication</span>
+            <p>Chaque oiseau que vous voyez est un <strong>dinosaure vivant</strong> — la lignée n'a jamais disparu.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════════════════════════════════════════
+     CONCLUSION
+══════════════════════════════════════════ -->
+<section id="conclusion">
+  <div class="section-header">
+    <div class="icon">🏁</div>
+    <div>
+      <span class="slide-num" style="color:var(--green-light);opacity:0.6;">Diapositive — Conclusion</span>
+      <h2>Ce qu'il faut retenir</h2>
+    </div>
+  </div>
+
+  <span class="big-dino">🦕</span>
+
+  <div class="concl-pills">
+    <span class="concl-pill">🔤 Étymologie grecque</span>
+    <span class="concl-pill">🏛️ Richard Owen 1842</span>
+    <span class="concl-pill">🐉 Dragon & mythes mondiaux</span>
+    <span class="concl-pill">✝️ Rupture chrétienne</span>
+    <span class="concl-pill">🧬 Génétique & éthique</span>
+    <span class="concl-pill">🐦 Ancêtres des oiseaux</span>
+  </div>
+
+  <p style="font-size:1.05rem; line-height:1.9;">
+    Le dinosaure est un animal <strong>complexe et fascinant</strong> dans le lien qu'il entretient avec l'Homme.
+    De simples fossiles incompris, il est devenu tour à tour <strong>dragon protecteur</strong> (Chine),
+    <strong>monstre diabolique</strong> (Moyen-Âge chrétien), <strong>symbole scientifique</strong> (XIXe s.)
+    et <strong>métaphore de l'arrogance humaine</strong> (Jurassic Park).
+    <br><br>
+    Ce que révèle cette trajectoire, c'est moins la nature de l'animal que la <strong>nature de l'Homme</strong> :
+    sa fascination pour la puissance brute, sa peur du danger inconnu, et sa tendance à projeter
+    ses valeurs sur le monde animal.
+    <br><br>
+    Et surtout : les dinosaures ne sont jamais vraiment disparus.
+    Chaque oiseau qui chante est leur <strong>descendant direct</strong> —
+    preuve que la vie trouve toujours un chemin.
+  </p>
+</section>
+
+<footer>
+  🦖 Page réalisée dans le style de <a href="https://mesangeantoine.fr/" target="_blank" style="color:var(--lime-dark); text-decoration:none; border-bottom: 2px solid var(--lime);">Mesange Antoine</a>
+  &nbsp;·&nbsp; BTS SIO2 — Les animaux et l'Homme
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
