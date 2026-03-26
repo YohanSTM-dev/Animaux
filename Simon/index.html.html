@@ -535,10 +535,514 @@
   @media (max-width: 600px) {
     .fig-right, .fig-left { float: none; width: 100%; margin: 1.5rem 0; }
     .art-strip { grid-template-columns: 1fr; }
+    .nav-inner { padding: 0 1rem; gap: 0.75rem; }
+    .nav-links { gap: 0.5rem; }
+    .nav-brand { font-size: 0.6rem; }
+  }
+
+  /* ─── GRAIN TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    background-repeat: repeat;
+  }
+
+  /* ─── CUSTOM CURSOR — flèche rapide ─── */
+  * { cursor: none !important; }
+
+  #cursor-arrow {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    will-change: transform;
+    transform-origin: 4px 4px;
+  }
+
+  /* Points de traînée */
+  .cursor-trail-dot {
+    position: fixed;
+    top: 0; left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    will-change: transform, opacity;
+    transform: translate(-50%, -50%);
+  }
+
+  /* ─── SECTION TITLE LONG SHADOW ─── */
+  .section-title {
+    transition: text-shadow 0.35s ease;
+  }
+
+  .section-header:hover .section-title {
+    text-shadow:
+      1px 1px 0 rgba(0,119,182,0.07),
+      2px 2px 0 rgba(0,119,182,0.065),
+      3px 3px 0 rgba(0,119,182,0.06),
+      4px 4px 0 rgba(0,119,182,0.05),
+      5px 5px 0 rgba(0,119,182,0.04),
+      6px 6px 0 rgba(0,119,182,0.035),
+      7px 7px 0 rgba(0,119,182,0.03),
+      8px 8px 0 rgba(0,119,182,0.025),
+      10px 10px 0 rgba(0,119,182,0.018),
+      13px 13px 10px rgba(0,119,182,0.07);
+  }
+
+  /* ─── TOOLTIPS ─── */
+  [data-tip] {
+    position: relative;
+    border-bottom: 1px dotted var(--blue);
+  }
+
+  [data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    background: var(--blue-dark);
+    color: #fff;
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.84rem;
+    line-height: 1.45;
+    width: max-content;
+    max-width: 240px;
+    white-space: normal;
+    padding: 0.5rem 0.85rem;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 500;
+    box-shadow: 0 6px 20px rgba(2,62,138,0.3);
+    text-align: center;
+  }
+
+  [data-tip]::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    border: 5px solid transparent;
+    border-top-color: var(--blue-dark);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 501;
+  }
+
+  [data-tip]:hover::after,
+  [data-tip]:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ─── STAT COUNTERS ─── */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 600px) { .stats-strip { grid-template-columns: repeat(2, 1fr); } }
+
+  .stat-cell {
+    background: #fff;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    transition: background 0.25s ease;
+  }
+
+  .stat-cell:hover { background: var(--orange-faint); }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.1rem;
+  }
+
+  .stat-unit {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--blue-light);
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  /* ─── MARTIN PÊCHEUR SVG ANIMATION ─── */
+  #bird-fly {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10001;
+    width: 72px;
+    opacity: 0;
+    top: 0; left: 0;
+    filter: drop-shadow(2px 3px 6px rgba(0,0,0,0.18));
+  }
+
+  /* ─── STICKY NAV ─── */
+  .site-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(2, 62, 138, 0);
+    backdrop-filter: blur(0px);
+    border-bottom: 1px solid transparent;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+  }
+
+  .site-nav.scrolled {
+    background: rgba(2, 62, 138, 0.92);
+    backdrop-filter: blur(14px);
+    border-bottom-color: rgba(247,127,0,0.25);
+  }
+
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .nav-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .site-nav.scrolled .nav-brand { opacity: 1; }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .site-nav.scrolled .nav-links { opacity: 1; }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--orange);
+    transition: width 0.25s ease;
+  }
+
+  .nav-links a:hover { color: #fff; }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+                transform 0.65s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ─── HERO ENHANCED ─── */
+  .hero-content { animation: heroIn 1.1s cubic-bezier(0.22,1,0.36,1) both; }
+
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Parallax overlay shimmer */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 20% 80%, rgba(0,119,182,0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 50% at 80% 30%, rgba(247,127,0,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ─── SECTION HEADERS ENHANCED ─── */
+  .section-header { position: relative; }
+
+  .section-number {
+    transition: opacity 0.4s ease;
+  }
+
+  .section:hover .section-number {
+    opacity: 0.28;
+  }
+
+  /* ─── LEGEND CARDS ENHANCED ─── */
+  .legend-card {
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.3s ease,
+                border-top-color 0.3s ease;
+  }
+
+  .legend-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,119,182,0.12), 0 2px 8px rgba(0,0,0,0.06);
+    border-top-color: var(--orange);
+  }
+
+  /* ─── OEUVRE ENHANCED ─── */
+  .oeuvre {
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.3s ease;
+  }
+
+  .oeuvre:hover {
+    transform: translateX(4px);
+    box-shadow: 0 8px 32px rgba(0,119,182,0.1);
+  }
+
+  .oeuvre::before {
+    transition: background 0.3s ease, width 0.3s ease;
+  }
+
+  .oeuvre:hover::before {
+    width: 5px;
+    background: var(--orange);
+  }
+
+  /* ─── DIFF TABLE ROWS ─── */
+  .diff-table tbody tr {
+    transition: background 0.2s ease;
+  }
+
+  .diff-table tbody tr:hover td {
+    background: rgba(0,119,182,0.06) !important;
+  }
+
+  /* ─── FIGURE HOVER ─── */
+  figure img:not(.img-failed) {
+    transition: filter 0.35s ease, transform 0.35s ease;
+  }
+
+  figure:hover img:not(.img-failed) {
+    filter: brightness(1.04) saturate(1.08);
+  }
+
+  /* ─── INFOBOX ENHANCED ─── */
+  .infobox {
+    transition: border-left-color 0.3s ease, background 0.3s ease;
+  }
+
+  .infobox:hover {
+    border-left-color: var(--orange);
+    background: rgba(247,127,0,0.08);
+  }
+
+  /* ─── PULL QUOTE ENHANCED ─── */
+  .pull-quote {
+    transition: border-left-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .pull-quote:hover {
+    border-left-color: var(--orange);
+    transform: translateX(4px);
+  }
+
+  /* ─── CONCLUSION SHIMMER ─── */
+  .conclusion-inner::after {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(247,127,0,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ─── SECTION DIVIDER ─── */
+  .section {
+    position: relative;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .read-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue-light), var(--orange));
+    width: 0%;
+    z-index: 200;
+    transition: width 0.1s linear;
+  }
+
+  /* ─── MARK PULSE ─── */
+  mark {
+    transition: background 0.2s ease;
+  }
+
+  mark:hover {
+    background: rgba(247,127,0,0.22);
+  }
+
+  /* ─── W-LABEL HOVER ─── */
+  .five-w li:hover .w-label {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+    transition: all 0.2s ease;
+  }
+
+  /* ─── ART STRIP ENHANCED ─── */
+  .art-strip figure {
+    overflow: hidden;
+    border-radius: 3px;
+  }
+
+  .art-strip figure img {
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .art-strip figure:hover img {
+    transform: scale(1.04);
+  }
+
+  /* ─── HERO SCROLL HINT ─── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    right: 3rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    animation: hintFade 2.5s ease 1.5s both;
+  }
+
+  @keyframes hintFade {
+    0%   { opacity: 0; transform: translateY(-8px); }
+    30%  { opacity: 0.6; transform: none; }
+    80%  { opacity: 0.6; }
+    100% { opacity: 0; }
+  }
+
+  .scroll-hint-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.4));
+  }
+
+  .scroll-hint-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.48rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    writing-mode: vertical-rl;
   }
 </style>
 </head>
 <body>
+
+<!-- Progress bar -->
+<div class="read-progress" id="readProgress"></div>
+
+<!-- Custom cursor -->
+<svg id="cursor-arrow" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Flèche pointue orientée vers la droite par défaut -->
+  <polygon id="cursor-shape" points="0,0 20,8 0,16 5,8" fill="#0077B6"/>
+</svg>
+
+<!-- Martin pêcheur volant -->
+<svg id="bird-fly" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Corps principal bleu -->
+  <ellipse cx="60" cy="32" rx="32" ry="11" fill="#0077B6" transform="rotate(-12,60,32)"/>
+  <!-- Ventre orangé -->
+  <ellipse cx="67" cy="38" rx="20" ry="7" fill="#F77F00" transform="rotate(-12,67,38)"/>
+  <!-- Aile gauche déployée -->
+  <path d="M42,26 Q28,8 10,14 Q26,22 38,32 Z" fill="#023E8A"/>
+  <!-- Aile droite déployée -->
+  <path d="M78,26 Q94,8 112,14 Q96,22 82,32 Z" fill="#023E8A"/>
+  <!-- Petits reflets turquoise sur le dos -->
+  <ellipse cx="58" cy="26" rx="14" ry="4" fill="#00B4D8" opacity="0.55" transform="rotate(-12,58,26)"/>
+  <!-- Tête -->
+  <circle cx="90" cy="27" r="10" fill="#023E8A"/>
+  <!-- Bec long -->
+  <path d="M98,28 L118,31 L98,33 Z" fill="#1A1410"/>
+  <!-- Oeil -->
+  <circle cx="93" cy="25" r="2.5" fill="#fff"/>
+  <circle cx="93.8" cy="25" r="1.4" fill="#1A1410"/>
+  <!-- Queue -->
+  <path d="M30,34 Q16,38 8,30 Q18,34 28,38 Z" fill="#023E8A"/>
+</svg>
+
+<!-- Sticky Nav -->
+<nav class="site-nav" id="siteNav">
+  <div class="nav-inner">
+    <span class="nav-brand">Le Martin Pêcheur — Alcedo atthis</span>
+    <ul class="nav-links">
+      <li><a href="#presentation">Présentation</a></li>
+      <li><a href="#legendes">Légendes</a></li>
+      <li><a href="#moyenage">Moyen Âge</a></li>
+      <li><a href="#aujourdhui">Aujourd'hui</a></li>
+      <li><a href="#conclusion">Conclusion</a></li>
+    </ul>
+  </div>
+</nav>
 
 <!-- ══════════════════════════════════════
      HERO
@@ -564,6 +1068,10 @@
     <p class="hero-sci">Alcedo atthis — L'alcyon d'Europe</p>
   </div>
   <p class="hero-credit">© Wikimedia Commons — CC BY-SA</p>
+  <div class="scroll-hint">
+    <span class="scroll-hint-text">Défiler</span>
+    <div class="scroll-hint-line"></div>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════
@@ -571,7 +1079,7 @@
 ══════════════════════════════════════ -->
 <div class="page">
   <section class="section" id="presentation">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="section-number">1</div>
       <div>
         <span class="section-label">Partie 1</span>
@@ -592,8 +1100,28 @@
         Le nom <mark>« martin pêcheur »</mark> vient de deux mots simples : <em>Martin</em>, un prénom très courant au Moyen Âge (il serait aussi appelé « oiseau de Saint Martin »), et <em>pêcheur</em>, qui décrit directement ce que fait l'oiseau : il plonge dans l'eau pour attraper des poissons.
       </p>
       <p>
-        Son nom scientifique, <em>Alcedo atthis</em>, vient du latin <em>alcedo</em>, lui-même issu du grec <em>alkyon</em> (« alcyon »). Ce mot renvoie directement au mythe grec d'Alcyone, une princesse transformée en martin pêcheur. Le deuxième mot, <em>atthis</em>, est le prénom d'une jeune femme célébrée par la poétesse grecque Sappho pour sa grâce et sa douceur.
+        Son nom scientifique, <em data-tip="Latin : alcyon, du grec alkyon — l'oiseau de la mer calme">Alcedo atthis</em>, vient du latin <em data-tip="Du grec : alkyon, l'oiseau associé aux jours de calme hivernal">alcedo</em>, lui-même issu du grec <em data-tip="Grec ancien : alkyon — l'alcyon, oiseau mythique qui niche sur la mer en hiver">alkyon</em> (« alcyon »). Ce mot renvoie directement au mythe grec d'Alcyone, une princesse transformée en martin pêcheur. Le deuxième mot, <em data-tip="Prénom d'une jeune femme célébrée par Sappho pour sa grâce — Alcedo atthis porte son souvenir">atthis</em>, est le prénom d'une jeune femme célébrée par la poétesse grecque Sappho pour sa grâce et sa douceur.
       </p>
+
+      <!-- Compteurs animés -->
+      <div class="stats-strip reveal" id="statsStrip">
+        <div class="stat-cell">
+          <div class="stat-value"><span class="count" data-target="17">0</span><span class="stat-unit"> cm</span></div>
+          <div class="stat-label">Taille</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value"><span class="count" data-target="40">0</span><span class="stat-unit"> km/h</span></div>
+          <div class="stat-label">Vitesse de plongée</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value"><span class="count" data-target="25">0</span><span class="stat-unit"> g</span></div>
+          <div class="stat-label">Poids</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value"><span class="count" data-target="7">0</span><span class="stat-unit"> œufs</span></div>
+          <div class="stat-label">Par ponte</div>
+        </div>
+      </div>
 
       <div class="ornament">✦</div>
 
@@ -602,7 +1130,7 @@
         En <strong>Grèce antique</strong>, le philosophe <strong>Aristote</strong> (IVe s. av. J.-C.) évoque l'alcyon dans son œuvre <em>Histoire des animaux</em>. Il le décrit comme un oiseau marin auquel on attribue la capacité de nicher sur la mer, et dont la présence est associée aux « jours alcyoniens », une période hivernale de calme des flots. Plus tard, le poète romain <strong>Ovide</strong> lui consacre tout un mythe dans ses <em>Métamorphoses</em> (vers 8 ap. J.-C.).
       </p>
       <p>
-        En <strong>Chine</strong>, sous la <mark>dynastie Han</mark> (IIe s. av. J.-C.), les plumes bleues et vertes du martin pêcheur servaient à décorer les bijoux et les coiffes des nobles. Cet art s'appelait le <em>tiancui</em>. L'oiseau représentait la beauté et le prestige.
+        En <strong>Chine</strong>, sous la <mark>dynastie Han</mark> (IIe s. av. J.-C.), les plumes bleues et vertes du martin pêcheur servaient à décorer les bijoux et les coiffes des nobles. Cet art s'appelait le <em data-tip="Chinois 點翠 (diǎncuì) : art de l'incrustation de plumes de martin pêcheur sur métal doré">tiancui</em>. L'oiseau représentait la beauté et le prestige.
       </p>
 
       <div class="pull-quote">
@@ -615,7 +1143,7 @@
        II — LÉGENDES
   ══════════════════════════════════════ -->
   <section class="section" id="legendes">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="section-number">2</div>
       <div>
         <span class="section-label">Partie 2</span>
@@ -634,7 +1162,7 @@
 
     <div class="legend-grid">
       <!-- Récit 1 -->
-      <div class="legend-card">
+      <div class="legend-card reveal reveal-delay-1">
         <div class="card-origin">Grèce antique</div>
         <h4>Le mythe d'Alcyone et Céyx</h4>
         <p class="source-ref">Ovide, Métamorphoses, Livre XI — vers 8 ap. J.-C.</p>
@@ -649,7 +1177,7 @@
       </div>
 
       <!-- Récit 2 -->
-      <div class="legend-card">
+      <div class="legend-card reveal reveal-delay-2">
         <div class="card-origin">Légende lorraine — France</div>
         <h4>Le Martin pêcheur, envoyé par Noé</h4>
         <p class="source-ref">Paul Sébillot, Le Folklore de la France — La faune et la flore, fin XIXe s.</p>
@@ -707,7 +1235,7 @@
        III — MOYEN ÂGE
   ══════════════════════════════════════ -->
   <section class="section" id="moyenage">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="section-number">3</div>
       <div>
         <span class="section-label">Partie 3</span>
@@ -748,7 +1276,7 @@
        IV — AUJOURD'HUI
   ══════════════════════════════════════ -->
   <section class="section" id="aujourdhui">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="section-number">4</div>
       <div>
         <span class="section-label">Partie 4</span>
@@ -774,8 +1302,7 @@
       </figure>
     </div>
 
-    <div class="oeuvre">
-      <div class="oeuvre-num">1</div>
+    <div class="oeuvre reveal reveal-delay-1">
       <div class="oeuvre-body">
         <div class="oeuvre-meta">Littérature · 1983 · États-Unis</div>
         <h4>The Kingfisher — Amy Clampitt</h4>
@@ -783,7 +1310,7 @@
       </div>
     </div>
 
-    <div class="oeuvre">
+    <div class="oeuvre reveal reveal-delay-2">
       <div class="oeuvre-num">2</div>
       <div class="oeuvre-body">
         <div class="oeuvre-meta">Illustration · 1974 · États-Unis</div>
@@ -804,7 +1331,7 @@
 
     <div class="clearfix">
       <p>
-        Au <strong>Japon</strong>, le martin pêcheur est appelé <em>kawasemi</em> (「翡翠」, « jade de rivière »). Il est représenté dans l'art traditionnel japonais depuis des siècles, notamment dans les estampes du peintre <strong>Hiroshige</strong> (XIXe s.). Il symbolise la patience, le calme et le bonheur. Il n'a jamais perdu de sa popularité là-bas.
+        Au <strong>Japon</strong>, le martin pêcheur est appelé <em data-tip="Japonais 翡翠 (kawasemi) : littéralement « jade de rivière » — sa couleur rappelle la pierre précieuse">kawasemi</em> (「翡翠」, « jade de rivière »). Il est représenté dans l'art traditionnel japonais depuis des siècles, notamment dans les estampes du peintre <strong>Hiroshige</strong> (XIXe s.). Il symbolise la patience, le calme et le bonheur. Il n'a jamais perdu de sa popularité là-bas.
       </p>
       <p>
         En <strong>Europe</strong>, aujourd'hui, le martin pêcheur est surtout connu comme un <mark>indicateur de la qualité de l'eau</mark> : si on en voit un sur une rivière, c'est que l'eau est propre et riche en poissons. Sa disparition dans certaines régions inquiète les associations de protection de la nature. Il est passé du statut de symbole mystique à celui de <strong>symbole de la nature fragilisée</strong>.
@@ -831,6 +1358,194 @@
   BTS SIO2 — Les animaux et l'Homme &nbsp;·&nbsp; Exposé oral &nbsp;·&nbsp; Le Martin Pêcheur
   &nbsp;·&nbsp; Images : Wikimedia Commons / Metropolitan Museum of Art (open access) / domaine public
 </footer>
+<script>
+  // ─── Progress bar + Nav ───
+  const progress = document.getElementById('readProgress');
+  const nav = document.getElementById('siteNav');
 
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (scrollTop / docHeight * 100) + '%';
+    if (scrollTop > 80) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }, { passive: true });
+
+  // ─── Scroll reveal ───
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // ─── Smooth nav ───
+  document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ─── Custom cursor — flèche rapide avec traînée ───
+  const arrow = document.getElementById('cursor-arrow');
+  const shape = document.getElementById('cursor-shape');
+
+  // Créer les points de traînée
+  const TRAIL_COUNT = 6;
+  const trails = [];
+  for (let i = 0; i < TRAIL_COUNT; i++) {
+    const d = document.createElement('div');
+    d.className = 'cursor-trail-dot';
+    const size = 6 - i * 0.7;
+    d.style.cssText = `width:${size}px;height:${size}px;background:rgba(0,119,182,${0.55 - i * 0.08});`;
+    document.body.appendChild(d);
+    trails.push({ el: d, x: 0, y: 0 });
+  }
+
+  let mx = 0, my = 0;       // position souris
+  let px = 0, py = 0;       // position précédente
+  let angle = 0;             // angle courant
+  let isHovered = false;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+  });
+
+  // Hover : flèche orange sur les éléments cliquables
+  document.querySelectorAll('a, button, [data-tip], .legend-card, .oeuvre, mark, .stat-cell').forEach(el => {
+    el.addEventListener('mouseenter', () => { isHovered = true; });
+    el.addEventListener('mouseleave', () => { isHovered = false; });
+  });
+
+  let frame = 0;
+  (function tick() {
+    // Calcul vitesse et direction
+    const vx = mx - px;
+    const vy = my - py;
+    const speed = Math.sqrt(vx * vx + vy * vy);
+
+    // Mettre à jour l'angle uniquement si on bouge (évite les sauts)
+    if (speed > 0.8) {
+      angle = Math.atan2(vy, vx) * 180 / Math.PI;
+    }
+
+    // Taille de la flèche : grandit avec la vitesse
+    const scale = 0.7 + Math.min(speed * 0.06, 1.1);
+    const color = isHovered ? '#F77F00' : '#0077B6';
+    shape.setAttribute('fill', color);
+
+    arrow.style.transform = `translate(${mx}px, ${my}px) rotate(${angle}deg) scale(${scale}) translate(-4px, -8px)`;
+
+    // Traînée : chaque point suit le précédent avec un délai
+    trails[0].x += (mx - trails[0].x) * 0.55;
+    trails[0].y += (my - trails[0].y) * 0.55;
+
+    for (let i = 1; i < TRAIL_COUNT; i++) {
+      const lag = 0.42 - i * 0.04;
+      trails[i].x += (trails[i - 1].x - trails[i].x) * lag;
+      trails[i].y += (trails[i - 1].y - trails[i].y) * lag;
+    }
+
+    // Opacité des points proportionnelle à la vitesse
+    const opacity = Math.min(speed / 8, 1);
+    trails.forEach((t, i) => {
+      const alpha = opacity * (0.55 - i * 0.08);
+      t.el.style.cssText = t.el.style.cssText.replace(/rgba\([^)]+\)/, `rgba(${isHovered ? '247,127,0' : '0,119,182'},${Math.max(alpha, 0).toFixed(2)})`);
+      t.el.style.left = t.x + 'px';
+      t.el.style.top  = t.y + 'px';
+    });
+
+    px = mx; py = my;
+    requestAnimationFrame(tick);
+  })();
+
+  // ─── Animated counters ───
+  function animateCounter(el) {
+    const target = +el.dataset.target;
+    const duration = 1200;
+    const start = performance.now();
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      el.textContent = Math.round(easeOut(progress) * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  const statsObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.count').forEach(animateCounter);
+        statsObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const strip = document.getElementById('statsStrip');
+  if (strip) statsObs.observe(strip);
+
+  // ─── Martin pêcheur traversant l'écran ───
+  (function launchBird() {
+    const bird = document.getElementById('bird-fly');
+    if (!bird) return;
+
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+
+    // Départ : côté gauche, quelque part dans le tiers supérieur
+    const startX = -80;
+    const startY = H * 0.15 + Math.random() * H * 0.2;
+    // Arrivée : côté droit, légèrement plus bas (diagonale douce)
+    const endX = W + 80;
+    const endY = startY + H * 0.12;
+
+    const duration = 2800;
+    let startTime = null;
+
+    bird.style.left = startX + 'px';
+    bird.style.top  = startY + 'px';
+
+    // Légère rotation pour suivre la diagonale
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+    bird.style.transform = `rotate(${angle}deg)`;
+
+    setTimeout(() => {
+      bird.style.opacity = '1';
+      bird.style.transition = 'none';
+
+      function fly(ts) {
+        if (!startTime) startTime = ts;
+        const elapsed = ts - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        // easeInOut
+        const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+        // Légère ondulation verticale
+        const wave = Math.sin(t * Math.PI * 3) * 6;
+
+        bird.style.left = (startX + (endX - startX) * ease) + 'px';
+        bird.style.top  = (startY + (endY - startY) * ease + wave) + 'px';
+
+        if (t < 1) {
+          requestAnimationFrame(fly);
+        } else {
+          bird.style.opacity = '0';
+        }
+      }
+      requestAnimationFrame(fly);
+    }, 1200); // part 1.2s après le chargement
+  })();
+</script>
 </body>
 </html>
