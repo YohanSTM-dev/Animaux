@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Bélier — Homme & Animal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --ink: #1a1208;
+    --rust: #8b3a1a;
+    --gold: #c9922a;
+    --tan: #d4b896;
+    --dark: #0e0b06;
+    --parch: #ede4d0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 4rem 2rem;
+    background: var(--dark);
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 60%, #3a1a0a 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 30%, #1a0e00 0%, transparent 60%),
+                var(--dark);
+  }
+
+  .hero-ornament {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 146, 42, 0.12);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 40s linear infinite;
+  }
+  .hero-ornament::after {
+    content: '';
+    position: absolute;
+    inset: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 146, 42, 0.08);
+  }
+
+  @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  .hero-label {
+    position: relative;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  .hero-title {
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-subtitle {
+    position: relative;
+    margin-top: 2rem;
+    max-width: 480px;
+    font-size: 1.1rem;
+    color: var(--tan);
+    font-style: italic;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+
+  .hero-divider {
+    position: relative;
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+
+  .hero-divider span {
+    display: block;
+    height: 1px;
+    width: 80px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .hero-divider svg { color: var(--gold); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--tan);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  /* CONTENT */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid rgba(26, 18, 8, 0.12);
+  }
+
+  section:last-of-type { border-bottom: none; }
+
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(16px);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s;
+    transform: translateY(16px);
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--rust);
+    margin: 2.5rem 0 0.75rem;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
+    transform: translateY(12px);
+  }
+
+  p {
+    margin-bottom: 1.2rem;
+    color: #2e2010;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+    transform: translateY(12px);
+  }
+
+  p + p { transition-delay: 0.25s; }
+
+  .visible .section-num,
+  .visible h2,
+  .visible h3,
+  .visible p,
+  .visible .quote-block,
+  .visible .tale-card,
+  .visible .diff-note {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* QUOTE BLOCK */
+  .quote-block {
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.8rem;
+    margin: 2.5rem 0;
+    background: var(--parch);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--rust);
+    opacity: 0;
+    transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+    transform: translateY(12px);
+  }
+
+  /* TALE CARDS */
+  .tale-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 600px) { .tale-cards { grid-template-columns: 1fr; } }
+
+  .tale-card {
+    background: var(--parch);
+    border: 1px solid rgba(201, 146, 42, 0.25);
+    padding: 1.8rem;
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+    transform: translateY(16px);
+  }
+
+  .tale-card:hover {
+    box-shadow: 4px 6px 24px rgba(139, 58, 26, 0.12);
+    transform: translateY(-2px) !important;
+  }
+
+  .tale-card:first-child { transition-delay: 0.2s; }
+  .tale-card:last-child { transition-delay: 0.35s; }
+
+  .tale-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--rust);
+    padding: 0.2rem 0.7rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .tale-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .tale-card p {
+    font-size: 0.95rem;
+    margin: 0;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* DIFF NOTE */
+  .diff-note {
+    background: var(--dark);
+    color: var(--tan);
+    padding: 2rem 2.2rem;
+    margin-top: 2rem;
+    font-size: 1rem;
+    border-left: 4px solid var(--gold);
+    opacity: 0;
+    transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
+    transform: translateY(12px);
+  }
+
+  .diff-note strong { color: var(--gold); }
+
+  /* MEDIEVAL */
+  .medieval-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .med-item {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(12px);
+  }
+
+  .med-item:nth-child(1) { transition-delay: 0.2s; }
+  .med-item:nth-child(2) { transition-delay: 0.3s; }
+  .med-item:nth-child(3) { transition-delay: 0.4s; }
+
+  .visible .med-item { opacity: 1; transform: translateY(0); }
+
+  .med-letter {
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+    background: var(--rust);
+    color: var(--cream);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .med-item p {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    margin: 0;
+  }
+
+  /* TODAY */
+  .today-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 600px) { .today-items { grid-template-columns: 1fr; } }
+
+  .today-item {
+    padding: 1.5rem;
+    border: 1px solid rgba(26, 18, 8, 0.12);
+    background: var(--parch);
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(12px);
+  }
+
+  .today-item:nth-child(1) { transition-delay: 0.2s; }
+  .today-item:nth-child(2) { transition-delay: 0.35s; }
+
+  .visible .today-item { opacity: 1; transform: translateY(0); }
+
+  .today-item .label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .today-item p {
+    font-size: 0.95rem;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    margin: 0;
+  }
+
+  /* CONCLUSION */
+  .conclusion {
+    background: var(--dark);
+    padding: 6rem 0;
+    text-align: center;
+    border-bottom: none;
+  }
+
+  .conclusion .container { max-width: 640px; }
+
+  .conclusion h2 {
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+
+  .conclusion p {
+    color: var(--tan);
+    font-size: 1.15rem;
+    font-style: italic;
+  }
+
+  .conclusion .ornament {
+    color: var(--gold);
+    font-size: 2rem;
+    opacity: 0.5;
+    margin: 2rem auto 0;
+    display: block;
+    letter-spacing: 0.5em;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--rust), var(--gold));
+    z-index: 1000;
+    transition: width 0.1s linear;
+    width: 0%;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 1.5rem 2rem;
+    display: flex;
+    gap: 1.5rem;
+    z-index: 100;
+    mix-blend-mode: exclusion;
+  }
+
+  nav a {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  nav a:hover { opacity: 1; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* DROPCAP */
+  .dropcap::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5em;
+    font-weight: 900;
+    float: left;
+    line-height: 0.8;
+    margin: 0.05em 0.1em 0 0;
+    color: var(--rust);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav>
+  <a href="#presentation">Présentation</a>
+  <a href="#legendes">Légendes</a>
+  <a href="#moyen-age">Moyen-Âge</a>
+  <a href="#aujourd-hui">Aujourd'hui</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ornament"></div>
+
+  <span class="hero-label">BTS SIO2 · Les animaux et l'Homme</span>
+  <h1 class="hero-title">
+    Le<br><em>Bélier</em>
+  </h1>
+  <p class="hero-subtitle">De la grotte préhistorique aux écrans de cinéma — une relation millénaire entre l'homme et l'animal.</p>
+  <div class="hero-divider">
+    <span></span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+    <span></span>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Défiler</span>
+    <div class="scroll-line"></div>
+  </div>
+</header>
+
+<!-- I. PRÉSENTATION -->
+<section id="presentation">
+  <div class="container reveal">
+    <span class="section-num">I — Présentation de l'animal</span>
+    <h2>Origines & premières représentations</h2>
+
+    <h3>a. Étymologie</h3>
+    <p class="dropcap">Le mot <em>bélier</em> vient du vieux français <em>belin</em>, lui-même issu du latin populaire <em>berbex</em> ou <em>vervex</em>, qui désignait à l'origine le mouton châtré, puis par extension le mâle entier. Le terme renvoie à l'idée de force et de choc, ce qui explique aussi pourquoi l'engin de guerre servant à enfoncer les portes a pris ce même nom.</p>
+
+    <h3>b. Premières représentations</h3>
+    <p>Les premières représentations du bélier remontent à la Préhistoire, notamment dans les peintures rupestres du Sahara vers 8000 av. J.-C., où il symbolise la puissance et la fécondité.</p>
+    <p>Dans l'Égypte ancienne, le dieu Amon était représenté avec une tête de bélier, incarnant la création et la force divine. En Mésopotamie, le bélier apparaît comme symbole de domination et de virilité dans de nombreuses sculptures.</p>
+
+    <div class="quote-block">
+      « De la caverne préhistorique aux temples égyptiens, le bélier fut toujours l'animal du sacré et de la puissance. »
+    </div>
+  </div>
+</section>
+
+<!-- II. LÉGENDES -->
+<section id="legendes">
+  <div class="container reveal">
+    <span class="section-num">II — Contes & Légendes</span>
+    <h2>Le bélier dans les récits du monde entier</h2>
+
+    <p>Le bélier traverse les mythologies avec une étonnante constance, tantôt héros, tantôt figure du mal. Deux récits illustrent particulièrement bien la diversité de ces interprétations.</p>
+
+    <div class="tale-cards">
+      <div class="tale-card">
+        <span class="tale-tag">Grèce antique</span>
+        <h4>La Toison d'or</h4>
+        <p>Le bélier Chrysomallos, parfois représenté avec de grandes ailes, est envoyé par les dieux pour sauver Phrixos et Hellé de leur belle-mère Ino. Arrivé en Colchide, Phrixos sacrifie l'animal en l'honneur de Zeus et offre sa toison au roi Éétès, qui la fait garder par un dragon. Pélias envoie Jason la ravir. Médée, trahissant son père, aide les Argonautes à s'en emparer. La toison d'or est avant tout un symbole solaire : sa conquête permet d'accéder au statut de héros et, pour certains, à la souveraineté.</p>
+      </div>
+      <div class="tale-card">
+        <span class="tale-tag">Occultisme européen</span>
+        <h4>Le Bouc de Mendes</h4>
+        <p>Figure légendaire traversant l'histoire de l'occultisme européen, souvent associé au Diable et aux cultes secrets. Issu des récits médiévaux, il est décrit comme une créature à tête de bouc aux yeux flamboyants et au corps humain, symbole de luxure, de puissance et de connaissance interdite. Sa réputation fut amplifiée par l'auteur ésotérique Éliphas Lévi, qui en fit l'icône du Baphomet. Bien qu'aucune preuve d'un culte réel n'existe, le mythe a durablement marqué l'imaginaire européen, incarnant la peur du mal et du surnaturel.</p>
+      </div>
+    </div>
+
+    <div class="diff-note">
+      <strong>Pourquoi ces différences ?</strong> La Toison d'or naît dans une Grèce antique où les animaux extraordinaires peuplent les aventures héroïques, dans un monde structuré autour des dieux et de l'honneur. Le Bouc de Mendes émerge dans une Europe médiévale hantée par la peur du surnaturel et la croyance en la sorcellerie. La façon dont chaque société parle du bélier dépend profondément de sa religion, de ses traditions et de ses croyances.
+    </div>
+  </div>
+</section>
+
+<!-- III. MOYEN-ÂGE -->
+<section id="moyen-age">
+  <div class="container reveal">
+    <span class="section-num">III — Moyen-Âge</span>
+    <h2>Le bélier dans les bestiaires médiévaux</h2>
+
+    <div class="medieval-grid">
+      <div class="med-item">
+        <div class="med-letter">a</div>
+        <p>Dans les bestiaires médiévaux, le bélier représente la force brute, mais aussi la fierté péchante. Il illustre parfois l'<em>orgueil</em> (<em>superbia</em>), l'un des sept péchés capitaux, en raison de ses combats frontaux violents pour dominer le troupeau.</p>
+      </div>
+      <div class="med-item">
+        <div class="med-letter">b</div>
+        <p>Cette vision est en partie une continuité de l'Antiquité — force, domination — mais elle se teinte davantage d'une dimension morale négative que la Préhistoire ou l'Égypte ancienne ne lui accordaient pas. Ces dernières le vénéraient sans jugement moral.</p>
+      </div>
+      <div class="med-item">
+        <div class="med-letter">c</div>
+        <p>La religion chrétienne, qui domine le Moyen-Âge, réinterprète les animaux à travers le prisme du bien et du mal. Paradoxalement, l'agneau — le jeune bélier — est le symbole du Christ et de la douceur, tandis que le bélier adulte et combatif renvoie à l'animal charnel et incontrôlé, ou au mal avec le Bouc de Mendes mentionné précédemment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IV. AUJOURD'HUI -->
+<section id="aujourd-hui">
+  <div class="container reveal">
+    <span class="section-num">IV — Le bélier aujourd'hui</span>
+    <h2>Entre utilitarisme et symbole culturel</h2>
+
+    <div class="today-items">
+      <div class="today-item">
+        <span class="label">a. Perception générale</span>
+        <p>Aujourd'hui, le bélier est principalement perçu comme un animal d'élevage utilitaire — viande, laine, reproduction. Il est aussi devenu un symbole astrologique (le signe du Bélier, mars-avril), associé à l'énergie et au leadership. Parmi les œuvres qui le mettent en scène : le film <em>Rams</em> (2015) du réalisateur islandais Grímur Hákonarson, qui explore la relation entre deux frères éleveurs de béliers, et le tableau <em>The Ram</em> de Francisco de Goya, portrait puissant et inquiétant.</p>
+      </div>
+      <div class="today-item">
+        <span class="label">b. Des exceptions dans le monde</span>
+        <p>Des exceptions existent : en Nouvelle-Zélande ou dans certaines régions d'Asie centrale, le bélier conserve un statut culturel fort, au cœur de rituels et de compétitions traditionnelles — comme les combats de béliers en Ouzbékistan — ce qui tranche nettement avec sa perception purement économique en Occident.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCLUSION -->
+<section class="conclusion">
+  <div class="container reveal">
+    <span class="section-num" style="color:var(--gold)">Conclusion</span>
+    <h2>Une relation millénaire</h2>
+    <p>Le bélier entretient avec l'homme une relation complexe et ancienne, oscillant entre vénération et utilitarisme, entre symbole divin et simple ressource agricole. De la grotte préhistorique aux écrans de cinéma, il traverse les cultures en portant tour à tour les valeurs de force, de sacrifice, de péché ou de renouveau — révélant ainsi autant sur l'animal lui-même que sur les sociétés qui l'ont observé.</p>
+    <span class="ornament">✦ ✦ ✦</span>
+  </div>
+</section>
+
+<script>
+  // Progress bar
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progress.style.width = pct + '%';
+  });
+
+  // Intersection Observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
