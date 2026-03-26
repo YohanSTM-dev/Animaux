@@ -1,182 +1,243 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maxime - Animaux</title>
-    <style>
-        :root {
-            --bg: #f3ede2;
-            --surface: #ffffff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --accent: #cc5c1a;
-            --accent-hover: #a84b15;
-            --border: #e6ddce;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Tortue</title>
 
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        }
+body {
+    font-family: 'Segoe UI';
+    background: linear-gradient(180deg, #021421, #063a5b);
+    color: white;
+    overflow-x: hidden;
+}
 
-        .container {
-            width: min(1100px, 94vw);
-            margin: 0 auto;
-            padding: 28px 0 56px;
-        }
+/* NAVBAR */
+header {
+    position: fixed;
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
+nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
 
-        h1 {
-            margin: 0;
-            font-size: clamp(1.8rem, 4vw, 2.4rem);
-        }
+nav a:hover {
+    color: #00d4ff;
+}
 
-        .subtitle {
-            margin: 6px 0 18px;
-            color: var(--muted);
-        }
+/* HERO */
+.hero {
+    height: 100vh;
+    background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
 
-        .btn-retour {
-            text-decoration: none;
-            background: var(--accent);
-            color: #ffffff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 9px 16px;
-            white-space: nowrap;
-        }
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 30, 60, 0.6);
+}
 
-        .btn-retour:hover {
-            background: var(--accent-hover);
-        }
+.hero h2 {
+    position: relative;
+    font-size: 2.5em;
+    text-align: center;
+}
 
-        .grille-animaux {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
+/* SECTIONS */
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 80px;
+}
 
-        .carte-animal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-            display: flex;
-            flex-direction: column;
-        }
+.section img {
+    width: 40%;
+    border-radius: 20px;
+    transition: 0.5s;
+}
 
-        .carte-image {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-            display: block;
-            background: #f9fafb;
-            border-bottom: 1px solid var(--border);
-        }
+.section img:hover {
+    transform: scale(1.05) rotate(1deg);
+}
 
-        .carte-contenu {
-            padding: 16px;
-            display: grid;
-            gap: 8px;
-            flex: 1;
-        }
+/* ALT BACKGROUND */
+.alt {
+    background: rgba(255,255,255,0.05);
+}
 
-        .carte-titre {
-            margin: 0;
-            font-size: 1.08rem;
-            font-weight: 800;
-        }
+/* CARDS */
+.card {
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    transition: 0.4s;
+}
 
-        .carte-sous-titre {
-            margin: 0;
-            color: #374151;
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+}
 
-        .carte-statut {
-            margin: 0;
-            color: #4b5563;
-            font-size: 0.9rem;
-        }
+.big {
+    width: 300px;
+}
 
-        .btn-fiche {
-            justify-self: start;
-            text-decoration: none;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 8px 14px;
-            margin-top: 4px;
-        }
+/* TEXT */
+.content {
+    max-width: 500px;
+}
 
-        .btn-fiche:hover {
-            background: var(--accent-hover);
-        }
+/* WAVE EFFECT */
+.wave {
+    position: fixed;
+    bottom: 0;
+    width: 200%;
+    height: 150px;
+    background: url('https://svgshare.com/i/uYh.svg');
+    animation: wave 10s linear infinite;
+    opacity: 0.3;
+}
 
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
+@keyframes wave {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* SCROLL ANIMATION */
+.reveal {
+    opacity: 0;
+    transform: translateY(80px);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: 1s;
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+    .section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .section img {
+        width: 80%;
+    }
+}
+</style>
 </head>
+
 <body>
-    <main class="container">
-        <div class="header">
-            <h1>Animaux de Maxime</h1>
-            <a class="btn-retour" href="../index.html">Retour a la liste</a>
-        </div>
-        <p class="subtitle">Tu peux mettre tes images en haut des cards en rempla cant les fichiers dans le dossier images.</p>
 
-        <section class="grille-animaux">
-            <article class="carte-animal">
-                <img src="./images/lion.jpg" alt="Lion" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+lion.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">LION</h2>
-                    <p class="carte-sous-titre">Categorie: Mammiferes</p>
-                    <p class="carte-statut">Selection de Maxime.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+<header>
+    <h1>🐢 La Tortue</h1>
+    <nav>
+        <a href="#p1">Origines</a>
+        <a href="#p2">Récits</a>
+        <a href="#p3">Moyen Âge</a>
+        <a href="#p4">Aujourd’hui</a>
+    </nav>
+</header>
 
-            <article class="carte-animal">
-                <img src="./images/aigle.jpg" alt="Aigle" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+aigle.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">AIGLE</h2>
-                    <p class="carte-sous-titre">Categorie: Oiseaux</p>
-                    <p class="carte-statut">Selection de Maxime.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+<section class="hero">
+    <div class="overlay"></div>
+    <h2>Un symbole entre mythe, sagesse et culture</h2>
+</section>
 
-            <article class="carte-animal">
-                <img src="./images/tortue.jpg" alt="Tortue" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+tortue.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">TORTUE</h2>
-                    <p class="carte-sous-titre">Categorie: Reptiles</p>
-                    <p class="carte-statut">Selection de Maxime.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
-        </section>
-    </main>
+<!-- PARTIE 1 -->
+<section id="p1" class="section reveal">
+    <div class="content">
+        <h2>Origines & représentations</h2>
+        <p>
+            Le mot "tortue" vient du latin <b>tartaruca</b>.
+            Animal à carapace, elle symbolise protection et longévité.
+        </p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f">
+</section>
+
+<!-- PARTIE 2 -->
+<section id="p2" class="section alt reveal">
+    <div class="card">
+        <h3>Fable d'Ésope</h3>
+        <p>Persévérance > vitesse</p>
+    </div>
+    <div class="card">
+        <h3>Mythe chinois</h3>
+        <p>Stabilité cosmique</p>
+    </div>
+</section>
+
+<!-- PARTIE 3 -->
+<section id="p3" class="section reveal">
+    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5">
+    <div class="content">
+        <h2>Moyen Âge</h2>
+        <p>
+            Vision négative liée à la religion chrétienne :
+            lenteur = péché.
+        </p>
+    </div>
+</section>
+
+<!-- PARTIE 4 -->
+<section id="p4" class="section alt reveal">
+    <div class="card big">
+        <h3>Le Monde de Nemo</h3>
+        <p>Tortue cool et libre</p>
+    </div>
+    <div class="card big">
+        <h3>Kung Fu Panda</h3>
+        <p>Maître Oogway = sagesse ultime</p>
+    </div>
+</section>
+
+<div class="wave"></div>
+
+<script>
+    // Scroll reveal
+const reveals = document.querySelectorAll(".reveal");
+
+window.addEventListener("scroll", () => {
+    reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            el.classList.add("active");
+        }
+    });
+});
+
+// Parallax léger
+window.addEventListener("scroll", () => {
+    document.querySelector(".hero").style.backgroundPositionY =
+        window.scrollY * 0.5 + "px";
+});
+</script>
 </body>
-</html>
+</html> 
