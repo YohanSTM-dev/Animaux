@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Tigre & l'Homme - Diaporama</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0a0a0a;
+            --bg-panel: rgba(22, 22, 22, 0.82);
+            --text-main: #f7f1e8;
+            --text-soft: #dcc8b0;
+            --accent: #ff6b00;
+            --accent-soft: #ff9d4d;
+            --line: rgba(255, 107, 0, 0.36);
+            --danger: #ff3b2f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            background: radial-gradient(circle at 20% 10%, #1c1c1c, #0b0b0b 62%, #000 100%);
+            color: var(--text-main);
+            font-family: "Source Sans 3", sans-serif;
+        }
+
+        .deck {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.985);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+            padding: clamp(22px, 3vw, 40px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.2;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Crect width='320' height='320' fill='none'/%3E%3Cpath d='M15 0 C 70 95, 35 225, 95 320' stroke='%23FF6B00' stroke-opacity='0.28' stroke-width='6' fill='none'/%3E%3Cpath d='M95 0 C 150 100, 125 220, 185 320' stroke='%23FF6B00' stroke-opacity='0.2' stroke-width='5' fill='none'/%3E%3Cpath d='M170 0 C 225 110, 205 225, 255 320' stroke='%23FF6B00' stroke-opacity='0.24' stroke-width='4.5' fill='none'/%3E%3Cpath d='M250 0 C 300 120, 280 230, 318 320' stroke='%23FF6B00' stroke-opacity='0.2' stroke-width='4' fill='none'/%3E%3C/svg%3E");
+            background-size: 320px 320px;
+            background-repeat: repeat;
+            mix-blend-mode: screen;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            z-index: 2;
+        }
+
+        .content {
+            position: relative;
+            width: min(1200px, 96vw);
+            min-height: min(78vh, 900px);
+            border: 1px solid var(--line);
+            background:
+                linear-gradient(160deg, rgba(255, 107, 0, 0.08), rgba(0, 0, 0, 0.06) 40%, rgba(255, 179, 71, 0.03)),
+                var(--bg-panel);
+            border-radius: 20px;
+            padding: clamp(20px, 4vw, 58px);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(18px, 2vh, 28px);
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.45);
+            overflow: hidden;
+        }
+
+        .kicker {
+            font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+            letter-spacing: 0.17em;
+            text-transform: uppercase;
+            color: var(--accent-soft);
+            font-weight: 700;
+        }
+
+        h1,
+        h2 {
+            font-family: "Playfair Display", serif;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        h1 {
+            font-size: clamp(2.3rem, 6.4vw, 5.4rem);
+        }
+
+        h2 {
+            font-size: clamp(1.7rem, 4.8vw, 3.4rem);
+        }
+
+        .subtitle {
+            font-size: clamp(1.15rem, 2.5vw, 2rem);
+            color: var(--text-soft);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            border: 1px solid var(--line);
+            background: rgba(255, 107, 0, 0.08);
+            color: #ffd2ac;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: clamp(0.95rem, 1.7vw, 1.2rem);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        .bullets {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .bullets li {
+            font-size: clamp(1rem, 2.3vw, 1.62rem);
+            line-height: 1.28;
+            color: #f5e5d5;
+            border-left: 3px solid rgba(255, 107, 0, 0.8);
+            padding-left: 12px;
+            font-weight: 600;
+        }
+
+        .cols-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(14px, 2vw, 24px);
+        }
+
+        .card {
+            border: 1px solid rgba(255, 107, 0, 0.45);
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.28);
+            padding: clamp(12px, 2vw, 20px);
+            min-height: 100%;
+        }
+
+        .card h3 {
+            font-family: "Playfair Display", serif;
+            font-size: clamp(1.25rem, 2.6vw, 2rem);
+            color: #ffc590;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .card ul {
+            list-style: none;
+            display: grid;
+            gap: 9px;
+        }
+
+        .card li {
+            font-size: clamp(0.96rem, 1.8vw, 1.22rem);
+            font-weight: 600;
+            color: #f7ede2;
+            line-height: 1.26;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .timeline .step {
+            border: 1px dashed rgba(255, 179, 71, 0.58);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            font-weight: 700;
+            color: #ffe0c2;
+            background: rgba(255, 107, 0, 0.06);
+        }
+
+        .question {
+            margin-top: auto;
+            font-size: clamp(1.2rem, 2.6vw, 2rem);
+            color: #ffd2ab;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            border-top: 1px solid rgba(255, 107, 0, 0.4);
+            padding-top: 14px;
+        }
+
+        .controls {
+            position: fixed;
+            left: 50%;
+            bottom: clamp(12px, 2.2vh, 24px);
+            transform: translateX(-50%);
+            width: min(880px, 94vw);
+            z-index: 12;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: rgba(8, 8, 8, 0.8);
+            border: 1px solid rgba(255, 107, 0, 0.35);
+            border-radius: 14px;
+            padding: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button {
+            appearance: none;
+            border: 1px solid rgba(255, 107, 0, 0.5);
+            background: rgba(255, 107, 0, 0.16);
+            color: #ffe2c7;
+            border-radius: 9px;
+            padding: 9px 12px;
+            font-family: "Source Sans 3", sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        button:hover,
+        button:focus-visible {
+            background: rgba(255, 107, 0, 0.34);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .counter,
+        .slide-id {
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            font-weight: 700;
+            color: #ffe8cf;
+            letter-spacing: 0.04em;
+        }
+
+        .slide-id {
+            position: absolute;
+            right: clamp(16px, 2.6vw, 28px);
+            bottom: clamp(12px, 2vw, 22px);
+            color: rgba(255, 200, 152, 0.82);
+            font-size: clamp(0.95rem, 1.7vw, 1.18rem);
+        }
+
+        .accent {
+            color: var(--accent-soft);
+        }
+
+        .danger {
+            color: #ff8f88;
+        }
+
+        @media (max-width: 950px) {
+            .cols-2,
+            .timeline {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                min-height: auto;
+                height: 84vh;
+                overflow-y: auto;
+                padding-bottom: 56px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .controls {
+                width: 96vw;
+                gap: 6px;
+            }
+
+            button {
+                padding: 8px 9px;
+                font-size: 0.95rem;
+            }
+
+            .counter {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="deck" aria-live="polite">
+        <section class="slide active" data-slide="1">
+            <article class="content">
+                <span class="kicker">Exposé Oral BTS</span>
+                <h1>Le Tigre <span class="accent">&</span> l'Homme</h1>
+                <p class="subtitle">Chronologie d'une fascination</p>
+                <div class="tags" aria-label="Mots-clés">
+                    <span class="tag">Puissance</span>
+                    <span class="tag">Danger</span>
+                    <span class="tag">Symbole</span>
+                    <span class="tag">Sacré</span>
+                </div>
+                <span class="slide-id">01 / 06</span>
+            </article>
+        </section>
+
+        <section class="slide" data-slide="2">
+            <article class="content">
+                <span class="kicker">Présentation & Étymologie</span>
+                <h2>Origines</h2>
+                <ul class="bullets">
+                    <li>Tigre - latin tigris - grec tigris - persan tigra - flèche - vitesse</li>
+                    <li>Panthera tigris - plus grand félin</li>
+                    <li>Grottes indiennes -2500 av. J.-C. - premières représentations</li>
+                    <li>Civilisation de l'Indus - puissance royale</li>
+                    <li>Chine ancienne - gardien - mauvais esprits éloignés</li>
+                    <li>Interprétations : danger - divinité - force</li>
+                </ul>
+                <span class="slide-id">02 / 06</span>
+            </article>
+        </section>
+
+        <section class="slide" data-slide="3">
+            <article class="content">
+                <span class="kicker">Contes & Légendes</span>
+                <h2>Deux Aspects Opposés</h2>
+                <div class="cols-2">
+                    <div class="card">
+                        <h3>Protecteur</h3>
+                        <ul>
+                            <li>Corée - Heungbu et le tigre - bienfaiteur</li>
+                            <li>Thaïlande - esprit protecteur des forêts</li>
+                            <li>Asie du Sud-Est - Antiquité - Moyen Âge</li>
+                            <li>Respect nature - totémisme</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Terrifiant</h3>
+                        <ul>
+                            <li>Inde - démon-tigre - humains égarés</li>
+                            <li>Sibérie - esprit vengeur - chasse irrespectueuse</li>
+                            <li>Religion - forêt - survie</li>
+                        </ul>
+                    </div>
+                </div>
+                <span class="slide-id">03 / 06</span>
+            </article>
+        </section>
+
+        <section class="slide" data-slide="4">
+            <article class="content">
+                <span class="kicker">Moyen Âge</span>
+                <h2>Bestiaires, Morale, Héraldique</h2>
+                <ul class="bullets">
+                    <li>Bestiaire médiéval - Physiologus - IIe siècle - Alexandrie</li>
+                    <li>Tigre : luxure - cruauté - péché chrétien</li>
+                    <li>Aussi : courage - noblesse - héraldique</li>
+                    <li>Bestiaire d'Aberdeen - XIIe s. - tigresse - miroir - vanité</li>
+                    <li>Antiquité vers Moyen Âge : continuité peur-fascination</li>
+                    <li>Christianisme - réinterprétation morale</li>
+                </ul>
+                <span class="slide-id">04 / 06</span>
+            </article>
+        </section>
+
+        <section class="slide" data-slide="5">
+            <article class="content">
+                <span class="kicker">Aujourd'hui</span>
+                <h2>Icône Culturelle <span class="accent">&</span> Tensions</h2>
+                <div class="cols-2">
+                    <div class="card">
+                        <h3>Vision positive</h3>
+                        <ul>
+                            <li>L'Histoire de Pi - 2012 - coexistence Homme-Tigre</li>
+                            <li>Tigre et Dragon - 2000 - liberté</li>
+                            <li>Tony le Tigre - force amicale</li>
+                            <li>WWF - emblème - protection</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Exceptions culturelles</h3>
+                        <ul>
+                            <li>Indonésie - Sumatra - esprit redouté</li>
+                            <li>Chine - médecine traditionnelle - braconnage os/peau</li>
+                            <li>Inde - Project Tiger 1973 - sacralisation moderne</li>
+                        </ul>
+                    </div>
+                </div>
+                <span class="slide-id">05 / 06</span>
+            </article>
+        </section>
+
+        <section class="slide" data-slide="6">
+            <article class="content">
+                <span class="kicker">Conclusion</span>
+                <h2>Une fascination millénaire</h2>
+                <div class="timeline">
+                    <div class="step">Préhistoire : puissance sacrée</div>
+                    <div class="step">Antiquité : symbole royal</div>
+                    <div class="step">Moyen Âge : péché & noblesse</div>
+                    <div class="step">Aujourd'hui : espèce en danger & icône culturelle</div>
+                </div>
+                <p class="question">Le tigre : miroir de nos peurs ou de nos rêves ?</p>
+                <span class="slide-id">06 / 06</span>
+            </article>
+        </section>
+    </main>
+
+    <nav class="controls" aria-label="Navigation du diaporama">
+        <div class="control-group">
+            <button id="prevBtn" type="button" aria-label="Slide précédente">← Précédent</button>
+            <button id="nextBtn" type="button" aria-label="Slide suivante">Suivant →</button>
+        </div>
+        <div class="counter" id="counter">1 / 6</div>
+        <div class="control-group">
+            <button id="fullscreenBtn" type="button" aria-label="Mode plein écran">Plein écran</button>
+        </div>
+    </nav>
+
+    <script>
+        (function () {
+            const slides = Array.from(document.querySelectorAll('.slide'));
+            const total = slides.length;
+            const counter = document.getElementById('counter');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            let current = 0;
+
+            function showSlide(index) {
+                const nextIndex = (index + total) % total;
+                slides[current].classList.remove('active');
+                slides[nextIndex].classList.add('active');
+                current = nextIndex;
+                counter.textContent = `${current + 1} / ${total}`;
+            }
+
+            function nextSlide() {
+                showSlide(current + 1);
+            }
+
+            function prevSlide() {
+                showSlide(current - 1);
+            }
+
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'ArrowRight') {
+                    nextSlide();
+                } else if (event.key === 'ArrowLeft') {
+                    prevSlide();
+                } else if (event.key.toLowerCase() === 'f') {
+                    toggleFullscreen();
+                }
+            });
+
+            function toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(function () {
+                        return null;
+                    });
+                } else {
+                    document.exitFullscreen().catch(function () {
+                        return null;
+                    });
+                }
+            }
+
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+        })();
+    </script>
+</body>
+</html>
