@@ -1,667 +1,1138 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CUGEX - Annuaire des Animaux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== TOKENS ===== */
         :root {
-            --bg: #fdfbf7;         
-            --surface: #ffffff;    
-            --text: #4a4036;       
-            --muted: #8c7e71;      
-            --accent: #c08b5c;     
-            --accent-hover: #a37248; 
-            --card-border: #eee9e0;  
-            --police: 'Inter', 'Roboto', 'Open Sans', sans-serif;
-            --radius-gélule: 30px;   
+            --bg:           #f0ede6;
+            --bg2:          #e8e4db;
+            --surface:      #faf8f3;
+            --surface2:     rgba(255,255,255,0.7);
+            --text:         #1e2b1a;
+            --text2:        #4a5c42;
+            --muted:        #7a8c72;
+            --accent:       #3d6b35;
+            --accent2:      #6aaa56;
+            --accent3:      #c8a84b;
+            --border:       rgba(61,107,53,0.18);
+            --shadow:       rgba(30,43,26,0.12);
+            --shadow-deep:  rgba(30,43,26,0.22);
+            --card-glow:    rgba(106,170,86,0.15);
+            --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
         }
 
-        * {
-            box-sizing: border-box;
+        [data-theme="dark"] {
+            --bg:           #0f1a0d;
+            --bg2:          #162013;
+            --surface:      #1c2a19;
+            --surface2:     rgba(28,42,25,0.85);
+            --text:         #dde8d8;
+            --text2:        #9bbf90;
+            --muted:        #6a8a62;
+            --accent:       #6aaa56;
+            --accent2:      #8dcc78;
+            --accent3:      #d4b558;
+            --border:       rgba(106,170,86,0.2);
+            --shadow:       rgba(0,0,0,0.35);
+            --shadow-deep:  rgba(0,0,0,0.55);
+            --card-glow:    rgba(106,170,86,0.08);
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            margin: 0;
-            min-height: 100vh;
             background: var(--bg);
             color: var(--text);
-            font-family: var(--police);
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.4s, color 0.4s;
         }
 
-        /* --- HEADER --- */
+        /* ===== SCROLL PROGRESS ===== */
+        #scroll-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent3));
+            z-index: 9999;
+            transition: width 0.1s linear;
+        }
+
+        /* ===== HEADER ===== */
         .site-header {
-            background: var(--surface);
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--card-border);
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--surface2);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 32px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            transition: background 0.4s;
         }
 
-        .header-content {
-            width: min(1200px, 94vw);
+        .header-inner {
+            width: min(1300px, 100%);
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .nav-liens a {
-            text-decoration: none;
-            color: var(--muted);
-            font-weight: 600;
-            margin-left: 20px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.2s;
-        }
-
-        .nav-liens a:hover {
-            color: var(--accent);
-            background: #fdfbf7;
-        }
-
-        .container {
-            width: min(1200px, 94vw);
-            margin: 0 auto;
-            padding: 20px 0 60px;
-            flex: 1; 
-        }
-
-        .titre-container {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 800;
-            color: var(--text);
-            margin-bottom: 10px;
-        }
-
-        h1 span {
-            color: var(--accent);
-        }
-
-        .subtitle {
-            margin: 0;
-            color: var(--muted);
-            font-size: 1.1rem;
-            font-weight: 400;
-        }
-
-        /* --- FILTRES --- */
-        .filtres {
-            background: var(--surface);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-gélule);
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 20px;
-            align-items: end;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.03);
-            margin-bottom: 30px;
-        }
-
-        .filtres label {
-            display: grid;
-            gap: 8px;
-            font-weight: 600;
-            color: var(--muted);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
-
-        .filtres input,
-        .filtres select {
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            font-size: 1.1rem;
-            padding: 12px 20px;
-            width: 100%;
-            background: var(--bg);
-            color: var(--text);
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-
-        .filtres input:focus,
-        .filtres select:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: var(--surface);
-            box-shadow: 0 0 0 3px rgba(192, 139, 92, 0.1);
-        }
-
-        .btn-reset {
-            border: 0;
-            border-radius: 20px;
-            padding: 12px 25px;
-            background: var(--bg);
-            color: var(--muted);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            border: 1px solid var(--card-border);
-        }
-
-        .btn-reset:hover {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .compteur {
-            margin: 20px 0;
-            color: var(--muted);
-            font-weight: 600;
-            font-size: 1.1rem;
-            display: inline-block;
-        }
-
-        /* --- GRILLE & CARTES --- */
-        .grille {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            justify-content: space-between;
             gap: 24px;
         }
 
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-leaf {
+            font-size: 1.6rem;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px var(--shadow));
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        nav a:hover { color: var(--accent); background: var(--border); }
+
+        /* Theme toggle */
+        .theme-btn {
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            width: 52px;
+            height: 28px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        .theme-btn::after {
+            content: '☀️';
+            position: absolute;
+            left: 3px; top: 2px;
+            font-size: 18px;
+            line-height: 1;
+            transition: transform 0.3s, content 0.3s;
+        }
+
+        [data-theme="dark"] .theme-btn::after {
+            content: '🌙';
+            transform: translateX(24px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            padding: 80px 32px 60px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 70% 60% at 20% 50%, rgba(61,107,53,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 80% at 80% 30%, rgba(106,170,86,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            background: var(--border);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 6px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Déco feuilles */
+        .deco-leaf {
+            position: absolute;
+            font-size: 6rem;
+            opacity: 0.06;
+            pointer-events: none;
+            line-height: 1;
+        }
+
+        .deco-leaf:nth-child(1) { top: 10%; left: -2%; transform: rotate(-20deg); font-size: 8rem; }
+        .deco-leaf:nth-child(2) { bottom: 0%; right: -1%; transform: rotate(30deg); font-size: 10rem; }
+        .deco-leaf:nth-child(3) { top: 5%; right: 10%; transform: rotate(-10deg); font-size: 5rem; }
+
+        /* ===== FILTRES ===== */
+        .filtres-wrap {
+            padding: 0 32px;
+            margin-bottom: 40px;
+        }
+
+        .filtres {
+            width: min(1300px, 100%);
+            margin: 0 auto;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px 28px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            box-shadow: 0 8px 30px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filtres::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .filtre-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .filtre-group label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .filtre-group select,
+        .filtre-group input {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            font-family: 'Lato', sans-serif;
+            color: var(--text);
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.3s;
+            width: 100%;
+        }
+
+        .filtre-group select:focus,
+        .filtre-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(61,107,53,0.12);
+        }
+
+        .filtre-actions {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 12px;
+            padding: 12px 22px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(61,107,53,0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--card-glow);
+        }
+
+        /* ===== TOOLBAR ===== */
+        .toolbar {
+            width: min(1300px, 100%);
+            margin: 0 auto 24px;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .compteur {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .compteur strong {
+            font-size: 1.6rem;
+            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            margin-right: 4px;
+            transition: all 0.3s;
+        }
+
+        .sort-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .sort-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sort-btn.active, .sort-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--card-glow);
+        }
+
+        /* ===== GRILLE ===== */
+        .grille-wrap {
+            width: min(1300px, 100%);
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        .grille {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 28px;
+        }
+
+        /* ===== CARTES ===== */
         .carte {
             background: var(--surface);
-            border-radius: var(--radius-gélule);
+            border: 1px solid var(--border);
+            border-radius: 20px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            border: 1px solid var(--card-border);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%; 
+            transition:
+                transform 0.4s cubic-bezier(.22,1,.36,1),
+                box-shadow 0.4s cubic-bezier(.22,1,.36,1),
+                opacity 0.35s ease;
+            box-shadow: 0 4px 20px var(--shadow);
+            perspective: 1000px;
+            will-change: transform;
+            cursor: default;
         }
 
         .carte:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            transform: translateY(-8px) rotateX(3deg) rotateY(-1deg) scale(1.02);
+            box-shadow: 0 24px 50px var(--shadow-deep), 0 0 0 1px var(--accent2), 0 0 30px var(--card-glow);
+        }
+
+        .carte.hiding {
+            opacity: 0;
+            transform: scale(0.92) translateY(10px);
+            pointer-events: none;
+        }
+
+        .carte.showing {
+            animation: cardIn 0.4s cubic-bezier(.22,1,.36,1) forwards;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .carte-img-wrap {
+            position: relative;
+            height: 210px;
+            overflow: hidden;
         }
 
         .carte-img {
             width: 100%;
-            height: 220px; 
+            height: 100%;
             object-fit: cover;
-            border-bottom: 1px solid var(--card-border);
+            transition: transform 0.6s cubic-bezier(.22,1,.36,1);
         }
 
+        .carte:hover .carte-img {
+            transform: scale(1.08);
+        }
+
+        .carte-badge {
+            position: absolute;
+            top: 14px; right: 14px;
+            background: rgba(15,26,13,0.65);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        [data-theme="dark"] .carte-badge {
+            background: rgba(0,0,0,0.6);
+        }
+
+        .carte-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15,26,13,0.5) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .carte:hover .carte-overlay { opacity: 1; }
+
         .carte-contenu {
-            padding: 20px;
+            padding: 20px 22px 22px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            flex-grow: 1;
+            gap: 4px;
+            flex: 1;
         }
 
         .nom {
-            margin: 0;
+            font-family: 'Playfair Display', serif;
             font-size: 1.4rem;
-            font-weight: 800;
-            text-transform: uppercase;
+            font-weight: 700;
             color: var(--text);
-            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
         }
 
-        .dossier {
-            margin: 0 0 15px 0;
+        .eleve-line {
+            font-size: 0.78rem;
             color: var(--muted);
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
         }
 
-        .dossier strong {
-            color: var(--text);
-            font-size: 1rem;
+        .eleve-line strong {
+            color: var(--accent2);
         }
 
         .ouvrir {
-            align-self: stretch; 
+            display: block;
             text-align: center;
             margin-top: auto;
             text-decoration: none;
-            background: var(--accent);
-            color: white;
-            font-weight: 600;
-            border-radius: 15px;
-            padding: 10px 20px;
-            font-size: 0.95rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            transition: all 0.2s;
+            border-radius: 10px;
+            padding: 11px 18px;
+            transition: all 0.25s;
+            box-shadow: 0 4px 14px rgba(61,107,53,0.25);
         }
 
         .ouvrir:hover {
-            background: var(--accent-hover);
-            transform: scale(1.02);
+            background: linear-gradient(135deg, var(--accent2), var(--accent3));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(61,107,53,0.4);
         }
 
+        /* ===== EMPTY STATE ===== */
         .empty {
-            grid-column: 1 / -1;
-            margin-top: 20px;
-            background: #fff8f3;
-            color: #b07c50;
-            border: 1px solid #e8d5c4;
-            border-radius: 20px;
-            padding: 20px;
             display: none;
-            font-weight: 600;
-            font-size: 1.2rem;
+            grid-column: 1/-1;
             text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
         }
 
-        /* --- FOOTER --- */
+        .empty-icon { font-size: 3rem; margin-bottom: 16px; }
+
+        .empty p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+        }
+
+        /* ===== FOOTER ===== */
         .site-footer {
-            background: var(--surface);
-            border-top: 1px solid var(--card-border);
-            padding: 40px 20px 20px;
-            margin-top: 40px;
-            text-align: center;
+            margin-top: auto;
+            padding-top: 60px;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
         }
 
-        .footer-content {
-            width: min(1200px, 94vw);
+        .footer-inner {
+            width: min(1300px, 100%);
             margin: 0 auto;
+            padding: 0 32px 40px;
         }
 
         .footer-titre {
-            margin: 0 0 15px;
-            color: var(--text);
-            font-size: 1.2rem;
-            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text2);
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         .portfolio-liens {
+            list-style: none;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px 25px;
-            margin-bottom: 30px;
-            padding: 0;
-            list-style: none;
+            gap: 10px 16px;
+            margin-bottom: 36px;
         }
 
         .portfolio-liens a {
             color: var(--muted);
             text-decoration: none;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 15px;
-            border: 1px solid transparent;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
             transition: all 0.2s;
         }
 
         .portfolio-liens a:hover {
             color: var(--accent);
-            background: var(--bg);
-            border-color: var(--card-border);
+            border-color: var(--accent);
+            background: var(--card-glow);
         }
 
-        .mentions-legales {
-            color: var(--muted);
-            font-size: 0.85rem;
-            font-weight: 400;
-            border-top: 1px solid var(--card-border);
+        .footer-bottom {
+            border-top: 1px solid var(--border);
             padding-top: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--muted);
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
         }
 
-        .mentions-legales a {
-            color: var(--muted);
-            text-decoration: none;
+        .footer-bottom a { color: var(--muted); text-decoration: none; }
+        .footer-bottom a:hover { color: var(--accent); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 680px) {
+            .hero { padding: 50px 20px 40px; }
+            .filtres-wrap, .grille-wrap, .toolbar { padding: 0 16px; }
+            .filtres { padding: 18px; }
+            .grille { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .header-inner { gap: 12px; }
         }
 
-        .mentions-legales a:hover {
-            color: var(--accent);
+        @media (max-width: 420px) {
+            .grille { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 760px) {
-            .filtres {
-                grid-template-columns: 1fr;
-            }
-            .header-content {
-                flex-direction: column;
-                gap: 10px;
-            }
+        /* ===== NOISE TEXTURE ===== */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: var(--noise);
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.4;
         }
     </style>
 </head>
 <body>
-    
-    <header class="site-header">
-        <div class="header-content">
-            <div class="logo">ZOO CUGEX</div>
-            <nav class="nav-liens">
+
+<div id="scroll-bar"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a class="logo" href="#">
+            <span class="logo-leaf">🌿</span>
+            <span class="logo-text">ZOO CUGEX</span>
+        </a>
+        <div class="header-right">
+            <nav>
                 <a href="#">Accueil</a>
                 <a href="#grilleAnimaux">Annuaire</a>
             </nav>
+            <button class="theme-btn" id="themeBtn" aria-label="Changer le thème"></button>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main class="container">
-        <div class="titre-container">
-            <h1>Découvrez notre <span>Faune</span></h1>
-            <p class="subtitle">Sélectionnez un animal pour consulter le dossier de l'équipe.</p>
+<section class="hero">
+    <span class="deco-leaf">🍃</span>
+    <span class="deco-leaf">🌿</span>
+    <span class="deco-leaf">🍀</span>
+    <div class="hero-eyebrow">🦁 Zoo Cugex — Projet 2026</div>
+    <h1>Découvrez notre<br><em>Faune Sauvage</em></h1>
+    <p>Sélectionnez un animal pour consulter le dossier de l'élève recherché.</p>
+</section>
+
+<div class="filtres-wrap">
+    <div class="filtres">
+        <div class="filtre-group">
+            <label for="filtrePrenom">Filtrer par auteur</label>
+            <select id="filtrePrenom">
+                <option value="">Toute l'équipe</option>
+                <option value="Alan">Alan</option>
+                <option value="Antoine">Antoine</option>
+                <option value="Cyriak">Cyriak</option>
+                <option value="David">David</option>
+                <option value="Evan">Evan</option>
+                <option value="Flavie">Flavie</option>
+                <option value="Ilies">Ilies</option>
+                <option value="Jules">Jules</option>
+                <option value="Leny">Leny</option>
+                <option value="Louis">Louis</option>
+                <option value="Mathias">Mathias</option>
+                <option value="Maxime">Maxime</option>
+                <option value="Paul">Paul</option>
+                <option value="Samuel">Samuel</option>
+                <option value="Simon">Simon</option>
+                <option value="Thomas">Thomas</option>
+                <option value="Wassim">Wassim</option>
+                <option value="Yohan">Yohan</option>
+            </select>
         </div>
+        <div class="filtre-group">
+            <label for="rechercheGenerale">Recherche rapide</label>
+            <input id="rechercheGenerale" type="text" placeholder="Ex : Ours, Antoine, Loup…">
+        </div>
+        <div class="filtre-actions">
+            <button class="btn btn-ghost" id="resetFiltres" type="button">Réinitialiser</button>
+        </div>
+    </div>
+</div>
 
-        <section class="filtres" aria-label="Filtres de recherche">
-            <label for="filtrePrenom">
-                Filtrer par auteur
-                <select id="filtrePrenom">
-                    <option value="">Toute l'équipe</option>
-                    <option value="Alan">Alan</option>
-                    <option value="Antoine">Antoine</option>
-                    <option value="Cyriak">Cyriak</option>
-                    <option value="David">David</option>
-                    <option value="Evan">Evan</option>
-                    <option value="Flavie">Flavie</option>
-                    <option value="Ilies">Ilies</option>
-                    <option value="Jules">Jules</option>
-                    <option value="Leny">Leny</option>
-                    <option value="Louis">Louis</option>
-                    <option value="Mathias">Mathias</option>
-                    <option value="Maxime">Maxime</option>
-                    <option value="Paul">Paul</option>
-                    <option value="Samuel">Samuel</option>
-                    <option value="Simon">Simon</option>
-                    <option value="Thomas">Thomas</option>
-                    <option value="Wassim">Wassim</option>
-                    <option value="Yohan">Yohan</option>
-                    <option value="Mathias">Yohan</option>
-                </select>
-            </label>
+<div class="toolbar">
+    <p class="compteur" id="resultatCount">
+        <strong id="countNum">19</strong> fiches affichées
+    </p>
+    <div class="sort-group">
+        <button class="sort-btn active" data-sort="default" type="button">Par défaut</button>
+        <button class="sort-btn" data-sort="alpha-anim" type="button">A→Z Animal</button>
+        <button class="sort-btn" data-sort="alpha-elev" type="button">A→Z Auteur</button>
+    </div>
+</div>
 
-            <label for="rechercheGenerale">
-                Recherche rapide
-                <input id="rechercheGenerale" type="text" placeholder="Ex: Ours, Antoine, Loup...">
-            </label>
+<main>
+    <section class="grille-wrap" id="grilleAnimaux">
+        <div class="grille" id="grille">
 
-            <button class="btn-reset" id="resetFiltres" type="button">Réinitialiser</button>
-        </section>
-
-        <p class="compteur" id="resultatCount">Fiches affichées</p>
-
-        <section class="grille" id="grilleAnimaux">
-            
-            <article class="carte" data-animal="Lion" data-eleve="Alan">
-                <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=500" alt="Le Lion" class="carte-img">
+            <article class="carte" data-animal="Lion" data-eleve="Alan" data-order="0">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=500" alt="Le Lion" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Mammifère</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Lion</h2>
-                    <p class="dossier">Par : <strong>Alan</strong></p>
-                    <a class="ouvrir" href="Alan/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Alan</strong></p>
+                    <a class="ouvrir" href="Alan/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Ours" data-eleve="Antoine">
-            <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=500" alt="L'Ours" class="carte-img">                <div class="carte-contenu">
+            <article class="carte" data-animal="Ours" data-eleve="Antoine" data-order="1">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=500" alt="L'Ours" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Mammifère</span>
+                </div>
+                <div class="carte-contenu">
                     <h2 class="nom">L'Ours</h2>
-                    <p class="dossier">Par : <strong>Antoine</strong></p>
-                    <a class="ouvrir" href="Antoine/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Antoine</strong></p>
+                    <a class="ouvrir" href="Antoine/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Aigle" data-eleve="Cyriak">
-                <img src="https://images.unsplash.com/photo-1598439210625-5067c578f3f6?w=500" alt="L'Aigle" class="carte-img">
+            <article class="carte" data-animal="Aigle" data-eleve="Cyriak" data-order="2">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1598439210625-5067c578f3f6?w=500" alt="L'Aigle" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Rapace</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">L'Aigle</h2>
-                    <p class="dossier">Par : <strong>Cyriak</strong></p>
-                    <a class="ouvrir" href="Cyriak/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Cyriak</strong></p>
+                    <a class="ouvrir" href="Cyriak/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Loup" data-eleve="David">
-                <img src="https://images.unsplash.com/photo-1590177579679-05244583161a?w=500" alt="Le Loup" class="carte-img">
+            <article class="carte" data-animal="Loup" data-eleve="David" data-order="3">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1590177579679-05244583161a?w=500" alt="Le Loup" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Mammifère</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Loup</h2>
-                    <p class="dossier">Par : <strong>David</strong></p>
-                    <a class="ouvrir" href="David/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>David</strong></p>
+                    <a class="ouvrir" href="David/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Gorille" data-eleve="Evan">
-                <img src="https://images.unsplash.com/photo-1541781257124-74780fceeaac?w=500" alt="Le Gorille" class="carte-img">
+            <article class="carte" data-animal="Gorille" data-eleve="Evan" data-order="4">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1541781257124-74780fceeaac?w=500" alt="Le Gorille" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Primate</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Gorille</h2>
-                    <p class="dossier">Par : <strong>Evan</strong></p>
-                    <a class="ouvrir" href="Evan/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Evan</strong></p>
+                    <a class="ouvrir" href="Evan/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Dauphin" data-eleve="Flavie">
-                <img src="https://images.unsplash.com/photo-1607153333880-92760bf0faeb?w=500" alt="Le Dauphin" class="carte-img">
+            <article class="carte" data-animal="Dauphin" data-eleve="Flavie" data-order="5">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1607153333880-92760bf0faeb?w=500" alt="Le Dauphin" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Marin</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Dauphin</h2>
-                    <p class="dossier">Par : <strong>Flavie</strong></p>
-                    <a class="ouvrir" href="Flavie/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Flavie</strong></p>
+                    <a class="ouvrir" href="Flavie/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Éléphant" data-eleve="Ilies">
-                <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=500" alt="L'Éléphant" class="carte-img">
+            <article class="carte" data-animal="Éléphant" data-eleve="Ilies" data-order="6">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=500" alt="L'Éléphant" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Mammifère</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">L'Éléphant</h2>
-                    <p class="dossier">Par : <strong>Ilies</strong></p>
-                    <a class="ouvrir" href="Ilies/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Ilies</strong></p>
+                    <a class="ouvrir" href="Ilies/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Calamar" data-eleve="Jules">
-                <img src="https://images.unsplash.com/photo-1545679469-6338b255476d?w=500" alt="Le Calamar" class="carte-img">
+            <article class="carte" data-animal="Calamar" data-eleve="Jules" data-order="7">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1545679469-6338b255476d?w=500" alt="Le Calamar" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Marin</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Calamar</h2>
-                    <p class="dossier">Par : <strong>Jules</strong></p>
-                    <a class="ouvrir" href="Jules/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Jules</strong></p>
+                    <a class="ouvrir" href="Jules/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Pingouin" data-eleve="Leny">
-                <img src="https://images.unsplash.com/photo-1598439210625-5067c578f3f6?w=500" alt="Le Pingouin" class="carte-img">
+            <article class="carte" data-animal="Pingouin" data-eleve="Leny" data-order="8">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1598439210625-5067c578f3f6?w=500" alt="Le Pingouin" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Oiseau</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Pingouin</h2>
-                    <p class="dossier">Par : <strong>Leny</strong></p>
-                    <a class="ouvrir" href="Leny/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Leny</strong></p>
+                    <a class="ouvrir" href="Leny/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Panda" data-eleve="Louis">
-                <img src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=500" alt="Le Panda" class="carte-img">
+            <article class="carte" data-animal="Panda" data-eleve="Louis" data-order="9">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=500" alt="Le Panda" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Mammifère</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Panda</h2>
-                    <p class="dossier">Par : <strong>Louis</strong></p>
-                    <a class="ouvrir" href="Louis/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Louis</strong></p>
+                    <a class="ouvrir" href="Louis/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Renard" data-eleve="Mathias">
-                <img src="https://images.unsplash.com/photo-1516934024742-b461fba47600?w=500" alt="Le Renard" class="carte-img">
+            <article class="carte" data-animal="Renard" data-eleve="Mathias" data-order="10">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1516934024742-b461fba47600?w=500" alt="Le Renard" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Mammifère</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Renard</h2>
-                    <p class="dossier">Par : <strong>Mathias</strong></p>
-                    <a class="ouvrir" href="Mathias/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Mathias</strong></p>
+                    <a class="ouvrir" href="Mathias/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Koala" data-eleve="Paul">
-                <img src="https://images.unsplash.com/photo-1540324864-44ee1da1f13b?w=500" alt="Le Koala" class="carte-img">
+            <article class="carte" data-animal="Koala" data-eleve="Paul" data-order="11">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1540324864-44ee1da1f13b?w=500" alt="Le Koala" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Marsupial</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Koala</h2>
-                    <p class="dossier">Par : <strong>Paul</strong></p>
-                    <a class="ouvrir" href="Paul/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Paul</strong></p>
+                    <a class="ouvrir" href="Paul/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Guépard" data-eleve="Samuel">
-                <img src="https://images.unsplash.com/photo-1551000693-0ec3531b7e28?w=500" alt="Le Guépard" class="carte-img">
+            <article class="carte" data-animal="Hibou" data-eleve="Samuel" data-order="12">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1542829155-2ccaa6d79346?w=500" alt="Le Hibou" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Rapace</span>
+                </div>
                 <div class="carte-contenu">
-                    <h2 class="nom">Le Guépard</h2>
-                    <p class="dossier">Par : <strong>Samuel</strong></p>
-                    <a class="ouvrir" href="Samuel/index.html">Voir le dossier</a>
+                    <h2 class="nom">Le Hibou</h2>
+                    <p class="eleve-line">Par <strong>Samuel</strong></p>
+                    <a class="ouvrir" href="Samuel/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Girafe" data-eleve="Simon">
-                <img src="https://images.unsplash.com/photo-1547464168-3e5eeb27c5bb?w=500" alt="La Girafe" class="carte-img">
+            <article class="carte" data-animal="Girafe" data-eleve="Simon" data-order="13">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1547464168-3e5eeb27c5bb?w=500" alt="La Girafe" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Mammifère</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">La Girafe</h2>
-                    <p class="dossier">Par : <strong>Simon</strong></p>
-                    <a class="ouvrir" href="Simon/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Simon</strong></p>
+                    <a class="ouvrir" href="Simon/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Perroquet" data-eleve="Thomas">
-                <img src="https://images.unsplash.com/photo-1552504268-2c2ee10de27a?w=500" alt="Le Perroquet" class="carte-img">
+            <article class="carte" data-animal="Perroquet" data-eleve="Thomas" data-order="14">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1552504268-2c2ee10de27a?w=500" alt="Le Perroquet" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Oiseau</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Perroquet</h2>
-                    <p class="dossier">Par : <strong>Thomas</strong></p>
-                    <a class="ouvrir" href="Thomas/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Thomas</strong></p>
+                    <a class="ouvrir" href="Thomas/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Dragon" data-eleve="Wassim">
-                <img src="Wassim/dragon-accueil.jpg" alt="Le Dragon" class="carte-img">
+            <article class="carte" data-animal="Dragon" data-eleve="Wassim" data-order="15">
+                <div class="carte-img-wrap">
+                    <img src="Wassim/dragon-accueil.jpg" alt="Le Dragon" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Légendaire</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Dragon</h2>
-                    <p class="dossier">Par : <strong>Wassim</strong></p>
-                    <a class="ouvrir" href="Wassim/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Wassim</strong></p>
+                    <a class="ouvrir" href="Wassim/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Cochon" data-eleve="Yohan">
-                <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=500" alt="Le Cochon" class="carte-img">
+            <article class="carte" data-animal="Cochon" data-eleve="Yohan" data-order="16">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=500" alt="Le Cochon" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Mammifère</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Le Cochon</h2>
-                    <p class="dossier">Par : <strong>Yohan</strong></p>
-                    <a class="ouvrir" href="Yohan/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Yohan</strong></p>
+                    <a class="ouvrir" href="Yohan/index.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Tortue" data-eleve="Maxime">
-                <img src="https://images.unsplash.com/photo-1508182314998-3bd49473002f" alt="La tortue" class="carte-img">
+            <article class="carte" data-animal="Tortue" data-eleve="Maxime" data-order="17">
+                <div class="carte-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1508182314998-3bd49473002f?w=500" alt="La Tortue" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Reptile</span>
+                </div>
                 <div class="carte-contenu">
-                    <h2 class="nom">La tortue</h2>
-                    <p class="dossier">Par : <strong>Maxime</strong></p>
-                    <a class="ouvrir" href="Maxime/tortue.html">Voir le dossier</a>
+                    <h2 class="nom">La Tortue</h2>
+                    <p class="eleve-line">Par <strong>Maxime</strong></p>
+                    <a class="ouvrir" href="Maxime/tortue.html">Voir le dossier →</a>
                 </div>
             </article>
 
-            <article class="carte" data-animal="Dinosaures" data-eleve="Mathias">
-                <img src="./Mathias/dinosaurs.jpg" alt="La tortue" class="carte-img">
+            <article class="carte" data-animal="Dinosaures" data-eleve="Mathias" data-order="18">
+                <div class="carte-img-wrap">
+                    <img src="./Mathias/dinosaurs.jpg" alt="Les Dinosaures" class="carte-img" loading="lazy">
+                    <div class="carte-overlay"></div>
+                    <span class="carte-badge">Préhistoire</span>
+                </div>
                 <div class="carte-contenu">
                     <h2 class="nom">Dinosaures</h2>
-                    <p class="dossier">Par : <strong>Mathias</strong></p>
-                    <a class="ouvrir" href="Mathias/index.html">Voir le dossier</a>
+                    <p class="eleve-line">Par <strong>Mathias</strong></p>
+                    <a class="ouvrir" href="Mathias/index.html">Voir le dossier →</a>
                 </div>
             </article>
-            
-        </section>
 
-        <p class="empty" id="noResult">Aucune fiche ne correspond à votre recherche.</p>
-    </main>
-
-    <footer class="site-footer">
-        <div class="footer-content">
-            <h3 class="footer-titre">Les Portfolios de l'Équipe</h3>
-            <ul class="portfolio-liens">
-                <li><a href="lien-alan.com" target="_blank">Alan</a></li>
-                <li><a href="lien-antoine.com" target="_blank">Antoine</a></li>
-                <li><a href="lien-cyriak.com" target="_blank">Cyriak</a></li>
-                <li><a href="lien-david.com" target="_blank">David</a></li>
-                <li><a href="lien-evan.com" target="_blank">Evan</a></li>
-                <li><a href="lien-flavie.com" target="_blank">Flavie</a></li>
-                <li><a href="lien-ilies.com" target="_blank">Ilies</a></li>
-                <li><a href="lien-jules.com" target="_blank">Jules</a></li>
-                <li><a href="lien-leny.com" target="_blank">Leny</a></li>
-                <li><a href="lien-louis.com" target="_blank">Louis</a></li>
-                <li><a href="lien-mathias.com" target="_blank">Mathias</a></li>
-                <li><a href="lien-maxime.com" target="_blank">Maxime</a></li>
-                <li><a href="lien-paul.com" target="_blank">Paul</a></li>
-                <li><a href="lien-samuel.com" target="_blank">Samuel</a></li>
-                <li><a href="lien-simon.com" target="_blank">Simon</a></li>
-                <li><a href="lien-thomas.com" target="_blank">Thomas</a></li>
-                <li><a href="https://ngadiwassim.fr/" target="_blank">Wassim</a></li>
-                <li><a href="lien-yohan.com" target="_blank">Yohan</a></li>
-                <li><a href="https://mathiasleculeerave.com/" target="_blank">Mathias</a></li>
-            </ul>
-            
-            <div class="mentions-legales">
-                <span>© 2026 CUGEX - Projet Scolaire</span>
-                <a href="mentions-legales.html">Mentions Légales</a>
+            <div class="empty" id="noResult">
+                <div class="empty-icon">🌿</div>
+                <p>Aucune fiche ne correspond à votre recherche.</p>
             </div>
         </div>
-    </footer>
+    </section>
+</main>
 
-    <script>
-        const selectEleve = document.getElementById("filtrePrenom");
-        const searchGenerale = document.getElementById("rechercheGenerale");
-        const resetBtn = document.getElementById("resetFiltres");
-        const cards = Array.from(document.querySelectorAll(".carte"));
-        const count = document.getElementById("resultatCount");
-        const emptyState = document.getElementById("noResult");
+<footer class="site-footer">
+    <div class="footer-inner">
+        <h3 class="footer-titre">Portfolios de l'Équipe</h3>
+        <ul class="portfolio-liens">
+            <li><a href="lien-alan.com" target="_blank">Alan</a></li>
+            <li><a href="lien-antoine.com" target="_blank">Antoine</a></li>
+            <li><a href="lien-cyriak.com" target="_blank">Cyriak</a></li>
+            <li><a href="lien-david.com" target="_blank">David</a></li>
+            <li><a href="lien-evan.com" target="_blank">Evan</a></li>
+            <li><a href="lien-flavie.com" target="_blank">Flavie</a></li>
+            <li><a href="lien-ilies.com" target="_blank">Ilies</a></li>
+            <li><a href="lien-jules.com" target="_blank">Jules</a></li>
+            <li><a href="lien-leny.com" target="_blank">Leny</a></li>
+            <li><a href="lien-louis.com" target="_blank">Louis</a></li>
+            <li><a href="lien-mathias.com" target="_blank">Mathias</a></li>
+            <li><a href="lien-maxime.com" target="_blank">Maxime</a></li>
+            <li><a href="lien-paul.com" target="_blank">Paul</a></li>
+            <li><a href="lien-samuel.com" target="_blank">Samuel</a></li>
+            <li><a href="lien-simon.com" target="_blank">Simon</a></li>
+            <li><a href="lien-thomas.com" target="_blank">Thomas</a></li>
+            <li><a href="https://ngadiwassim.fr/" target="_blank">Wassim</a></li>
+            <li><a href="lien-yohan.com" target="_blank">Yohan</a></li>
+            <li><a href="https://mathiasleculeerave.com/" target="_blank">Mathias L.</a></li>
+        </ul>
+        <div class="footer-bottom">
+            <span>© 2026 CUGEX — Projet Scolaire</span>
+            <a href="mentions-legales.html">Mentions Légales</a>
+        </div>
+    </div>
+</footer>
 
-        function normalize(value) {
-            return value
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "");
+<script>
+    /* ===== SCROLL PROGRESS ===== */
+    const scrollBar = document.getElementById('scroll-bar');
+    window.addEventListener('scroll', () => {
+        const scrollTop = document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        scrollBar.style.width = (scrollTop / docHeight * 100) + '%';
+    }, { passive: true });
+
+    /* ===== THEME TOGGLE ===== */
+    const html = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+
+    themeBtn.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+    });
+
+    /* ===== FILTER & SORT ===== */
+    const selectEleve = document.getElementById('filtrePrenom');
+    const searchInput  = document.getElementById('rechercheGenerale');
+    const resetBtn     = document.getElementById('resetFiltres');
+    const grille       = document.getElementById('grille');
+    const countNum     = document.getElementById('countNum');
+    const noResult     = document.getElementById('noResult');
+    const cards        = Array.from(document.querySelectorAll('.carte'));
+
+    let currentSort = 'default';
+
+    function normalize(v) {
+        return v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function animateCount(from, to) {
+        const duration = 400;
+        const start = performance.now();
+        const tick = (now) => {
+            const t = Math.min((now - start) / duration, 1);
+            const val = Math.round(from + (to - from) * (t < .5 ? 2*t*t : -1+(4-2*t)*t));
+            countNum.textContent = val;
+            if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+    }
+
+    function applyFilter() {
+        const sel = normalize(selectEleve.value.trim());
+        const q   = normalize(searchInput.value.trim());
+        let visible = 0;
+        const prevCount = parseInt(countNum.textContent) || 0;
+
+        // Sort
+        let sorted = [...cards];
+        if (currentSort === 'alpha-anim') {
+            sorted.sort((a, b) => normalize(a.dataset.animal).localeCompare(normalize(b.dataset.animal)));
+        } else if (currentSort === 'alpha-elev') {
+            sorted.sort((a, b) => normalize(a.dataset.eleve).localeCompare(normalize(b.dataset.elev)));
+        } else {
+            sorted.sort((a, b) => +a.dataset.order - +b.dataset.order);
         }
 
-        function applyFilter() {
-            const selected = normalize(selectEleve.value.trim());
-            const searched = normalize(searchGenerale.value.trim());
-            let visibleCount = 0;
+        // Reorder DOM
+        sorted.forEach(c => grille.insertBefore(c, noResult));
 
-            cards.forEach((card) => {
-                const animal = normalize(card.getAttribute("data-animal") || "");
-                const eleve = normalize(card.getAttribute("data-eleve") || "");
-                
-                const matchSelect = selected === "" || eleve === selected;
-                const matchSearch = searched === "" || animal.includes(searched) || eleve.includes(searched);
-                
-                const isVisible = matchSelect && matchSearch;
+        // Filter
+        sorted.forEach((card, i) => {
+            const animal = normalize(card.dataset.animal || '');
+            const eleve  = normalize(card.dataset.eleve  || '');
+            const match  = (sel === '' || eleve === sel) &&
+                           (q   === '' || animal.includes(q) || eleve.includes(q));
 
-                card.style.display = isVisible ? "flex" : "none";
-                
-                if (isVisible) {
-                    visibleCount += 1;
-                }
-            });
+            if (match) {
+                card.style.display = 'flex';
+                card.style.animationDelay = (visible * 40) + 'ms';
+                card.classList.remove('hiding');
+                card.classList.add('showing');
+                visible++;
+            } else {
+                card.style.display = 'none';
+                card.classList.remove('showing');
+            }
+        });
 
-            count.textContent = `${visibleCount} fiche${visibleCount > 1 ? "s" : ""} affichée${visibleCount > 1 ? "s" : ""}`;
-            emptyState.style.display = visibleCount === 0 ? "block" : "none";
-        }
+        animateCount(prevCount, visible);
+        noResult.style.display = visible === 0 ? 'block' : 'none';
+    }
 
+    selectEleve.addEventListener('change', applyFilter);
+    searchInput.addEventListener('input',  applyFilter);
+    resetBtn.addEventListener('click', () => {
+        selectEleve.value = '';
+        searchInput.value = '';
         applyFilter();
+    });
 
-        selectEleve.addEventListener("change", applyFilter);
-        searchGenerale.addEventListener("input", applyFilter);
-        resetBtn.addEventListener("click", () => {
-            selectEleve.value = "";
-            searchGenerale.value = "";
+    /* ===== SORT BUTTONS ===== */
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSort = btn.dataset.sort;
             applyFilter();
         });
-    </script>
+    });
+
+    /* ===== INIT ===== */
+    applyFilter();
+</script>
 </body>
 </html>
