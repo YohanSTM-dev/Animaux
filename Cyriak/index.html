@@ -1,182 +1,1109 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyriak - Animaux</title>
+    <title>L'Hippopotame — Présentation</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --bg: #f3ede2;
-            --surface: #ffffff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --accent: #cc5c1a;
-            --accent-hover: #a84b15;
-            --border: #e6ddce;
+            /* Thème Kaki / Olive / Marécage (Vert Olive, Khaki, Argile) */
+            --kaki-deep: #1b220a;
+            /* Marécage sombre */
+            --kaki-dark: #3a4216;
+            /* Olive profonde */
+            --kaki-medium: #556b2f;
+            /* Kaki classique */
+            --kaki-light: #8f9779;
+            /* Kaki doux / Sauge */
+            --mud-brown: #3d2b1f;
+            /* Boue sombre */
+            --clay: #b87333;
+            /* Accents cuivrés */
+            --sand: #d2b48c;
+            /* Texte clair / Sable */
+            --white: #ffffff;
+            --cream: #f4ece2;
+            --text-main: #e2e8f0;
+            --text-dark: #1b1f0a;
         }
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--kaki-deep);
+            background-image:
+                radial-gradient(circle at 10px 10px, rgba(0, 0, 0, 0.2) 2px, transparent 0),
+                /* Motif "Motifs de boue" / Organic splotches */
+                radial-gradient(at 50% 50%, rgba(61, 43, 31, 0.4) 0%, transparent 70%),
+                radial-gradient(at 20% 80%, rgba(61, 43, 31, 0.3) 0%, transparent 60%);
+            background-size: 100px 100px, 100% 100%, 100% 100%;
+            background-attachment: fixed;
+            font-family: 'Nunito', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
-        .container {
-            width: min(1100px, 94vw);
-            margin: 0 auto;
-            padding: 28px 0 56px;
+        /* ── MUD & WATER EFFECTS ── */
+        .mud-splash {
+            position: relative;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+        .mud-splash::before {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: var(--mud-brown);
+            filter: blur(60px);
+            opacity: 0.4;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            z-index: -1;
+            pointer-events: none;
+            animation: mudMove 20s infinite alternate;
         }
 
-        h1 {
-            margin: 0;
-            font-size: clamp(1.8rem, 4vw, 2.4rem);
+        @keyframes mudMove {
+            from {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            to {
+                transform: translate(50px, 30px) rotate(10deg);
+            }
         }
 
-        .subtitle {
-            margin: 6px 0 18px;
-            color: var(--muted);
+        .mud-splash-right::before {
+            top: 10%;
+            right: -50px;
         }
 
-        .btn-retour {
-            text-decoration: none;
-            background: var(--accent);
-            color: #ffffff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 9px 16px;
-            white-space: nowrap;
+        .mud-splash-left::before {
+            bottom: 10%;
+            left: -50px;
         }
 
-        .btn-retour:hover {
-            background: var(--accent-hover);
-        }
-
-        .grille-animaux {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
-
-        .carte-animal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        .water-ripple {
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .water-ripple::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.1),
+                    transparent);
+            transform: skewX(-25deg);
+            animation: ripple 8s infinite linear;
+        }
+
+        @keyframes ripple {
+            0% {
+                left: -100%;
+            }
+
+            20% {
+                left: 200%;
+            }
+
+            100% {
+                left: 200%;
+            }
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 3rem 2rem;
         }
 
-        .carte-image {
+        /* Nouvelle image d'hippopotame pour le début (Héro) */
+        .hero-hero-img {
             width: 100%;
-            height: 190px;
-            object-fit: cover;
-            display: block;
-            background: #f9fafb;
-            border-bottom: 1px solid var(--border);
+            max-width: 500px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(33, 30, 27, 0.15);
+            margin-bottom: 2.5rem;
+            animation: fadeUp 1s ease-out both;
+            border: 3px solid var(--white);
         }
 
-        .carte-contenu {
-            padding: 16px;
-            display: grid;
-            gap: 8px;
-            flex: 1;
+        .hero h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(3rem, 10vw, 7rem);
+            color: var(--clay);
+            letter-spacing: -2px;
+            text-shadow: 4px 4px 0 var(--mud-deep), 8px 8px 15px rgba(0, 0, 0, 0.5);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
         }
 
-        .carte-titre {
-            margin: 0;
-            font-size: 1.08rem;
-            font-weight: 800;
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.6) rotate(-3deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
         }
 
-        .carte-sous-titre {
-            margin: 0;
-            color: #374151;
-            font-size: 0.9rem;
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--sand);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.7s 0.6s both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeUp 0.7s 0.8s both;
+        }
+
+        .hero-tag {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(4px);
+            border: 2px solid rgba(104, 117, 86, 0.4);
+            border-radius: 30px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
+            color: var(--brown);
         }
 
-        .carte-statut {
-            margin: 0;
-            color: #4b5563;
-            font-size: 0.9rem;
+        /* ── NAV ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(26, 20, 16, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--mud-medium);
+            padding: 0.8rem 2rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .btn-fiche {
-            justify-self: start;
+        nav a {
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.95rem;
+            color: var(--sand);
             text-decoration: none;
-            background: var(--accent);
-            color: #fff;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        nav a:hover {
+            background: var(--clay);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(166, 124, 82, 0.4);
+        }
+
+        /* ── SECTIONS ── */
+        section {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-header .icon {
+            font-size: 2.2rem;
+            font-family: 'Fredoka One', cursive;
+            color: white;
+            background: var(--mud-medium);
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 4px 4px 0 var(--hippo-blue);
+            flex-shrink: 0;
+        }
+
+        .section-header h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--clay);
+            line-height: 1.1;
+        }
+
+        .section-header .slide-num {
+            font-size: 0.85rem;
             font-weight: 700;
-            border-radius: 999px;
-            padding: 8px 14px;
-            margin-top: 4px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--brown-light);
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 0.2rem;
         }
 
-        .btn-fiche:hover {
-            background: var(--accent-hover);
+        /* ── CARDS ── */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
+        .card {
+            background: var(--mud-dark);
+            border-radius: 20px;
+            padding: 1.8rem;
+            border: 2px solid var(--mud-medium);
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: var(--text-main);
+        }
+
+        .card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3rem;
+            color: var(--clay);
+            margin-bottom: 0.8rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* ── HIGHLIGHT ── */
+        .highlight {
+            background: linear-gradient(135deg, var(--mud-medium) 0%, var(--mud-dark) 100%);
+            color: var(--text-main);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+            font-size: 1.2rem;
+            line-height: 1.8;
+            font-weight: 600;
+        }
+
+        .highlight strong {
+            color: white;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+        }
+
+        /* ── ÉTYMOLOGIE ── */
+        .etym-block {
+            background: var(--mud-dark);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 2px solid var(--mud-medium);
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .etym-latin {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            color: var(--clay);
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .etym-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .etym-text strong {
+            color: var(--gold-dark);
+            font-weight: 700;
+        }
+
+        /* ── STORIES ── */
+        .stories {
+            display: grid;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .story {
+            background: var(--mud-dark);
+            border-radius: 20px;
+            border: 2px solid var(--mud-medium);
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .story:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .story-header {
+            background: var(--mud-medium);
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .story-header h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .story-body {
+            padding: 2rem;
+        }
+
+        .story-body img {
+            margin-top: 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--beige-dark);
+            /* Assure que TOUTES les photos de récits sont entièrement visibles sans être coupées */
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            background: var(--white);
+        }
+
+        .w-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .w-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.2rem;
+            border: 1.5px solid var(--mud-medium);
+        }
+
+        .w-item .w-label {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1rem;
+            color: var(--clay);
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .w-item p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--brown-dark);
+        }
+
+        /* ── TIMELINE ── */
+        .timeline {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .tl-item {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .tl-dot {
+            background: var(--clay);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4rem;
+            box-shadow: 3px 3px 0 var(--mud-deep);
+            flex-shrink: 0;
+        }
+
+        .tl-content {
+            background: var(--mud-dark);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            border: 2px solid var(--mud-medium);
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
+            color: var(--text-main);
+        }
+
+        .tl-content h4 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2rem;
+            color: var(--gold-dark);
+            margin-bottom: 0.6rem;
+        }
+
+        .tl-content p {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* ── CULTURE CARDS ── */
+        .culture-item {
+            background: var(--mud-dark);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border: 2px solid var(--mud-medium);
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+            display: grid;
+            grid-template-columns: 1fr;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: var(--text-main);
+        }
+
+        .culture-item:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .culture-item h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            color: var(--clay);
+            margin-bottom: 1rem;
+        }
+
+        .culture-item img {
+            width: 100%;
+            height: 450px;
+            object-fit: contain;
+            border-radius: 16px;
+            margin-top: 1rem;
+            box-shadow: 6px 6px 0 var(--mud-medium);
+            background: var(--mud-dark);
+        }
+
+        .culture-item p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── SEP ── */
+        .sep {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--beige-dark), transparent);
+            margin: 0 10%;
+        }
+
+        /* ── CONCLUSION ── */
+        #conclusion {
+            background: var(--mud-dark);
+            color: var(--text-main);
+            border-radius: 32px;
+            margin: 4rem auto;
+            max-width: 960px;
+            padding: 5rem 3rem;
+            text-align: center;
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.6);
+            border: 3px solid var(--clay);
+        }
+
+        #conclusion .section-header {
+            justify-content: center;
+        }
+
+        #conclusion .section-header h2 {
+            color: var(--beige-light);
+        }
+
+        #conclusion p {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--beige-light);
+            max-width: 700px;
+            margin: 2rem auto;
+        }
+
+        /* ── REVEAL ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ── NEW CURIOSITY SECTION ── */
+        .except-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .except-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1.5px solid var(--mud-medium);
+            color: var(--text-main);
+        }
+
+        .expr-duo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .expr-card {
+            background: var(--mud-medium);
+            border-left: 5px solid var(--clay);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+            color: var(--text-main);
+        }
+
+        .expr-card strong {
+            display: block;
+            font-family: 'Fredoka One', cursive;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Styles de story déjà définis au-dessus, pas besoin de banni-container custom pour du standard */
+
+        .combat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .combat-card {
+            background: var(--kaki-dark);
+            border: 2px solid var(--kaki-medium);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .combat-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .combat-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .combat-info {
+            padding: 1.5rem;
+        }
+
+        .combat-info h4 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--clay);
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 800px) {
+            .combat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-bleed-content {
+                margin: 0 1rem;
+                padding: 2rem;
             }
         }
     </style>
 </head>
+
 <body>
-    <main class="container">
-        <div class="header">
-            <h1>Animaux de Cyriak</h1>
-            <a class="btn-retour" href="../index.html">Retour a la liste</a>
+
+    <!-- ── HERO ── -->
+    <div class="hero">
+        <img src="hippo_water.jpg" alt="Un magnifique hippopotame dans l'eau" class="hero-hero-img">
+        <!-- L'hippopotame est désormais énorme au centre et tout en haut pour qu'on le voie bien ! -->
+        <h1>Le Colosse</h1>
+        <p class="hero-sub">Origines · Légendes · Culture</p>
+        <p
+            style="font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--brown-light); letter-spacing:2px; margin-bottom:1.5rem; animation: fadeUp 0.7s 1s both;">
+            Par Cyriak Launay</p>
+    </div>
+
+    <!-- ── NAV ── -->
+    <nav>
+        <a href="#origines">Origines</a>
+        <a href="#legendes">Mythes</a>
+        <a href="#moyenage">Moyen Âge</a>
+        <a href="#arts">Culture Pop</a>
+        <a href="#visuels">Curiosités</a>
+        <a href="#conclusion">Conclusion</a>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════
+     DIAPO 1 — PRÉSENTATION & ORIGINES
+════════════════════════════════════════════ -->
+    <section id="origines" class="mud-splash mud-splash-right">
+        <div class="section-header reveal">
+            <div class="icon">01</div>
+            <div>
+                <span class="slide-num">Diapositive 1</span>
+                <h2>Présentation & Origines</h2>
+            </div>
         </div>
-        <p class="subtitle">Tu peux mettre tes images en haut des cards en rempla cant les fichiers dans le dossier images.</p>
 
-        <section class="grille-animaux">
-            <article class="carte-animal">
-                <img src="./images/lion.jpg" alt="Lion" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+lion.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">LION</h2>
-                    <p class="carte-sous-titre">Categorie: Mammiferes</p>
-                    <p class="carte-statut">Selection de Cyriak.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+        <div class="etym-block reveal water-ripple">
+            <div class="etym-latin">Hippopotamus</div>
+            <div class="etym-text">
+                <strong>Étymologie grecque</strong> — L'appellation hippopotame provient du grec ancien « hippos »
+                signifiant <em>cheval</em> et « potamos » signifiant <em>fleuve</em>. Le "cheval du fleuve".
+                Curieusement, l'étude phylogénétique moderne démontre que son plus proche parent terrestre n'est pas le
+                cheval, mais les <strong>baleines</strong>, dont il s'est séparé il y a 55 millions d'années.
+            </div>
+        </div>
 
-            <article class="carte-animal">
-                <img src="./images/aigle.jpg" alt="Aigle" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+aigle.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">AIGLE</h2>
-                    <p class="carte-sous-titre">Categorie: Oiseaux</p>
-                    <p class="carte-statut">Selection de Cyriak.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
+        <!-- NOUVEAU VISUEL DE NAGE -->
+        <div class="reveal" style="margin-bottom: 3rem;">
+            <div
+                style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: center; background: var(--kaki-dark); padding: 2rem; border-radius: 24px; border: 2px solid var(--kaki-medium);">
+                <div>
+                    <h3 style="font-family:'Fredoka One',cursive; color:var(--clay); margin-bottom: 1rem;">L'Aisance
+                        Subaquatique</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.7;">
+                        Contrairement aux apparences, l'hippopotame ne nage pas au sens propre : il <strong>marche sur
+                            le fond</strong> avec une grâce surprenante. Sa densité osseuse lui permet de rester immergé
+                        sans effort, se propulsant délicatement dans ce ballet aquatique.
+                    </p>
                 </div>
-            </article>
+                <img src="hippo_nage.webp" alt="Hippopotame nageant sous l'eau"
+                    style="width: 100%; border-radius: 16px; border: 3px solid var(--clay); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            </div>
+        </div>
 
-            <article class="carte-animal">
-                <img src="./images/tortue.jpg" alt="Tortue" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+tortue.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">TORTUE</h2>
-                    <p class="carte-sous-titre">Categorie: Reptiles</p>
-                    <p class="carte-statut">Selection de Cyriak.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
+        <div class="cards">
+            <div class="card reveal">
+                <h3>Parenté surprenante</h3>
+                <p>Bien loin du cheval ou du porc auquel il ressemble, il partage une lignée ancienne avec les cétacés,
+                    expliquant son incroyable adaptation et son aisance en milieu aquatique profond.</p>
+            </div>
+            <div class="card reveal">
+                <h3>Protection naturelle</h3>
+                <p>Son métabolisme sécrète un fluide corporel rougeâtre (souvent confondu à tort avec de la sueur de
+                    sang). Ce liquide agit comme un <strong>filtre ultraviolet</strong> puissant et un excellent
+                    antibactérien contre le soleil zénithal.</p>
+                <img src="hippo-out-of-water-lower-zambezi-national-park-zambia-reduite.jpg"
+                    alt="Hippopotame hors de l'eau au parc du Zambèze"
+                    style="width:100%; height:180px; object-fit:contain; border-radius:10px; margin-top:1rem; border:1.5px solid var(--beige-dark); background:var(--white);">
+            </div>
+            <div class="card reveal">
+                <h3>Force titanesque</h3>
+                <p>Pesant en moyenne 1 500 kg, il court jusqu'à 30 km/h sur terre. C'est l'un des plus massifs
+                    mammifères terrestres.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════
+     DIAPO 2 — CONTES & LÉGENDES
+════════════════════════════════════════════ -->
+    <section id="legendes" class="mud-splash mud-splash-left">
+        <div class="section-header reveal">
+            <div class="icon">02</div>
+            <div>
+                <span class="slide-num">Diapositive 2</span>
+                <h2>L'hippopotame dans les mythes</h2>
+            </div>
+        </div>
+
+        <div class="highlight reveal">
+            L'hippopotame a toujours fasciné par sa <strong>double nature</strong> : animal paisible au premier abord,
+            mais aux capacités destructrices considérables. Selon les mythes, il incarne tantôt l'entité protectrice
+            redoutable de la maternité, tantôt un glouton divinement condamné à l'exil aquatique.
+        </div>
+
+        <div class="stories">
+            <!-- TAWERET -->
+            <div class="story reveal mud-splash mud-splash-right">
+                <div class="story-header" style="background: var(--hippo-blue);">
+                    <h3>1. La Déesse Bienveillante — Taweret</h3>
                 </div>
-            </article>
-        </section>
-    </main>
+                <div class="story-body"
+                    style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center;">
+                    <div>
+                        <p style="font-size:1.1rem;line-height:1.8;margin-bottom:1.5rem;">
+                            Dans la mythologie égyptienne, la femelle était profondément vénérée et perçue comme un
+                            bouclier
+                            divin inébranlable contre le chaos.
+                        </p>
+                        <div class="w-grid">
+                            <div class="w-item">
+                                <span class="w-label">Le mythe</span>
+                                <p><strong>Taweret</strong>, "La Grande", protégeait les mères et les nouveau-nés en
+                                    effrayant les démons par son apparence redoutable.</p>
+                            </div>
+                            <div class="w-item">
+                                <span class="w-label">L'aspect</span>
+                                <p>Une fusion de lion, de crocodile et d'hippopotame, symbolisant la force protectrice
+                                    ultime de la nature.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="taweret_statue.jpg" alt="Statue de la déesse Taweret"
+                            style="height: auto; max-width: 100%; border: 3px solid var(--clay); border-radius: 20px; box-shadow: 10px 10px 0 var(--mud-deep);">
+                        <p style="font-style: italic; color: var(--sand); margin-top: 1rem; font-size: 0.9rem;">Statue
+                            antique de Taweret</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LE BANNI (FORMAT STANDARD COMME TAWERET) -->
+            <div class="story reveal mud-splash mud-splash-right">
+                <div class="story-header" style="background: var(--mud-brown);">
+                    <h3>2. Punition Céleste — Le Banni</h3>
+                </div>
+                <div class="story-body"
+                    style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center;">
+                    <div>
+                        <p style="font-size:1.1rem;line-height:1.8;margin-bottom:1.5rem;">
+                            Réprouvé par les dieux pour sa voracité destructive, l'hippopotame fut condamné à l'exil
+                            aquatique. Ce banni de la terre ferme symbolise désormais la puissance solitaire et le poids
+                            du
+                            destin.
+                        </p>
+                        <div class="w-grid">
+                            <div class="w-item">
+                                <span class="w-label">La Légende</span>
+                                <p>Banni des plaines pour avoir dévoré les récoltes divines, il doit rester immergé le
+                                    jour
+                                    pour implorer le pardon sous les eaux.</p>
+                            </div>
+                            <div class="w-item">
+                                <span class="w-label">Le Symbole</span>
+                                <p>L'animal incarne ici le <strong>poids incontrôlable de la nature</strong> et la force
+                                    brute du silence aquatique.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="banni.jpg" alt="L'hippopotame banni"
+                            style="height: auto; max-width: 100%; border: 3px solid var(--clay); border-radius: 20px; box-shadow: 10px 10px 0 var(--mud-brown);">
+                        <p style="font-style: italic; color: var(--sand); margin-top: 1rem; font-size: 0.9rem;">L'exilé
+                            des plaines</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════
+     DIAPO 3 — L'HIPPOPOTAME AU MOYEN ÂGE
+════════════════════════════════════════════ -->
+    <section id="moyenage" class="mud-splash mud-splash-left">
+        <div class="section-header reveal">
+            <div class="icon">03</div>
+            <div>
+                <span class="slide-num">Diapositive 3</span>
+                <h2>L'Hippopotame au Moyen Âge</h2>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="tl-item reveal">
+                <div class="tl-dot">I</div>
+                <div class="tl-content">
+                    <h4>Le grand oubli zoologique</h4>
+                    <p>Après l'effondrement de l'Empire Romain et la rupture des voies commerciales intercontinentales,
+                        l'immense faune d'Afrique s'efface totalement de la géographie scientifique européenne.
+                        L'existence empirique de l'hippopotame est oubliée.</p>
+                </div>
+            </div>
+            <div class="tl-item reveal">
+                <div class="tl-dot">II</div>
+                <div class="tl-content">
+                    <h4>Assimilation au Léviathan</h4>
+                    <p>Confrontée à des rapports indirects et obscurs concernant un titanesque hôte des rivières
+                        africaines, la pensée chrétienne l'associera sans peine avec l'effrayante chimère biblique du
+                        <strong>Léviathan</strong> aquatique.
+                    </p>
+                </div>
+            </div>
+            <div class="tl-item reveal">
+                <div class="tl-dot">III</div>
+                <div class="tl-content">
+                    <h4>Allégorie de la démesure</h4>
+                    <p>Intégré de facto dans le registre théologique, l'hippopotame est caricaturé comme la
+                        personnification formelle de la pure gloutonnerie pécheresse : une bête insatiable avilissant
+                        tout l'écosystème autour d'elle.</p>
+                </div>
+            </div>
+            <div class="tl-item reveal">
+                <div class="tl-dot">IV</div>
+                <div class="tl-content">
+                    <h4>Un monstre de parchemin persistant</h4>
+                    <p>En l'absence de spécimens réels, les moines imagineront progressivement cet animal en combinant
+                        des attributs cauchemardesques sur leurs manuscrits, dessinant ainsi <strong>un monstre
+                            conceptuel</strong> déconnecté du mammifère africain.</p>
+                    <img src="leviathan_book.jpg" alt="Représentation d'un Léviathan mystique">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════
+     DIAPO 4 — STRUCTURE SOCIALE & BAGARRE INTERNE
+════════════════════════════════════════════ -->
+    <section id="structure-sociale" class="mud-splash mud-splash-left">
+        <div class="section-header reveal">
+            <div class="icon">04</div>
+            <div>
+                <span class="slide-num">Diapositive 4</span>
+                <h2>La Loi de la Masse</h2>
+            </div>
+        </div>
+
+        <div class="highlight reveal">
+            La vie sociale de l'hippopotame ne connaît pas le repos. C'est une <strong>bagarre interne
+                constante</strong> pour le pouvoir, où la hiérarchie se dessine par la force brute et la masse physique.
+        </div>
+
+        <div class="combat-grid">
+            <div class="combat-card reveal">
+                <img src="hippo-masse.webp" alt="Masse d'hippopotames">
+                <div class="combat-info">
+                    <h4>L'effet de Masse</h4>
+                    <p>Dans les eaux encombrées, la proximité forcée crée une tension permanente. La "masse" n'est pas
+                        une simple réunion, c'est une poudrière prête à exploser.</p>
+                </div>
+            </div>
+            <div class="combat-card reveal">
+                <img src="hippo-combat.webp" alt="Combat d'hippopotames">
+                <div class="combat-info">
+                    <h4>Le Combat pour le Trône</h4>
+                    <p>Les mâles s'affrontent avec une violence inouïe. Les mâchoires, capables de briser des os, sont
+                        les seuls juges du pouvoir territorial.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════
+     DIAPO 4 — L'HIPPOPOTAME AUJOURD'HUI (ARTS)
+════════════════════════════════════════════ -->
+    <section id="arts" class="mud-splash mud-splash-right">
+        <div class="section-header reveal">
+            <div class="icon">05</div>
+            <div>
+                <span class="slide-num">Diapositive 5</span>
+                <h2>Culture Populaire & Réalité</h2>
+            </div>
+        </div>
+
+        <div class="highlight reveal">
+            <strong>Le paradoxe contemporain :</strong> Jamais l'écart entre la perception animée idyllique et la dure
+            loi territoriale de l'animal réel n'a été aussi criant, l'un rassurant nos enfants, l'autre dictant sa loi
+            implacable sur la chaîne alimentaire.
+        </div>
+
+        <div class="culture-item reveal">
+            <h3>L'anthropomorphisme : De Fantasia à Madagascar</h3>
+            <p>
+                La littérature et le divertissement tentent souvent de "lisser" l'image de la faune sauvage.
+                Dans <em>Fantasia</em> (Disney, 1940), l'hippopotame devient une ballerine gracieuse nommée
+                <strong>Hyacinth</strong>.
+                Plus récemment, <strong>Gloria</strong> dans <em>Madagascar</em> promeut une image affectueuse et
+                amicale.
+                L'animal y est perçu comme un être inoffensif, suscitant l'empathie plutôt que la prudence.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <img src="fantasia_hippo.png" alt="Hyacinth Hippo de Fantasia" style="margin-top:0;">
+                <img src="Gloria.jpg" alt="Gloria personnage populaire d'animation" style="margin-top:0;">
+            </div>
+        </div>
+
+        <div class="culture-item reveal">
+            <h3 style="color: var(--clay);">La violente loi du territoire</h3>
+            <p>
+                La réalité sur le terrain contredit vertigineusement cette fable animée. Dans le vaste bassin
+                subsaharien, l'hippopotame amphibie trône indiscutablement en tête des recensements concernant les
+                affrontements létaux inter-espèces. Armé de canines d'ivoire aiguisées atteignant soixante centimètres,
+                il se montre féroce, <strong>irrationalement territorial</strong> et extrêmement protecteur envers sa
+                meute.
+            </p>
+            <img src="hippo_danger.jpg" alt="Agressivité territoriale">
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════
+     DIAPO 5 — CURIOSITÉS & EXPRESSIONS
+════════════════════════════════════════════ -->
+    <section id="visuels" class="mud-splash mud-splash-right">
+        <div class="section-header reveal">
+            <div class="icon">06</div>
+            <div>
+                <span class="slide-num">Diapositive 6</span>
+                <h2>Curiosités & Expressions</h2>
+            </div>
+        </div>
+
+        <div class="culture-item reveal">
+            <h3>L'exception colombienne : Les hippopotames d'Escobar</h3>
+            <p>
+                Une curiosité mondiale majeure se situe en Colombie. Originaires d'Afrique, quatre hippopotames importés
+                par Pablo Escobar dans les années 80 se sont multipliés pour former une population sauvage de plus d'une
+                centaine d'individus. C'est aujourd'hui la seule population sauvage hors d'Afrique.
+            </p>
+        </div>
+
+        <div class="except-grid">
+            <div class="except-card reveal">
+                <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">L'Hippopotame Nain</h4>
+                <p>Bien plus rare et discret que son cousin, il vit dans les forêts d'Afrique de l'Ouest. Il est
+                    solitaire et pèse dix fois moins lourd.</p>
+                <img src="hippo-nain.jfif" alt="Hippopotame Nain"
+                    style="width:100%; height:200px; object-fit:contain; border-radius:12px; margin-top:1rem; border:1px solid var(--mud-medium); background:var(--mud-dark);">
+            </div>
+            <div class="except-card reveal">
+                <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Une longévité record</h4>
+                <p>En captivité ou dans des conditions idéales, ce colosse peut vivre jusqu'à 40 ou 50 ans, surveillant
+                    son fleuve pendant des décennies.</p>
+            </div>
+        </div>
+
+        <p class="reveal"
+            style="font-size:1.05rem;font-weight:700;margin:3rem 0 1rem;color:var(--clay); text-align: center; text-transform: uppercase; letter-spacing: 2px;">
+            Expressions Populaires
+        </p>
+        <div class="expr-duo">
+            <div class="expr-card reveal">
+                <strong>Avoir une peau d'hippopotame</strong>
+                <p>Désigne une personne dotée d'une grande résistance morale ou qui n'est pas facilement touchée par les
+                    critiques.</p>
+            </div>
+            <div class="expr-card reveal">
+                <strong>Fort comme un hippopotame</strong>
+                <p>Expression utilisée pour souligner une puissance brute et massive, souvent liée à une force de la
+                    nature indomptable.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+     DIAPO 5 — CONCLUSION
+════════════════════════════════════════════ -->
+    <section id="conclusion" class="mud-splash mud-splash-left">
+        <div class="section-header" style="margin-bottom: 2rem;">
+            <div>
+                <span class="slide-num" style="color:var(--sand);">Diapositive 7</span>
+                <h2 style="color:var(--white);">Conclusion</h2>
+            </div>
+        </div>
+
+        <p>
+            <strong>Ni mascotte inoffensive, ni divinité invulnérable.</strong><br><br>
+            L'hippopotame est fondamentalement indissociable de son immense patrimoine biologique et mythique. Déesse
+            respectée en Égypte ancienne, monumentale épreuve biblique du Moyen-Âge ou vedette incontestée des studios
+            d'animation au XXIe siècle, cet herbivore redoutable continue inlassablement de démontrer à quel point la
+            nature se révèle bien plus imprévisible et majestueuse que les histoires que nous en faisons.
+        </p>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer
+        style="text-align:center; padding:3rem; font-family:'Fredoka One',cursive; font-size:1rem; color:var(--brown-light); letter-spacing:1px; border-top: 2px solid var(--beige-dark); margin-top:2rem;">
+        Exposé réalisé par <span
+            style="color:var(--clay); font-family:'Fredoka One',cursive; border-bottom: 2px solid var(--clay);">Cyriak
+            Launay</span>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('visible'), i * 80);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
 </body>
+
 </html>
