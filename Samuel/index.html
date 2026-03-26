@@ -1,182 +1,462 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samuel - Animaux</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>L'Esprit de la Forêt — Mythes & Nature</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        :root {
-            --bg: #f3ede2;
-            --surface: #ffffff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --accent: #cc5c1a;
-            --accent-hover: #a84b15;
-            --border: #e6ddce;
-        }
+      :root {
+        --bg-color: #1a1c2c;
+        --card-bg: #292d3e;
+        --text-main: #f0f0f0; /* Un peu plus blanc pour le contraste */
+        --text-sub: #b0b0c0;
+        --accent: #d4a373;
+        --border-soft: #3e445e;
+      }
 
-        * {
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
 
+      body {
+        background: var(--bg-color);
+        color: var(--text-main);
+        /* Passage sur Open Sans pour une lecture parfaite */
+        font-family: "Open Sans", sans-serif;
+        line-height: 1.8; /* Interligne augmenté */
+        font-size: 18px; /* Taille augmentée pour présentation */
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(26, 28, 44, 0.98);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-soft);
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      nav a {
+        font-family: "Space Mono", monospace;
+        font-size: 12px;
+        color: var(--text-sub);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+        font-weight: 600;
+      }
+
+      nav a:hover {
+        color: var(--accent);
+      }
+
+      .hero {
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: #111420;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://media.gerbeaud.net/2020/03/640/hibou-grand-duc.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 0;
+        opacity: 0.35;
+        filter: sepia(100%) hue-rotate(190deg) saturate(180%);
+      }
+
+      .hero h1,
+      .hero .hero-sub,
+      .hero .hero-author {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        font-family: "Montserrat", sans-serif;
+        font-size: clamp(3rem, 8vw, 5.5rem);
+        color: var(--accent);
+        font-weight: 900;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+
+      .hero-sub {
+        font-family: "Space Mono", monospace;
+        font-size: 16px;
+        color: var(--text-sub);
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      section {
+        padding: 120px 0;
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .section-header {
+        margin-bottom: 60px;
+      }
+      .section-header h2 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.8rem;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .image-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+        margin: 60px 0;
+      }
+
+      .img-box {
+        aspect-ratio: 3/4;
+        background: var(--card-bg);
+        border: 1px solid var(--border-soft);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.4s ease;
+        border-radius: 8px; /* Adoucir les bords */
+      }
+
+      .img-box:hover {
+        border-color: var(--accent);
+        transform: scale(1.02);
+      }
+
+      .img-box img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .highlight {
+        background: rgba(212, 163, 115, 0.08);
+        border-left: 5px solid var(--accent);
+        padding: 40px;
+        margin: 40px 0;
+        font-style: italic;
+        font-size: 1.4rem;
+        color: var(--text-main);
+        font-weight: 400;
+      }
+
+      .grid-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+      }
+
+      .card {
+        background: var(--card-bg);
+        padding: 40px;
+        border-radius: 8px;
+        border: 1px solid var(--border-soft);
+      }
+
+      .card h3 {
+        color: var(--accent);
+        margin-bottom: 20px;
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.5rem;
+      }
+
+      footer {
+        padding: 80px;
+        text-align: center;
+        font-family: "Space Mono";
+        font-size: 14px;
+        color: var(--text-sub);
+        background: #111420;
+      }
+
+      strong {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      @media (max-width: 768px) {
+        .grid-info {
+          grid-template-columns: 1fr;
+        }
+        .section-header h2 {
+          font-size: 2rem;
+        }
         body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          font-size: 16px;
         }
-
-        .container {
-            width: min(1100px, 94vw);
-            margin: 0 auto;
-            padding: 28px 0 56px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: clamp(1.8rem, 4vw, 2.4rem);
-        }
-
-        .subtitle {
-            margin: 6px 0 18px;
-            color: var(--muted);
-        }
-
-        .btn-retour {
-            text-decoration: none;
-            background: var(--accent);
-            color: #ffffff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 9px 16px;
-            white-space: nowrap;
-        }
-
-        .btn-retour:hover {
-            background: var(--accent-hover);
-        }
-
-        .grille-animaux {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
-
-        .carte-animal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .carte-image {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-            display: block;
-            background: #f9fafb;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .carte-contenu {
-            padding: 16px;
-            display: grid;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .carte-titre {
-            margin: 0;
-            font-size: 1.08rem;
-            font-weight: 800;
-        }
-
-        .carte-sous-titre {
-            margin: 0;
-            color: #374151;
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .carte-statut {
-            margin: 0;
-            color: #4b5563;
-            font-size: 0.9rem;
-        }
-
-        .btn-fiche {
-            justify-self: start;
-            text-decoration: none;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 8px 14px;
-            margin-top: 4px;
-        }
-
-        .btn-fiche:hover {
-            background: var(--accent-hover);
-        }
-
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-    <main class="container">
-        <div class="header">
-            <h1>Animaux de Samuel</h1>
-            <a class="btn-retour" href="../index.html">Retour a la liste</a>
+  </head>
+  <body>
+    <nav>
+      <a href="#origines">Origines</a>
+      <a href="#legendes">Légendes</a>
+      <a href="#moyenage">Moyen-Âge</a>
+      <a href="#moderne">Aujourd'hui</a>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-background-image"></div>
+      <h1>L'Esprit de la Forêt</h1>
+      <p class="hero-sub">Mythes • Nature • Symbolisme</p>
+      <p
+        class="hero-author"
+        style="
+          margin-top: 30px;
+          font-family: &quot;Space Mono&quot;;
+          font-size: 12px;
+          color: var(--accent);
+        "
+      >
+        CONÇU PAR SAMUEL LALANNE
+      </p>
+    </div>
+
+    <div class="container">
+      <section id="origines">
+        <div class="section-header">
+          <p
+            style="
+              font-family: &quot;Space Mono&quot;;
+              color: var(--accent);
+              font-size: 14px;
+              font-weight: 700;
+            "
+          >
+            01. ÉTYMOLOGIE
+          </p>
+          <h2>Origines et Signification</h2>
         </div>
-        <p class="subtitle">Tu peux mettre tes images en haut des cards en rempla cant les fichiers dans le dossier images.</p>
 
-        <section class="grille-animaux">
-            <article class="carte-animal">
-                <img src="./images/lion.jpg" alt="Lion" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+lion.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">LION</h2>
-                    <p class="carte-sous-titre">Categorie: Mammiferes</p>
-                    <p class="carte-statut">Selection de Samuel.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+        <div class="grid-info">
+          <div>
+            <p>
+              Le terme <strong>"hibou"</strong> est né d'une onomatopée imitant
+              son hululement mystérieux qui déchire le silence des bois.
+              Contrairement à la chouette, il porte des aigrettes de plumes,
+              véritables couronnes de l'ombre.
+            </p>
+            <p style="margin-top: 25px">
+              Depuis l'aube des civilisations, sa silhouette immobile captive
+              l'imaginaire. Dans la Grèce antique, il ne quittait jamais
+              l'épaule d'Athéna, incarnant la
+              <strong>clairvoyance spirituelle</strong> capable de percer les
+              ténèbres.
+            </p>
+          </div>
+          <div class="card">
+            <h3>L'Ambivalence Nocturne</h3>
+            <p>
+              Le hibou est un paradoxe vivant : prédateur silencieux aux serres
+              redoutables, il est aussi le philosophe des bois qui médite
+              lorsque le monde s'endort. Il représente ce lien fragile entre le
+              monde visible et les mystères de la nuit.
+            </p>
+          </div>
+        </div>
 
-            <article class="carte-animal">
-                <img src="./images/aigle.jpg" alt="Aigle" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+aigle.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">AIGLE</h2>
-                    <p class="carte-sous-titre">Categorie: Oiseaux</p>
-                    <p class="carte-statut">Selection de Samuel.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+        <div class="image-gallery">
+          <div class="img-box">
+            <img
+              src="https://www.rustica.fr/images/hibou-arbre-l790-h526.jpg.webp"
+              alt="Hibou souverain"
+            />
+          </div>
+          <div style="display: flex; align-items: center">
+            <p class="highlight">
+              "Le hibou est le gardien des secrets ; il voit là où nos yeux
+              refusent de regarder."
+            </p>
+          </div>
+        </div>
+      </section>
 
-            <article class="carte-animal">
-                <img src="./images/tortue.jpg" alt="Tortue" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+tortue.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">TORTUE</h2>
-                    <p class="carte-sous-titre">Categorie: Reptiles</p>
-                    <p class="carte-statut">Selection de Samuel.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
-        </section>
-    </main>
-</body>
+      <section id="legendes">
+        <div class="section-header">
+          <p
+            style="
+              font-family: &quot;Space Mono&quot;;
+              color: var(--accent);
+              font-size: 14px;
+              font-weight: 700;
+            "
+          >
+            02. FOLKLORE
+          </p>
+          <h2>Légendes du Monde</h2>
+        </div>
+
+        <div class="grid-info">
+          <div class="card">
+            <h3>Grèce Antique</h3>
+            <p>
+              Messager divin, il était gravé sur les monnaies d'Athènes,
+              veillant sur la cité comme un symbole de protection et de
+              discernement politique.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Visions Ancestrales</h3>
+            <p>
+              Considéré par certains comme le "Roi des Oiseaux de Nuit", il
+              était craint ou vénéré pour ses facultés prophétiques, capable de
+              communiquer avec l'invisible.
+            </p>
+          </div>
+        </div>
+
+        <div class="image-gallery">
+          <div style="display: flex; align-items: center">
+            <p>
+              D'un continent à l'autre, son hululement a été interprété comme un
+              avertissement ou une bénédiction. Cette dualité reflète notre peur
+              de l'obscurité et notre fascination pour ceux qui la maîtrisent.
+            </p>
+          </div>
+          <div class="img-box">
+            <img
+              src="https://i0.wp.com/www.jepense.org/wp-content/uploads/2024/02/symbolisme-du-hibou.png?w=840&ssl=1"
+              alt="Symbolisme du hibou"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="moyenage">
+        <div class="section-header">
+          <p
+            style="
+              font-family: &quot;Space Mono&quot;;
+              color: var(--accent);
+              font-size: 14px;
+              font-weight: 700;
+            "
+          >
+            03. OBSCURANTISME
+          </p>
+          <h2>L'Épreuve du Moyen-Âge</h2>
+        </div>
+
+        <p>
+          À l'époque médiévale, l'image du hibou s'assombrit. Dans un monde régi
+          par la peur de l'inconnu, sa vie nocturne fut associée aux forces
+          occultes. On l'imaginait compagnon des sorciers, se terrant dans les
+          ruines et les forêts impénétrables pour fuir la lumière.
+        </p>
+
+        <div class="image-gallery">
+          <div class="img-box" style="grid-column: span 2; aspect-ratio: 16/7">
+            <img
+              src="https://www.zoologiste.com/images/xl/hibou-vole-foret.jpg"
+              alt="Le vol silencieux"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="moderne">
+        <div class="section-header">
+          <p
+            style="
+              font-family: &quot;Space Mono&quot;;
+              color: var(--accent);
+              font-size: 14px;
+              font-weight: 700;
+            "
+          >
+            04. POP CULTURE
+          </p>
+          <h2>Le Regard Actuel</h2>
+        </div>
+
+        <div class="grid-info">
+          <div>
+            <p>
+              Le XXIe siècle a réhabilité ce seigneur des bois. Il est redevenu
+              l'icône de l'intelligence académique et de la protection de la
+              biodiversité.
+            </p>
+            <p style="margin-top: 25px">
+              De la loyauté de <em>Hedwige</em> dans Harry Potter aux designs
+              modernes de la mode, le hibou incarne aujourd'hui une élégance
+              intemporelle et une sagesse mystique retrouvée.
+            </p>
+          </div>
+          <div class="img-box">
+            <img
+              src="https://cdn-s-www.vosgesmatin.fr/images/1BAED0AF-3A28-4E76-BD50-5B2F0247F774/NW_raw/harry-potter-et-sa-fidele-chouette-hedwige-copyright-warner-bros-1502639510.jpg"
+              alt="Hibou dans la culture moderne"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="conclusion" style="text-align: center; border: none">
+        <h2
+          style="
+            font-family: &quot;Montserrat&quot;;
+            color: var(--accent);
+            font-size: 3.5rem;
+          "
+        >
+          Conclusion
+        </h2>
+        <div style="max-width: 800px; margin: 40px auto">
+          <p>
+            Plus qu'un simple oiseau, le hibou demeure le miroir de notre âme.
+            En observant ses yeux d'ambre, nous nous rappelons que la beauté et
+            la connaissance naissent souvent au cœur de la nuit la plus
+            profonde.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>CONCEPTION DE SAMUEL LALANNE — 2026</p>
+    </footer>
+  </body>
 </html>
