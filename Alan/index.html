@@ -1,182 +1,731 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alan - Animaux</title>
-    <style>
-        :root {
-            --bg: #f3ede2;
-            --surface: #ffffff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --accent: #cc5c1a;
-            --accent-hover: #a84b15;
-            --border: #e6ddce;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Lion — De la Grotte à l'Éternité</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #C9943A;
+      --gold-light: #E8C47A;
+      --gold-dark: #8B6520;
+      --ink: #1A1208;
+      --parchment: #F5EDDA;
+      --parchment-dark: #E8D9BB;
+      --red-accent: #8B2216;
+      --text-body: #2C1F0E;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        }
+    html { scroll-behavior: smooth; }
 
-        .container {
-            width: min(1100px, 94vw);
-            margin: 0 auto;
-            padding: 28px 0 56px;
-        }
+    body {
+      background-color: var(--ink);
+      color: var(--parchment);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
+    /* ─── HERO ─────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
 
-        h1 {
-            margin: 0;
-            font-size: clamp(1.8rem, 4vw, 2.4rem);
-        }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('images/lion-hero.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      filter: brightness(0.35) sepia(0.4);
+      transform: scale(1.05);
+      animation: slowZoom 20s ease-in-out infinite alternate;
+    }
 
-        .subtitle {
-            margin: 6px 0 18px;
-            color: var(--muted);
-        }
+    @keyframes slowZoom {
+      from { transform: scale(1.05); }
+      to   { transform: scale(1.12); }
+    }
 
-        .btn-retour {
-            text-decoration: none;
-            background: var(--accent);
-            color: #ffffff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 9px 16px;
-            white-space: nowrap;
-        }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(26,18,8,0.85) 100%);
+    }
 
-        .btn-retour:hover {
-            background: var(--accent-hover);
-        }
+    .hero-border {
+      position: absolute; inset: 20px;
+      border: 1px solid rgba(201,148,58,0.35);
+      pointer-events: none;
+    }
+    .hero-border::before {
+      content: '';
+      position: absolute; inset: 6px;
+      border: 1px solid rgba(201,148,58,0.15);
+    }
 
-        .grille-animaux {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 2rem;
+      max-width: 780px;
+    }
 
-        .carte-animal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-            display: flex;
-            flex-direction: column;
-        }
+    .hero-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.3s forwards;
+    }
 
-        .carte-image {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-            display: block;
-            background: #f9fafb;
-            border-bottom: 1px solid var(--border);
-        }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 900;
+      line-height: 0.95;
+      color: var(--parchment);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.6s forwards;
+    }
 
-        .carte-contenu {
-            padding: 16px;
-            display: grid;
-            gap: 8px;
-            flex: 1;
-        }
+    .hero-title span { color: var(--gold); font-style: italic; }
 
-        .carte-titre {
-            margin: 0;
-            font-size: 1.08rem;
-            font-weight: 800;
-        }
+    .hero-subtitle {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--parchment-dark);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.9s forwards;
+    }
 
-        .carte-sous-titre {
-            margin: 0;
-            color: #374151;
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: var(--gold);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.4s forwards;
+    }
+    .scroll-cue::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        .carte-statut {
-            margin: 0;
-            color: #4b5563;
-            font-size: 0.9rem;
-        }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-        .btn-fiche {
-            justify-self: start;
-            text-decoration: none;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 700;
-            border-radius: 999px;
-            padding: 8px 14px;
-            margin-top: 4px;
-        }
+    /* ─── SECTIONS ──────────────────────────────────── */
+    .section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
 
-        .btn-fiche:hover {
-            background: var(--accent-hover);
-        }
+    .section-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(201,148,58,0.1);
+      line-height: 1;
+      margin-bottom: -1rem;
+    }
 
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--parchment);
+      margin-bottom: 2rem;
+      line-height: 1.2;
+    }
+
+    .section-title em { color: var(--gold); }
+
+    .divider {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin-bottom: 2.5rem;
+    }
+
+    p { color: rgba(245,237,218,0.85); margin-bottom: 1.2rem; }
+
+    /* ─── IMAGE BLOCKS ──────────────────────────────── */
+    .img-full {
+      width: 100%;
+      aspect-ratio: 16/7;
+      object-fit: cover;
+      display: block;
+      filter: sepia(0.2) brightness(0.9);
+      transition: filter 0.4s;
+    }
+    .img-full:hover { filter: sepia(0) brightness(1); }
+
+    .img-frame {
+      position: relative;
+      margin: 3rem 0;
+      overflow: hidden;
+    }
+    .img-frame::before {
+      content: '';
+      position: absolute; inset: 12px;
+      border: 1px solid rgba(201,148,58,0.4);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .img-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(26,18,8,0.92));
+      color: var(--gold-light);
+      font-style: italic;
+      font-size: 0.85rem;
+      padding: 2rem 1.5rem 1rem;
+      z-index: 2;
+    }
+
+    /* ─── TWO-COL LAYOUT ────────────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+      margin: 3rem 0;
+    }
+    @media (max-width: 680px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .two-col .img-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+    }
+    .two-col .img-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: sepia(0.3) brightness(0.85);
+      transition: transform 0.5s ease, filter 0.4s;
+    }
+    .two-col .img-card:hover img {
+      transform: scale(1.04);
+      filter: sepia(0) brightness(1);
+    }
+    .two-col .img-card .label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1rem 0.75rem;
+      background: linear-gradient(transparent, rgba(26,18,8,0.9));
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--gold-light);
+      font-style: italic;
+    }
+
+    /* ─── TALE CARDS ────────────────────────────────── */
+    .tale-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    @media (max-width: 640px) { .tale-grid { grid-template-columns: 1fr; } }
+
+    .tale-card {
+      background: rgba(201,148,58,0.05);
+      border: 1px solid rgba(201,148,58,0.2);
+      padding: 2rem;
+      position: relative;
+    }
+    .tale-card::before {
+      content: attr(data-num);
+      position: absolute;
+      top: -1.2rem; left: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: rgba(201,148,58,0.15);
+      line-height: 1;
+    }
+    .tale-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--gold-light);
+      margin-bottom: 0.75rem;
+    }
+    .tale-card .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red-accent);
+      border: 1px solid var(--red-accent);
+      padding: 0.15rem 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ─── QUOTE ─────────────────────────────────────── */
+    .pull-quote {
+      border-left: 3px solid var(--gold);
+      padding: 1.5rem 2rem;
+      margin: 3rem 0;
+      background: rgba(201,148,58,0.04);
+    }
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--parchment);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .pull-quote cite {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ─── TIMELINE ──────────────────────────────────── */
+    .timeline {
+      margin: 3rem 0;
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .timeline-item {
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.4rem; top: 0.4rem;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold);
+    }
+    .timeline-item .era {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+    .timeline-item h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--parchment);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ─── CONCLUSION ────────────────────────────────── */
+    .conclusion {
+      text-align: center;
+      padding: 6rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .conclusion-bg {
+      position: absolute; inset: 0;
+      background-image: url('images/lion-conclusion.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.2) sepia(0.5);
+    }
+    .conclusion-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .conclusion h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--parchment);
+      margin-bottom: 2rem;
+      line-height: 1.2;
+    }
+    .conclusion h2 em { color: var(--gold); }
+
+    /* ─── SEPARATOR ─────────────────────────────────── */
+    .ornament {
+      text-align: center;
+      color: var(--gold);
+      opacity: 0.5;
+      font-size: 1.5rem;
+      letter-spacing: 0.5em;
+      padding: 1rem 0;
+    }
+
+    hr.gold {
+      border: none;
+      border-top: 1px solid rgba(201,148,58,0.2);
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
-    <main class="container">
-        <div class="header">
-            <h1>Animaux de Alan</h1>
-            <a class="btn-retour" href="../index.html">Retour a la liste</a>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-border"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Une exploration culturelle & symbolique</p>
+      <h1 class="hero-title">Le <span>Lion</span></h1>
+      <p class="hero-subtitle">De la peur primitive à la responsabilité écologique — cinq mille ans d'un fauve dans l'imaginaire humain.</p>
+    </div>
+    <div class="scroll-cue">Défiler</div>
+  </section>
+
+  <!-- ═══ I. ORIGINES ═══ -->
+  <section class="section">
+    <div class="section-number">I</div>
+    <p class="section-tag">Origines &amp; Étymologie</p>
+    <h2 class="section-title">De l'origine <em>à la grotte</em></h2>
+    <div class="divider"></div>
+
+    <p>Le terme <em>lion</em> provient du latin <strong>leo</strong>, lui-même emprunté au grec ancien <strong>léōn</strong>. À l'origine, ces racines désignaient la puissance et le caractère souverain du prédateur — un nom à la hauteur de la bête.</p>
+    <p>Les premières représentations artistiques remontent à la Préhistoire, environ <strong>35 000 ans</strong> avant notre ère. C'est dans la Grotte Chauvet, en Europe, que l'on trouve les traces les plus anciennes et les plus saisissantes : des lions des cavernes tracés à l'ocre sur la roche brute.</p>
+
+    <div class="img-frame">
+      <svg viewBox="0 0 1280 450" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <!-- Cave wall texture background -->
+        <defs>
+          <filter id="rough">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+            <feColorMatrix type="saturate" values="0"/>
+            <feBlend in="SourceGraphic" mode="multiply"/>
+          </filter>
+          <radialGradient id="torchLight" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#3d2508" stop-opacity="0"/>
+            <stop offset="70%" stop-color="#1a0d02" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#0a0400" stop-opacity="0.85"/>
+          </radialGradient>
+        </defs>
+        <!-- Rock base -->
+        <rect width="1280" height="450" fill="#2a1a0a"/>
+        <!-- Rock texture patches -->
+        <ellipse cx="200" cy="80" rx="300" ry="120" fill="#221406" opacity="0.6"/>
+        <ellipse cx="900" cy="350" rx="400" ry="130" fill="#1e1204" opacity="0.5"/>
+        <ellipse cx="640" cy="220" rx="500" ry="180" fill="#301a08" opacity="0.4"/>
+        <ellipse cx="100" cy="300" rx="180" ry="100" fill="#251508" opacity="0.5"/>
+        <ellipse cx="1100" cy="100" rx="200" ry="80" fill="#1c1005" opacity="0.4"/>
+
+        <!-- === LION 1 — large, left-center === -->
+        <g transform="translate(180,110)" opacity="0.88">
+          <!-- Body -->
+          <ellipse cx="160" cy="130" rx="110" ry="65" fill="#8B5A2B" opacity="0.85"/>
+          <!-- Hindquarters -->
+          <ellipse cx="70" cy="155" rx="72" ry="60" fill="#7A4E24" opacity="0.85"/>
+          <!-- Neck -->
+          <ellipse cx="245" cy="100" rx="50" ry="55" fill="#8B5A2B" opacity="0.85"/>
+          <!-- Head — elongated feline, no mane (cave lion) -->
+          <ellipse cx="300" cy="72" rx="62" ry="46" fill="#7A4E24" opacity="0.9"/>
+          <!-- Snout -->
+          <ellipse cx="348" cy="80" rx="28" ry="20" fill="#6B3E1A" opacity="0.9"/>
+          <!-- Eye -->
+          <ellipse cx="310" cy="62" rx="9" ry="7" fill="#1a0d02" opacity="0.9"/>
+          <!-- Ear -->
+          <path d="M275 38 Q268 18 285 22 Q292 36 280 44Z" fill="#7A4E24" opacity="0.9"/>
+          <path d="M305 30 Q300 12 316 16 Q320 30 308 38Z" fill="#7A4E24" opacity="0.9"/>
+          <!-- Legs -->
+          <rect x="90" y="195" width="28" height="65" rx="10" fill="#7A4E24" opacity="0.8" transform="rotate(-5,104,228)"/>
+          <rect x="130" y="193" width="28" height="62" rx="10" fill="#7A4E24" opacity="0.8"/>
+          <rect x="210" y="188" width="28" height="68" rx="10" fill="#7A4E24" opacity="0.8" transform="rotate(4,224,222)"/>
+          <rect x="250" y="185" width="26" height="65" rx="10" fill="#7A4E24" opacity="0.8"/>
+          <!-- Tail -->
+          <path d="M68 148 Q20 120 8 95 Q15 88 22 95 Q32 118 72 142Z" fill="#7A4E24" opacity="0.8"/>
+          <ellipse cx="10" cy="91" rx="12" ry="9" fill="#6B3E1A" opacity="0.8"/>
+          <!-- Ochre outline strokes (cave art style) -->
+          <ellipse cx="160" cy="130" rx="110" ry="65" fill="none" stroke="#C9943A" stroke-width="2.5" opacity="0.5"/>
+          <ellipse cx="300" cy="72" rx="62" ry="46" fill="none" stroke="#C9943A" stroke-width="2" opacity="0.5"/>
+        </g>
+
+        <!-- === LION 2 — smaller, upper right === -->
+        <g transform="translate(700,60) scale(0.72)" opacity="0.78">
+          <ellipse cx="160" cy="130" rx="110" ry="65" fill="#6B3E1A" opacity="0.8"/>
+          <ellipse cx="70" cy="155" rx="72" ry="60" fill="#5E3416" opacity="0.8"/>
+          <ellipse cx="245" cy="100" rx="50" ry="55" fill="#6B3E1A" opacity="0.8"/>
+          <ellipse cx="300" cy="72" rx="62" ry="46" fill="#5E3416" opacity="0.85"/>
+          <ellipse cx="348" cy="80" rx="28" ry="20" fill="#4e2a10" opacity="0.85"/>
+          <ellipse cx="310" cy="62" rx="9" ry="7" fill="#1a0d02" opacity="0.9"/>
+          <path d="M275 38 Q268 18 285 22 Q292 36 280 44Z" fill="#5E3416" opacity="0.9"/>
+          <path d="M305 30 Q300 12 316 16 Q320 30 308 38Z" fill="#5E3416" opacity="0.9"/>
+          <rect x="90" y="195" width="28" height="65" rx="10" fill="#5E3416" opacity="0.75"/>
+          <rect x="130" y="193" width="28" height="62" rx="10" fill="#5E3416" opacity="0.75"/>
+          <rect x="210" y="188" width="28" height="68" rx="10" fill="#5E3416" opacity="0.75"/>
+          <rect x="250" y="185" width="26" height="65" rx="10" fill="#5E3416" opacity="0.75"/>
+          <path d="M68 148 Q20 120 8 95 Q15 88 22 95 Q32 118 72 142Z" fill="#5E3416" opacity="0.75"/>
+          <ellipse cx="160" cy="130" rx="110" ry="65" fill="none" stroke="#C9943A" stroke-width="2" opacity="0.4"/>
+          <ellipse cx="300" cy="72" rx="62" ry="46" fill="none" stroke="#C9943A" stroke-width="1.5" opacity="0.4"/>
+        </g>
+
+        <!-- === LION 3 — partial, far right, facing left === -->
+        <g transform="translate(980,140) scale(0.6) scaleX(-1)" opacity="0.65">
+          <ellipse cx="160" cy="130" rx="110" ry="65" fill="#7A4E24" opacity="0.75"/>
+          <ellipse cx="70" cy="155" rx="72" ry="60" fill="#6B3E1A" opacity="0.75"/>
+          <ellipse cx="245" cy="100" rx="50" ry="55" fill="#7A4E24" opacity="0.75"/>
+          <ellipse cx="300" cy="72" rx="62" ry="46" fill="#6B3E1A" opacity="0.8"/>
+          <ellipse cx="348" cy="80" rx="28" ry="20" fill="#5a3212" opacity="0.8"/>
+          <ellipse cx="295" cy="62" rx="9" ry="7" fill="#1a0d02" opacity="0.9"/>
+          <path d="M275 38 Q268 18 285 22 Q292 36 280 44Z" fill="#6B3E1A"/>
+          <ellipse cx="160" cy="130" rx="110" ry="65" fill="none" stroke="#C9943A" stroke-width="2" opacity="0.35"/>
+          <ellipse cx="300" cy="72" rx="62" ry="46" fill="none" stroke="#C9943A" stroke-width="1.5" opacity="0.35"/>
+        </g>
+
+        <!-- Torch / light overlay -->
+        <rect width="1280" height="450" fill="url(#torchLight)"/>
+
+        <!-- Hand stencil (prehistoric art signature) -->
+        <g transform="translate(55,300)" opacity="0.45">
+          <path d="M30 80 Q28 40 32 10 Q35 5 38 10 Q40 40 38 80Z" fill="#C9943A"/>
+          <path d="M42 78 Q38 38 44 8 Q47 3 50 8 Q52 38 48 78Z" fill="#C9943A"/>
+          <path d="M52 80 Q50 42 56 14 Q59 9 62 14 Q63 42 59 80Z" fill="#C9943A"/>
+          <path d="M62 82 Q62 46 66 22 Q69 17 72 22 Q72 46 68 82Z" fill="#C9943A"/>
+          <path d="M20 80 Q15 55 18 40 Q22 35 26 40 Q28 55 26 80Z" fill="#C9943A"/>
+          <ellipse cx="44" cy="85" rx="30" ry="18" fill="#C9943A"/>
+          <ellipse cx="44" cy="85" rx="24" ry="14" fill="#2a1a0a"/>
+        </g>
+
+        <!-- Caption band -->
+        <rect x="0" y="380" width="1280" height="70" fill="rgba(10,4,0,0.75)"/>
+        <text x="640" y="418" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#C9943A" opacity="0.9" letter-spacing="3">GROTTE CHAUVET — PANNEAU DES LIONS</text>
+        <text x="640" y="438" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="rgba(245,237,218,0.6)" letter-spacing="1">~32 000 av. J.-C. — Lions des cavernes sans crinière, tracés à l'ocre sur la roche brute.</text>
+      </svg>
+      <div class="img-caption">Grotte Chauvet — Panneau des Lions, ~32 000 av. J.-C. — Le lion des cavernes représenté sans crinière, symbole de danger et de puissance brute.</div>
+    </div>
+
+    <p>Dans ces dessins rupestres, l'animal est représenté <em>sans crinière</em> — le lion des cavernes diffère de son cousin africain. L'homme préhistorique y voyait un symbole de danger extrême, de puissance brute et de peur, marquant une fascination pour le prédateur dominant son environnement.</p>
+  </section>
+
+  <hr class="gold" />
+
+  <!-- ═══ II. CONTES ═══ -->
+  <section class="section">
+    <div class="section-number">II</div>
+    <p class="section-tag">Mythes &amp; Fables</p>
+    <h2 class="section-title">Deux visages <em>du fauve</em></h2>
+    <div class="divider"></div>
+
+    <p>À travers les cultures et les siècles, le lion a revêtu des rôles radicalement opposés — tour à tour symbole de clémence royale ou instrument de châtiment divin. Deux récits illustrent particulièrement bien cette dualité.</p>
+
+    <div class="tale-grid">
+      <div class="tale-card" data-num="1">
+        <span class="tag">Fable — Ésope / La Fontaine</span>
+        <h3>Le Lion et le Rat</h3>
+        <p>Dans la savane, un Lion épargne un Rat. Plus tard, pris dans un filet de chasseur, c'est le Rat qui ronge les mailles pour le libérer. Le lion incarne ici la <strong>clémence</strong> et la <strong>reconnaissance</strong> — la force qui sait se montrer généreuse.</p>
+      </div>
+      <div class="tale-card" data-num="2">
+        <span class="tag">Mythologie — Égypte Antique</span>
+        <h3>La déesse Sekhmet</h3>
+        <p>En Égypte, la déesse à tête de lionne est envoyée par Rê pour massacrer les humains rebelles. Elle ne s'arrête que lorsqu'elle est ivre de bière rouge. Le lion représente ici la <strong>fureur destructrice</strong> et le <strong>châtiment divin</strong>.</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="img-card">
+        <img src="sekhmet.png" alt="Sekhmet déesse à tête de lionne" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />
+        <div class="label">Sekhmet — déesse lionne de l'Égypte</div>
+      </div>
+      <div style="align-self: center;">
+        <div class="pull-quote">
+          <p>« En Europe, le lion est une métaphore de la hiérarchie sociale. En Égypte, il est lié aux forces climatiques et solaires brutales. »</p>
+          <cite>Analyse culturelle comparative</cite>
         </div>
-        <p class="subtitle">Tu peux mettre tes images en haut des cards en rempla cant les fichiers dans le dossier images.</p>
+        <p>Ces différences s'expliquent par le contexte de chaque civilisation. En Europe, les fables utilisent le lion comme miroir des rapports de pouvoir humains. En Égypte, la nature est une force cosmique — et le lion son incarnation la plus redoutable.</p>
+      </div>
+    </div>
+  </section>
 
-        <section class="grille-animaux">
-            <article class="carte-animal">
-                <img src="./images/lion.jpg" alt="Lion" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+lion.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">LION</h2>
-                    <p class="carte-sous-titre">Categorie: Mammiferes</p>
-                    <p class="carte-statut">Selection de Alan.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+  <hr class="gold" />
 
-            <article class="carte-animal">
-                <img src="./images/aigle.jpg" alt="Aigle" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+aigle.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">AIGLE</h2>
-                    <p class="carte-sous-titre">Categorie: Oiseaux</p>
-                    <p class="carte-statut">Selection de Alan.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
+  <!-- ═══ III. MOYEN-ÂGE ═══ -->
+  <section class="section">
+    <div class="section-number">III</div>
+    <p class="section-tag">Symbolisme Médiéval</p>
+    <h2 class="section-title">Le Lion au Moyen-Âge : <em>le Roi Chrétien</em></h2>
+    <div class="divider"></div>
 
-            <article class="carte-animal">
-                <img src="./images/tortue.jpg" alt="Tortue" class="carte-image" onerror="this.src='https://placehold.co/600x380?text=Ajoute+tortue.jpg';">
-                <div class="carte-contenu">
-                    <h2 class="carte-titre">TORTUE</h2>
-                    <p class="carte-sous-titre">Categorie: Reptiles</p>
-                    <p class="carte-statut">Selection de Alan.</p>
-                    <a href="#" class="btn-fiche">Voir la fiche</a>
-                </div>
-            </article>
-        </section>
-    </main>
+    <p>Au Moyen Âge, le lion occupe une place centrale dans les <em>bestiaires</em> — ces encyclopédies symboliques des animaux. Le regard porté sur lui est désormais radicalement spirituel, en rupture avec la simple crainte de l'Antiquité.</p>
+
+    <div class="img-frame">
+      <svg viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#0e0b06;">
+        <!-- Decorative border -->
+        <rect x="8" y="8" width="884" height="324" fill="none" stroke="#C9943A" stroke-width="1" opacity="0.4"/>
+        <rect x="14" y="14" width="872" height="312" fill="none" stroke="#C9943A" stroke-width="0.5" opacity="0.2"/>
+        <!-- Shield background left -->
+        <path d="M80 40 L320 40 L320 230 Q200 295 80 230Z" fill="#8B2216" opacity="0.85"/>
+        <!-- Shield border -->
+        <path d="M80 40 L320 40 L320 230 Q200 295 80 230Z" fill="none" stroke="#C9943A" stroke-width="2"/>
+        <!-- Lion rampant SVG path (simplified heraldic lion) -->
+        <g transform="translate(120,45) scale(0.85)">
+          <!-- Body -->
+          <ellipse cx="120" cy="150" rx="55" ry="45" fill="#C9943A"/>
+          <!-- Hindquarters -->
+          <ellipse cx="80" cy="175" rx="40" ry="38" fill="#C9943A"/>
+          <!-- Chest -->
+          <ellipse cx="155" cy="120" rx="42" ry="48" fill="#C9943A"/>
+          <!-- Head -->
+          <circle cx="185" cy="75" r="38" fill="#C9943A"/>
+          <!-- Mane -->
+          <circle cx="185" cy="75" r="50" fill="none" stroke="#8B6520" stroke-width="14" opacity="0.7"/>
+          <!-- Face -->
+          <circle cx="185" cy="78" r="28" fill="#E8C47A"/>
+          <!-- Eyes -->
+          <circle cx="175" cy="72" r="5" fill="#1a0e05"/>
+          <circle cx="195" cy="72" r="5" fill="#1a0e05"/>
+          <circle cx="175" cy="72" r="2" fill="#C9943A"/>
+          <circle cx="195" cy="72" r="2" fill="#C9943A"/>
+          <!-- Nose -->
+          <path d="M180 83 Q185 88 190 83" stroke="#8B6520" stroke-width="2" fill="none"/>
+          <!-- Mouth -->
+          <path d="M172 90 Q185 98 198 90" stroke="#8B6520" stroke-width="1.5" fill="none"/>
+          <!-- Crown -->
+          <rect x="163" y="28" width="44" height="12" rx="2" fill="#C9943A"/>
+          <rect x="161" y="24" width="8" height="10" rx="1" fill="#C9943A"/>
+          <rect x="177" y="20" width="8" height="14" rx="1" fill="#C9943A"/>
+          <rect x="193" y="24" width="8" height="10" rx="1" fill="#C9943A"/>
+          <circle cx="165" cy="23" r="3" fill="#E8C47A"/>
+          <circle cx="181" cy="19" r="3" fill="#E8C47A"/>
+          <circle cx="197" cy="23" r="3" fill="#E8C47A"/>
+          <!-- Front raised paw -->
+          <path d="M195 128 Q230 100 240 80 Q248 70 244 62 Q252 72 246 84 Q238 108 205 138Z" fill="#C9943A"/>
+          <!-- Claws front -->
+          <line x1="241" y1="62" x2="248" y2="55" stroke="#E8C47A" stroke-width="2"/>
+          <line x1="244" y1="65" x2="253" y2="60" stroke="#E8C47A" stroke-width="2"/>
+          <!-- Hind leg raised -->
+          <path d="M82 165 Q55 130 45 105 Q40 90 48 85 Q42 97 52 108 Q68 135 92 172Z" fill="#C9943A"/>
+          <!-- Hind claws -->
+          <line x1="48" y1="85" x2="42" y2="78" stroke="#E8C47A" stroke-width="2"/>
+          <line x1="44" y1="89" x2="36" y2="85" stroke="#E8C47A" stroke-width="2"/>
+          <!-- Tail -->
+          <path d="M70 195 Q30 205 15 185 Q5 165 20 150 Q10 168 22 180 Q38 194 72 188Z" fill="#C9943A"/>
+          <!-- Tail tuft -->
+          <path d="M15 185 Q5 170 12 155 Q18 168 15 185Z" fill="#8B6520"/>
+          <!-- Hind standing paw -->
+          <path d="M95 205 Q90 225 100 235 Q110 240 120 232 Q108 232 102 222 Q98 210 100 202Z" fill="#C9943A"/>
+        </g>
+        <!-- Divider line -->
+        <line x1="340" y1="50" x2="340" y2="290" stroke="#C9943A" stroke-width="1" opacity="0.3"/>
+        <!-- Text zone -->
+        <text x="480" y="100" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="22" fill="#C9943A" letter-spacing="4">HÉRALDIQUE MÉDIÉVALE</text>
+        <line x1="370" y1="115" x2="590" y2="115" stroke="#C9943A" stroke-width="1" opacity="0.5"/>
+        <text x="480" y="150" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="rgba(245,237,218,0.7)" letter-spacing="1">Le Lion Rampant — symbole de souveraineté</text>
+        <text x="480" y="175" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="rgba(245,237,218,0.7)" letter-spacing="1">et de vigilance chrétienne au Moyen Âge.</text>
+        <text x="480" y="220" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#C9943A" opacity="0.6" letter-spacing="2" font-style="italic">« Pro rege et patria »</text>
+        <!-- Decorative corner ornaments -->
+        <text x="30" y="32" font-family="serif" font-size="18" fill="#C9943A" opacity="0.4">✦</text>
+        <text x="852" y="32" font-family="serif" font-size="18" fill="#C9943A" opacity="0.4">✦</text>
+        <text x="30" y="326" font-family="serif" font-size="18" fill="#C9943A" opacity="0.4">✦</text>
+        <text x="852" y="326" font-family="serif" font-size="18" fill="#C9943A" opacity="0.4">✦</text>
+      </svg>
+      <div class="img-caption">Le lion passant — emblème héraldique médiéval, symbole de souveraineté et de vigilance chrétienne.</div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="era">Le Bestiaire</div>
+        <h4>Naissance et résurrection du lionceau</h4>
+        <p>On racontait que le lionceau naît mort et que son père le ressuscite au bout de trois jours en lui soufflant dessus — une allégorie transparente de la Résurrection du Christ.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="era">Symbole spirituel</div>
+        <h4>La Vigilance divine</h4>
+        <p>On croyait que le lion <em>dormait les yeux ouverts</em>, ce qui en faisait le symbole parfait de la vigilance divine et de la garde perpétuelle sur les âmes.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="era">Rupture avec l'Antiquité</div>
+        <h4>Du danger physique au symbole spirituel</h4>
+        <p>La religion chrétienne transforme l'image du prédateur : le lion devient l'allégorie du Christ et, par extension, le garant de l'ordre moral du monde.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="gold" />
+
+  <!-- ═══ IV. AUJOURD'HUI ═══ -->
+  <section class="section">
+    <div class="section-number">IV</div>
+    <p class="section-tag">Époque Contemporaine</p>
+    <h2 class="section-title">Entre icône <em>et menace</em></h2>
+    <div class="divider"></div>
+
+    <p>Aujourd'hui, le lion est devenu un symbole de la nature fragile à préserver, tout en restant ancré comme le « Roi » dans l'imaginaire collectif mondial. Deux œuvres majeures cristallisent cette double image.</p>
+
+    <div class="two-col">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif; color:var(--gold-light); margin-bottom:0.75rem;">Le Roi Lion <span style="font-size:0.8rem; font-weight:400; color:var(--gold); opacity:0.7;">Disney, 1994</span></h3>
+        <p>Le cinéma d'animation de Disney représente le lion comme le garant de l'ordre moral et écologique. Simba hérite non seulement d'un trône, mais d'une <em>responsabilité envers la vie elle-même</em>.</p>
+        <div class="pull-quote" style="margin-top:1.5rem;">
+          <p>« La puissance du lion n'est légitime que si elle est mise au service de l'équilibre du monde. »</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:'Playfair Display',serif; color:var(--gold-light); margin-bottom:0.75rem;">Le Lion <span style="font-size:0.8rem; font-weight:400; color:var(--gold); opacity:0.7;">Joseph Kessel, 1958</span></h3>
+        <p>La littérature de Kessel illustre l'amitié mystique entre l'homme et l'animal sauvage. King, le lion de Kessel, n'est pas domestiqué — il est une présence naturelle que l'homme apprend à côtoyer avec humilité.</p>
+      </div>
+    </div>
+
+    <div class="img-frame" style="margin-top:3rem;">
+      <img class="img-full" src="lion-afrique.jpg" alt="Lion dans la savane africaine" loading="lazy" />
+      <div class="img-caption">La cohabitation contemporaine : dans certaines zones d'Afrique, le lion reste perçu comme un prédateur de bétail, créant un conflit entre protection de l'espèce et survie des populations.</div>
+    </div>
+
+    <p style="margin-top:2rem;">Dans certaines zones de cohabitation en Afrique, le lion est perçu négativement comme un prédateur de bétail. La protection de l'animal entre alors en conflit direct avec la survie des populations locales — rappelant que le symbole et la réalité ne coïncident pas toujours.</p>
+  </section>
+
+  <!-- ═══ CONCLUSION ═══ -->
+  <section class="conclusion">
+    <div class="conclusion-bg"></div>
+    <div class="conclusion-content">
+      <div class="ornament">✦ ✦ ✦</div>
+      <h2 style="margin-top:2rem;">Ce qu'il faut <em>retenir</em></h2>
+      <div class="divider" style="margin: 1.5rem auto;"></div>
+      <p style="font-size:1.15rem; color:rgba(245,237,218,0.9);">Le lien entre l'homme et le lion est passé de la <strong>peur mutuelle</strong> à une <strong>vénération symbolique</strong>, pour finir aujourd'hui par une <strong>responsabilité écologique</strong>. À travers 35 000 ans d'histoire, le fauve n'a jamais cessé d'être le miroir dans lequel l'humanité projette ses craintes, ses valeurs et ses rêves.</p>
+      <div class="ornament" style="margin-top:3rem;">✦</div>
+    </div>
+  </section>
+
 </body>
 </html>

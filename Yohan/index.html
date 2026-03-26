@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐷 Le Grand Livre des Cochons - Histoire, Art et Culture 🐽</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(145deg, #ffe4ec 0%, #ffd6e5 50%, #ffe0eb 100%);
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Comic Neue', sans-serif;
+            color: #5a2e2a;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* ========== ARRIÈRE-PLAN AVEC COCHONS DESSINÉS ========== */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.15"><path fill="%23e68a6e" d="M80,60c-8,0-15,5-18,12c-3-2-8-3-12-2c-8,2-13,10-11,18c1,3,3,5,6,7c-3,4-5,9-4,14c2,9,10,15,19,15h48c10,0,18-6,20-15c2-8-3-16-10-18c-5-1-10,1-13,4c-3-8-10-13-18-13c-4,0-7,1-10,3C94,63,87,60,80,60z M74,85c3,0,5,2,5,5s-2,5-5,5s-5-2-5-5S71,85,74,85z M98,85c3,0,5,2,5,5s-2,5-5,5s-5-2-5-5S95,85,98,85z"/><circle fill="%23e68a6e" cx="70" cy="78" r="2.5"/><circle fill="%23e68a6e" cx="98" cy="78" r="2.5"/></svg>');
+            background-repeat: repeat;
+            background-size: 80px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Petits cochons flottants animés */
+        .floating-pig {
+            position: fixed;
+            font-size: 2.5rem;
+            pointer-events: none;
+            z-index: 998;
+            animation: floatAround 22s infinite ease-in-out;
+            opacity: 0.25;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.05));
+        }
+
+        @keyframes floatAround {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0.2; }
+            30% { transform: translate(35px, -20px) rotate(6deg); opacity: 0.35; }
+            60% { transform: translate(-25px, 25px) rotate(-4deg); opacity: 0.25; }
+            100% { transform: translate(0, 0) rotate(0deg); opacity: 0.2; }
+        }
+
+        /* --- HEADER ROSE COCHON --- */
+        .pig-hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+            background: radial-gradient(circle at 50% 40%, rgba(255,235,240,0.9) 0%, rgba(255,220,235,0.7) 100%);
+            border-bottom: 4px solid #f5b0c0;
+        }
+
+        .hero-pig-illustration {
+            font-size: 6rem;
+            filter: drop-shadow(0 10px 15px rgba(230, 120, 100, 0.3));
+            animation: bounceHappy 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounceHappy {
+            0%,100%{ transform: translateY(0);}
+            50%{ transform: translateY(-15px);}
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: #c95a3e;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0 #ffe0e7;
+            background: linear-gradient(135deg, #d96c4a, #b6492c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .pig-slogan {
+            font-size: 1.2rem;
+            background: rgba(255,245,235,0.9);
+            display: inline-block;
+            padding: 10px 28px;
+            border-radius: 60px;
+            border: 2px solid #f3b5c5;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #b85a3a;
+            backdrop-filter: blur(4px);
+        }
+
+        .scroll-snort {
+            margin-top: 40px;
+            background: #f3aa8a;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 0 #b6492c;
+            border: none;
+        }
+        .scroll-snort:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #b6492c;
+            background: #d96c4a;
+        }
+
+        /* --- SECTIONS & CARTES ROSES --- */
+        section {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pig-card {
+            background: rgba(255, 250, 245, 0.96);
+            border-radius: 48px 32px 48px 32px;
+            box-shadow: 0 20px 40px rgba(180, 80, 60, 0.12);
+            padding: 40px 45px;
+            margin: 35px 0;
+            transition: all 0.3s ease;
+            border: 2px solid #ffccd5;
+            backdrop-filter: blur(2px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pig-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 28px 45px rgba(200, 90, 60, 0.18);
+            border-color: #f5acbc;
+        }
+
+        /* oreille de cochon décorative */
+        .pig-card::after {
+            content: "🐽";
+            position: absolute;
+            font-size: 55px;
+            opacity: 0.08;
+            bottom: 10px;
+            right: 15px;
+            transform: rotate(-10deg);
+            pointer-events: none;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #c95a3e;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 3px dotted #f7bfcf;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 12px;
+            color: #d8734f;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            color: #694034;
+        }
+
+        /* grille double colonne */
+        .grid-piggy {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin: 30px 0;
+        }
+
+        .mini-pig-panel {
+            background: #fffbf7;
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+            border: 1px solid #ffdbd0;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .mini-pig-panel:hover {
+            background: #fff7f0;
+            border-color: #f5b5a5;
+        }
+
+        /* images */
+        .mini-img {
+            margin: 18px 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
+        }
+        .mini-img img {
+            max-height: 140px;
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+        .mini-img img:hover {
+            transform: scale(1.02);
+        }
+
+        figure {
+            background: #fff2ea;
+            border-radius: 28px;
+            padding: 20px;
+            text-align: center;
+            margin: 28px 0;
+            border: 1px solid #f7cebe;
+        }
+
+        img.real-img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        figcaption {
+            margin-top: 12px;
+            font-style: italic;
+            color: #b16242;
+            font-size: 0.9rem;
+        }
+
+        /* BOUTONS STYLÉS ROSE */
+        button.pig-button {
+            background: linear-gradient(135deg, #f3a68a, #e0815c);
+            border: none;
+            padding: 10px 26px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            margin-top: 18px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 0 #b6492c;
+            align-self: flex-start;
+        }
+        button.pig-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #b6492c;
+            background: linear-gradient(135deg, #e58c68, #c96f48);
+        }
+        button.pig-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #b6492c;
+        }
+
+        .cochon-fact {
+            background: #fff0e6;
+            border-radius: 24px;
+            padding: 18px 28px;
+            margin: 25px 0;
+            font-weight: bold;
+            border-left: 10px solid #f5a48a;
+            color: #824d38;
+        }
+
+        footer {
+            text-align: center;
+            padding: 45px 20px;
+            background: #f7cfc0;
+            color: #7a4536;
+            font-size: 1rem;
+            margin-top: 70px;
+            border-radius: 50px 50px 0 0;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 750px) {
+            .grid-piggy {
+                grid-template-columns: 1fr;
+            }
+            .pig-card {
+                padding: 28px 22px;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* MODALE ROSE */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 210, 200, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fffcf5;
+            border-radius: 70px 50px 70px 50px;
+            max-width: 480px;
+            width: 90%;
+            padding: 35px 35px;
+            text-align: center;
+            border: 3px solid #f3aa8a;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.2);
+        }
+        .modal-emoji {
+            font-size: 3.8rem;
+            animation: bounceHappy 0.5s ease;
+        }
+        .modal-title {
+            font-size: 1.7rem;
+            color: #c95a3e;
+            margin: 12px 0;
+            font-weight: bold;
+        }
+        .modal-message {
+            font-size: 1.1rem;
+            color: #694034;
+            margin: 18px 0;
+            line-height: 1.5;
+        }
+        .modal-close {
+            background: #e58c68;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        .modal-close:hover {
+            background: #c96f48;
+            transform: scale(1.02);
+        }
+
+        /* Petit toast mignon */
+        .toast-cochon {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: #f5bb9e;
+            color: #542e22;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: bold;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            animation: slideUp 0.4s ease;
+            border-left: 5px solid #c95a3e;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(80px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="piggy-deco-container" aria-hidden="true"></div>
+
+<main>
+    <div class="pig-hero">
+        <div class="hero-pig-illustration" id="heroPigClick">🐷 🐽 🐖</div>
+        <h1>LE COCHON</h1>
+        <p class="pig-slogan">⭐ Chronologie d'un lien complexe avec l'Homme ⭐</p>
+        <div class="scroll-snort" id="snortScrollBtn">🐽 Découvrir l'exposé ↓</div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <section>
+        <div class="pig-card">
+            <h2>🐗 1. Aux origines : Le Sanglier et le Cochon</h2>
+            <h3>L'étymologie</h3>
+            <p>Le mot <strong>"cochon"</strong> dérive de l'onomatopée « coch » imitant le grognement. Son ancêtre sauvage, le sanglier (<em>Sus scrofa</em>), est représenté depuis la Préhistoire.</p>
+            <h3>Premières représentations</h3>
+            <p>À la <strong>Grotte d'Altamira</strong> (Espagne), les peintures rupestres montrent des sangliers majestueux, symboles de force et de survie.</p>
+            <figure>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Altamira_paintings_01.jpg" alt="Peinture rupestre Altamira" class="real-img">
+                <figcaption>🎨 Sanglier - Grotte d'Altamira, Magdalénien (vers 15 000 av. J.-C.)</figcaption>
+            </figure>
+            <div class="cochon-fact">
+                💡 <strong>Le savais-tu ?</strong> Le cochon a un odorat 2000 fois plus puissant que l'homme ! C'est le roi de la truffe 🍄🐽
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2 : LÉGENDES -->
+    <section>
+        <div class="pig-card">
+            <h2>📖 2. Le Cochon dans les Légendes du Monde</h2>
+            <div class="grid-piggy">
+                <div class="mini-pig-panel">
+                    <h3>🧱 Les Trois Petits Cochons</h3>
+                    <p>Le conte européen où le cochon malin triomphe du loup. Symbole d'intelligence et de prévoyance !</p>
+                    <div class="mini-img">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Three_little_pigs_-_loup.jpg/800px-Three_little_pigs_-_loup.jpg" alt="Trois petits cochons">
+                    </div>
+                    <button class="pig-button pig-info-btn" data-title="🐷 Les 3 Petits Cochons" data-message="Le troisième petit cochon bâtit une maison en briques : le travail et la persévérance payent toujours ! 🧱✨">En savoir plus</button>
+                </div>
+                <div class="mini-pig-panel">
+                    <h3>⚔️ Zhu Bajie (Chine)</h3>
+                    <p>Personnage du Voyage en Occident, mi-homme mi-cochon, protecteur loyal. En Asie, le cochon est signe de prospérité.</p>
+                    <div class="mini-img">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Zhu_Bajie.png/200px-Zhu_Bajie.png" alt="Zhu Bajie">
+                    </div>
+                    <button class="pig-button pig-info-btn" data-title="🐗 Zhu Bajie - Roi Cochon" data-message="Glouton mais fidèle protecteur. En Chine, le cochon porte chance et abondance ! 🍚🐽">Découvrir Zhu Bajie</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3 : MOYEN ÂGE -->
+    <section>
+        <div class="pig-card">
+            <h2>⚜️ 3. Le Bestiaire Médiéval : Diabolisation</h2>
+            <p>L'Antiquité vénérait le cochon (sacrifices à Cérès). Au Moyen Âge, l'Église en fait l'allégorie du péché.</p>
+            <figure>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Livre_des_merveilles_pig.jpg/800px-Livre_des_merveilles_pig.jpg" alt="Enluminure médiévale cochon" class="real-img">
+                <figcaption>Manuscrit médiéval : le cochon, symbole de luxure et gloutonnerie</figcaption>
+            </figure>
+            <h3>L'Explication religieuse</h3>
+            <p>Le groin baissé vers la boue l'empêche de regarder le Ciel → symbole des vices charnels.</p>
+            <button class="pig-button pig-info-btn" data-title="⚜️ Pourquoi diabolisation ?" data-message="Selon les bestiaires, le cochon ne lève jamais les yeux vers Dieu, image de l'homme prisonnier de ses instincts. Une vision chrétienne qui a marqué l'Occident. 🙏🐷">Comprendre la symbolique</button>
+        </div>
+    </section>
+
+    <!-- SECTION 4 : ART MODERNE -->
+    <section>
+        <div class="pig-card">
+            <h2>🎭 4. Le Cochon aujourd'hui : Dénonciation et Art</h2>
+            <div class="grid-piggy">
+                <div class="mini-pig-panel">
+                    <h3>📖 La Ferme des Animaux</h3>
+                    <p>Orwell (1945) : les cochons prennent le pouvoir. Métaphore du totalitarisme.</p>
+                    <div class="mini-img">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Animal_Farm_-_1st_edition.jpg" alt="Animal Farm">
+                    </div>
+                    <button class="pig-button pig-info-btn" data-title="📖 Orwell et les cochons dictateurs" data-message="« Tous les animaux sont égaux, mais certains sont plus égaux que d'autres. » Une critique féroce de Staline. 🐷📚">L'analyse</button>
+                </div>
+                <div class="mini-pig-panel">
+                    <h3>🎨 Wim Delvoye - Art Farm</h3>
+                    <p>Des cochons vivants tatoués de motifs luxueux. Questionne notre rapport à l'animal.</p>
+                    <div class="mini-img">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Wim_Delvoye_Tim.jpg/300px-Wim_Delvoye_Tim.jpg" alt="Cochon tatoué">
+                    </div>
+                    <button class="pig-button pig-info-btn" data-title="🎨 L'art contemporain provocateur" data-message="L'artiste belge Wim Delvoye expose des cochons tatoués : une réflexion sur la marchandisation du vivant. 🐷✨">Réfléchir</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5 : EXCEPTIONS CULTURELLES -->
+    <section>
+        <div class="pig-card">
+            <h2>🌍 5. Les Exceptions Culturelles</h2>
+            <div class="grid-piggy">
+                <div class="mini-pig-panel">
+                    <h3>🕌 Rejet absolu</h3>
+                    <p>Islam & Judaïsme : le cochon est impur (<em>haram/treif</em>). Un interdit millénaire.</p>
+                    <button class="pig-button pig-info-btn" data-title="🕌 L'interdit religieux" data-message="Coran et Torah déclarent le cochon impur. Cet interdit structure les identités culturelles depuis des siècles. 📿🐽">En savoir +</button>
+                </div>
+                <div class="mini-pig-panel">
+                    <h3>🏝️ Richesse et prestige</h3>
+                    <p>Au Vanuatu, le cochon à dents recourbées est une monnaie sacrée et symbole de statut social.</p>
+                    <div class="mini-img">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Pig_with_tusks_Vanuatu.jpg/300px-Pig_with_tusks_Vanuatu.jpg" alt="Cochon Vanuatu">
+                    </div>
+                    <button class="pig-button pig-info-btn" data-title="🏝️ Le trésor du Vanuatu" data-message="Les cochons aux défenses recourbées valent une fortune ! Ils sont offerts lors des mariages et cérémonies de chefferie. 👑🐷">La tradition</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6 : CONCLUSION -->
+    <section>
+        <div class="pig-card" style="background: #fff7f0;">
+            <h2>🪞 6. Conclusion : Miroir de l'Humanité</h2>
+            <p><strong>Le cochon est notre miroir paradoxal.</strong> Génétiquement proche (95% d'ADN partagé), nous l'avons tour à tour divinisé, diabolisé et industrialisé.</p>
+            <div class="cochon-fact">
+                🧬 Le savais-tu ? Le cœur de cochon génétiquement modifié a déjà été greffé à des humains (xénogreffes). Une avancée médicale incroyable ! ❤️🐷
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="pig-button" id="oinkConclusionBtn" style="background: #d96c4a; padding: 12px 35px;">🐽 Un grognement final 🐽</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    🐷 Le Cochon et l'Homme : Une chronologie culturelle unique 🐷<br>
+
+</footer>
+
+<!-- MODALE ROSE -->
+<div id="customModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-emoji" id="modalEmoji">🐷</div>
+        <div class="modal-title" id="modalTitle">Titre</div>
+        <div class="modal-message" id="modalMessage">Message</div>
+        <button class="modal-close" id="closeModalBtn">Fermer</button>
+    </div>
+</div>
+
+<script>
+    // Création des cochons flottants + arrière-plan enrichi
+    function createFloatingPigs() {
+        const container = document.getElementById('piggy-deco-container');
+        if (!container) return;
+        const pigFaces = ['🐷', '🐽', '🐖', '🐷', '🐽', '🐖', '🐷'];
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < 28; i++) {
+            let pigSpan = document.createElement('div');
+            pigSpan.classList.add('floating-pig');
+            pigSpan.innerHTML = pigFaces[Math.floor(Math.random() * pigFaces.length)];
+            pigSpan.style.fontSize = Math.floor(Math.random() * 35 + 18) + 'px';
+            pigSpan.style.left = Math.random() * 100 + '%';
+            pigSpan.style.top = Math.random() * 100 + '%';
+            pigSpan.style.animationDuration = (Math.random() * 28 + 16) + 's';
+            pigSpan.style.animationDelay = (Math.random() * 14) + 's';
+            pigSpan.style.opacity = Math.random() * 0.25 + 0.12;
+            fragment.appendChild(pigSpan);
+        }
+        container.appendChild(fragment);
+    }
+
+    // Modale
+    const modal = document.getElementById('customModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalEmoji = document.getElementById('modalEmoji');
+    const closeModal = document.getElementById('closeModalBtn');
+
+    function showModal(title, message, emoji = '🐷') {
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        modalEmoji.textContent = emoji;
+        modal.style.display = 'flex';
+        modalEmoji.style.animation = 'bounceHappy 0.4s ease';
+        setTimeout(() => { modalEmoji.style.animation = ''; }, 500);
+    }
+
+    closeModal.addEventListener('click', () => modal.style.display = 'none');
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+
+    // Boutons info
+    document.querySelectorAll('.pig-info-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const title = btn.getAttribute('data-title') || 'Information';
+            const message = btn.getAttribute('data-message') || 'Découvrez le monde merveilleux du cochon !';
+            showModal(title, message, '🐽');
+        });
+    });
+
+    // Bouton conclusion
+    document.getElementById('oinkConclusionBtn')?.addEventListener('click', () => {
+        showModal('🐷 Merci infiniment !', 'Le cochon, notre miroir depuis des millénaires. À travers l’histoire et l’art, il nous raconte nous-mêmes. N’oubliez jamais son intelligence et sa sensibilité ! 🐽✨', '🎉🐷');
+        const footer = document.querySelector('footer');
+        if (footer) {
+            footer.style.transition = '0.4s';
+            footer.style.backgroundColor = '#f7bbaa';
+            setTimeout(() => footer.style.backgroundColor = '#f7cfc0', 600);
+        }
+    });
+
+    // Scroll
+    document.getElementById('snortScrollBtn')?.addEventListener('click', () => {
+        const firstCard = document.querySelector('.pig-card');
+        if (firstCard) firstCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Petit toast mignon
+        const toast = document.createElement('div');
+        toast.className = 'toast-cochon';
+        toast.innerHTML = '🐽 C\'est parti pour l\'histoire du cochon ! 🐷';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    });
+
+    // Animation hero clic
+    document.getElementById('heroPigClick')?.addEventListener('click', () => {
+        showModal('🐷 Bienvenue dans le monde des cochons !', 'Ils sont intelligents, sensibles, et accompagnent l’humanité depuis la Préhistoire. Prêt pour un voyage fascinant ?', '🐽🎉');
+    });
+
+    // Animation d'apparition des cartes
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '0';
+                entry.target.style.transform = 'translateY(18px)';
+                entry.target.style.transition = 'all 0.55s cubic-bezier(0.2, 0.9, 0.4, 1.1)';
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, 80);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.pig-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(18px)';
+        observer.observe(card);
+    });
+
+    createFloatingPigs();
+
+    // Message de bienvenue toast
+    setTimeout(() => {
+        const helloToast = document.createElement('div');
+        helloToast.className = 'toast-cochon';
+        helloToast.innerHTML = '🐷✨ Salut ! Prépare-toi à découvrir le cochon comme jamais auparavant ✨🐽';
+        document.body.appendChild(helloToast);
+        setTimeout(() => helloToast.remove(), 3800);
+    }, 900);
+</script>
+</body>
+</html>
