@@ -833,71 +833,210 @@
     font-style: italic;
   }
 
-  /* ===== RESPONSIVE ===== */
+  /* ===== RESPONSIVE — MOBILE FIRST ===== */
   @media (max-width: 768px) {
+
+    /* ── Général ── */
+    body { padding: 0; overflow-x: hidden; }
+
+    .section { padding: 48px 20px; }
+
+    * { box-sizing: border-box; max-width: 100%; }
+
+    /* ── Hero titre — empêche le débordement ── */
+    .hero {
+      padding: 60px 20px 80px;
+      min-height: 100svh;
+      overflow: hidden;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 11vw, 4rem);
+      line-height: 1.05;
+      word-break: break-word;
+      white-space: normal;
+    }
+
+    .hero-title em { display: inline; }
+
+    .hero-eyebrow {
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      margin-top: 14px;
+    }
+
+    .hero-img-placeholder {
+      width: 160px;
+      margin: 16px auto;
+    }
+
+    .hero-img-placeholder img {
+      max-width: 160px;
+    }
+
+    /* ── Grilles → colonne unique ── */
     .presentation-grid,
     .decouverte-layout,
     .cultures-grid,
-    .moyenage-layout { grid-template-columns: 1fr; gap: 40px; }
+    .moyenage-layout { grid-template-columns: 1fr; gap: 28px; }
+
+    /* ── Anatomy cards → 2 colonnes ── */
+    .anatomy-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 28px;
+    }
+
+    .anatomy-card { padding: 16px 12px; }
+
+    .anatomy-title { font-size: 0.95rem; }
+
+    .anatomy-desc { font-size: 0.75rem; }
+
+    /* ── Stats / compteurs — 1 colonne, layout horizontal par item ── */
+    .stats-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 28px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      overflow: hidden;
+      text-align: left;
+      border-bottom: 1px solid rgba(184,130,10,0.1);
+    }
+
+    .stat-item:last-child { border-bottom: none; }
+
+    .stat-item::after { display: none; }
+
+    .stat-counter {
+      font-size: clamp(1.6rem, 8vw, 2.2rem);
+      line-height: 1;
+      white-space: nowrap;
+      flex-shrink: 0;
+      order: 2;
+      color: var(--amber);
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      line-height: 1.4;
+      color: #8a6a30;
+      order: 1;
+      flex: 1;
+      padding-right: 16px;
+    }
+
+    /* ── Status row (aujourd'hui) ── */
+    .status-row { flex-direction: column; gap: 2px; }
+
+    /* ── Images — hauteur réduite et cadrée ── */
+    .image-frame { padding: 6px; }
+
+    .image-frame img {
+      width: 100%;
+      height: 180px !important;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* Images en pleine largeur dans les grilles 2 colonnes */
+    [style*="grid-template-columns:1fr 1fr"] .image-frame img,
+    [style*="grid-template-columns: 1fr 1fr"] .image-frame img {
+      height: 140px !important;
+    }
+
+    /* ── Titres de sections ── */
+    .section-heading {
+      font-size: clamp(1.8rem, 8vw, 3rem);
+      margin-bottom: 28px;
+    }
+
+    /* ── Textes ── */
+    .presentation-text p,
+    .decouverte-text p,
+    .moyenage-text p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    /* ── Highlight box ── */
+    .highlight-box { padding: 14px 16px; margin: 20px 0; }
+    .highlight-box p { font-size: 0.9rem !important; }
+
+    /* ── Chronologie ── */
+    .timeline { padding-left: 36px; }
+    .timeline-year { font-size: 1.4rem; }
+    .timeline-text { font-size: 0.85rem; }
+
+    /* ── Culture cards ── */
+    .culture-card { padding: 24px 16px; }
+    .culture-name { font-size: 1.1rem; }
+    .culture-text { font-size: 0.85rem; }
+
+    /* ── Conclusion ── */
+    .conclusion-quote { font-size: 1rem; padding: 0 12px; }
+
+    /* ── Section divider ── */
+    .section-divider { margin-bottom: 28px; }
+
+    /* ── Bestiary card ── */
+    .bestiary-card { padding: 20px 14px; }
+    .creature-list li { font-size: 0.82rem; }
+
+    /* ── Footer ── */
+    .footer-bar {
+      font-size: 0.55rem;
+      padding: 18px 16px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Bouton mode exposé ── */
+    #expo-toggle {
+      bottom: 16px;
+      right: 16px;
+      font-size: 0.6rem;
+      padding: 8px 14px;
+    }
+  }
+
+  /* ── Très petits écrans (< 400px) ── */
+  @media (max-width: 400px) {
+
+    .hero-title {
+      font-size: clamp(1.9rem, 10vw, 2.8rem);
+    }
+
     .anatomy-grid { grid-template-columns: 1fr; }
-    .status-row { flex-direction: column; }
-    .section { padding: 60px 24px; }
+
+    .stats-row { flex-direction: column; }
+
+    .stat-counter { font-size: clamp(1.2rem, 6vw, 1.6rem); }
+
+    .section { padding: 36px 14px; }
+
+    .section-heading { font-size: 1.6rem; }
+
+    .image-frame img { height: 140px !important; }
   }
 
-  /* 📱 Responsive mobile */
-  @media (max-width: 768px) {
 
-    body {
-      padding: 10px;
-    }
-
-    .decouverte-text {
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .decouverte-text p {
-      margin-bottom: 15px;
-    }
-
-    .highlight-box {
-      padding: 12px;
-      font-size: 14px;
-      border-radius: 10px;
-    }
-
-    h1, h2 {
-      font-size: 20px;
-      text-align: center;
-    }
-
-    /* Evite les débordements */
-    * {
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-  }
-
-  /* 📱 Très petits écrans */
-  @media (max-width: 480px) {
-
-    .decouverte-text {
-      font-size: 13px;
-    }
-
-    h1 {
-      font-size: 18px;
-    }
-
-    h2 {
-      font-size: 16px;
-    }
-
-    .highlight-box {
-      font-size: 13px;
-      padding: 10px;
-    }
-  }
 
 
   /* ===== SCROLL REVEAL ===== */
@@ -998,12 +1137,12 @@
   .glitch::before {
     color: var(--rust);
     clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
-    animation: gl1 3s infinite 0.5s;
+    animation: gl1 7s infinite 3s;
   }
   .glitch::after {
     color: #4a9eff;
     clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-    animation: gl2 3s infinite 0.5s;
+    animation: gl2 7s infinite 3s;
   }
   @keyframes gl1 {
     0%,90%,100%{opacity:0;transform:translateX(0)}
@@ -1076,6 +1215,72 @@
   }
   #expo-toggle:hover { background: var(--amber); color: var(--ink); }
   #expo-toggle svg { flex-shrink: 0; }
+
+  /* ── Mobile : bouton quitter exposé ── */
+  @media (max-width: 768px) {
+    /* Bouton "Mode exposé" à droite */
+    #expo-toggle {
+      bottom: 16px;
+      right: 16px;
+      transform: none;
+      font-size: 0.62rem;
+      padding: 10px 18px;
+      letter-spacing: 0.15em;
+    }
+
+    /* En mode exposé : bouton "Quitter" discret, petit, coin bas droit */
+    body.expo-mode #expo-toggle {
+      right: 12px;
+      bottom: 80px;
+      transform: none;
+      background: transparent;
+      border-color: rgba(184,130,10,0.3);
+      color: rgba(184,130,10,0.5);
+      padding: 6px 12px;
+      font-size: 0.55rem;
+      box-shadow: none;
+    }
+
+    /* Indicateur slides en bas, plus compact */
+    #expo-indicator {
+      bottom: 16px;
+      gap: 12px;
+      padding: 8px 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      justify-content: space-between;
+    }
+
+    .expo-btn {
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+    }
+
+    #expo-dots { gap: 5px; }
+
+    .expo-dot { width: 7px; height: 7px; }
+
+    #expo-counter {
+      font-size: 0.65rem;
+      min-width: 40px;
+    }
+
+    /* Barre titre slide plus compacte */
+    #expo-title-bar {
+      padding: 10px 20px;
+      gap: 10px;
+    }
+
+    #expo-title-bar .etb-name { font-size: 0.85rem; }
+
+    /* Flèches et hint masqués sur mobile */
+    #expo-arrow-left,
+    #expo-arrow-right { display: none; }
+
+    #expo-kbd-hint { display: none !important; }
+  }
 
   /* Indicateur de slide */
   #expo-indicator {
@@ -1388,17 +1593,17 @@
 
     <!-- Compteurs animés -->
     <div class="stats-row reveal">
-      <div class="stat-item" data-count="40000" data-suffix=" récepteurs">
+      <div class="stat-item" data-count="40000" data-suffix="">
         <span class="stat-counter" data-target="40000">0</span>
-        <span class="stat-label">Dans le bec</span>
+        <span class="stat-label">Récepteurs bec</span>
       </div>
       <div class="stat-item" data-count="1799">
         <span class="stat-counter" data-target="1799">0</span>
-        <span class="stat-label">Année de découverte</span>
+        <span class="stat-label">Découverte</span>
       </div>
       <div class="stat-item" data-count="17" data-suffix=" ans">
         <span class="stat-counter" data-target="17">0</span>
-        <span class="stat-label">Longévité moyenne</span>
+        <span class="stat-label">Longévité</span>
       </div>
       <div class="stat-item" data-count="45" data-suffix=" cm">
         <span class="stat-counter" data-target="45">0</span>
